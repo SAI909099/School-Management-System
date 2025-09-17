@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jadval — sinf bo‘yicha (ko‘rish)</title>
+  <link rel="stylesheet" href="{% static 'css/jadval-style.css' %}">
+  <style>
+    .panel { background:#fff; border-radius:12px; box-shadow:0 3px 6px rgba(0,0,0,.08); padding:14px; }
+    .controls { display:flex; gap:10px; flex-wrap:wrap; align-items:end; margin-bottom:12px; }
+    .controls label { font-weight:600; display:block; }
+    .badge { background:#eef; color:#2b2a8f; padding:4px 10px; border-radius:999px; }
+    .timetable { width:100%; border-collapse:collapse; }
+    .timetable th,.timetable td { border:1px solid #e5e5e5; padding:8px; vertical-align:top; }
+    .timetable thead th { background:#f7f7f7; }
+    .slot { font-size:12px; line-height:1.35; background:#f9fafb; border:1px dashed #ddd; padding:6px; border-radius:8px; white-space:pre-line; }
+    .slot b { display:block; margin-bottom:2px; }
+    .hidden { display:none; }
+    @media print {
+      .sidebar, .controls, .print-actions { display:none !important; }
+      body { background:#fff; }
+      .panel { box-shadow:none; padding:0; }
+      .timetable th,.timetable td { border:1px solid #444; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo"><img src="{% static 'img/Logo.png' %}" alt="Logo" class="logo-img"></div>
+      <h3 class="sidebar-title">School</h3>
+      <nav class="menu">
+        <a href="/dashboard/"><img src="{% static 'icons/Asosiy.png' %}" alt=""> Asosiy</a>
+        <a href="/schedule/view/teacher/"><img src="{% static 'icons/Jadval.png' %}" alt=""> Jadval (o‘qituvchi)</a>
+        <a href="/schedule/view/class/" class="active"><img src="{% static 'icons/Jadval.png' %}" alt=""> Jadval (sinf)</a>
+      </nav>
+    </aside>
+
+    <!-- Content -->
+    <main class="content">
+      <h2 class="page-title">Jadval — sinf bo‘yicha (ko‘rish)</h2>
+
+      <div class="panel">
+        <div class="controls">
+          <div>
+            <label>Sinf</label>
+            <select id="classSel" style="min-width:220px;"></select>
+          </div>
+          <div>
+            <label>Hafta</label>
+            <select id="weekTemplate">
+              <option value="default">Dushanba–Shanba</option>
+            </select>
+          </div>
+          <button id="btnReload" class="btn">Yuklash</button>
+          <div class="print-actions" style="margin-left:auto; display:flex; gap:8px;">
+            <button id="btnPrint" class="btn">Chop etish</button>
+          </div>
+          <span id="meta" class="badge">—</span>
+        </div>
+
+        <table id="tbl" class="timetable"></table>
+
+        <div id="msg" class="hidden" style="margin-top:10px;"></div>
+      </div>
+    </main>
+  </div>
+
+  <script src="{% static 'js/schedule-view-class.js' %}"></script>
+</body>
+</html>

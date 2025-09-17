@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>O‘qituvchi jadvali (ko‘rish)</title>
+  <link rel="stylesheet" href="{% static 'css/jadval-style.css' %}">
+  <style>
+    .viewer { background:#fff; border-radius:12px; box-shadow:0 3px 6px rgba(0,0,0,.1); padding:16px; }
+    .head { display:flex; gap:12px; align-items:center; justify-content:space-between; margin-bottom:10px; }
+    .meta { color:#333; }
+    .print-btn { padding:8px 12px; border:1px solid #ddd; border-radius:8px; background:#f7f7f7; cursor:pointer; }
+    .timetable { width:100%; border-collapse:collapse; }
+    .timetable th, .timetable td { border:1px solid #ddd; padding:8px; vertical-align:top; }
+    .timetable thead th { background:#f5f5f5; }
+    .lesson { display:flex; flex-direction:column; gap:2px; }
+    .lesson .time { font-weight:600; }
+    .lesson .line { color:#333; }
+    .badge { display:inline-block; padding:2px 8px; font-size:12px; border-radius:999px; background:#eef; color:#2b2a8f; }
+    #msg.ok { color:#0a7a33; margin-top:8px; } #msg.err { color:#c01a1a; white-space:pre-wrap; margin-top:8px; }
+    @media print {
+      body { background:#fff; }
+      .sidebar, .topbar, .print-btn, .page-title { display:none !important; }
+      .viewer { box-shadow:none; padding:0; }
+      .timetable th, .timetable td { border:1px solid #000; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="logo"><img src="{% static 'img/Logo.png' %}" class="logo-img" alt=""></div>
+      <h3 class="sidebar-title">School</h3>
+      <nav class="menu">
+        <a href="/dashboard/"><img src="{% static 'icons/Asosiy.png' %}" alt=""> Asosiy</a>
+        <a href="/schedule/"><img src="{% static 'icons/Jadval.png' %}" alt=""> Jadval (o‘qituvchi)</a>
+        <a href="/schedule/classes/"><img src="{% static 'icons/Jadval.png' %}" alt=""> Jadval (sinflar)</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <h2 class="page-title">O‘qituvchi jadvali (ko‘rish)</h2>
+
+      <div id="msg" class="hidden"></div>
+
+      <div class="viewer">
+        <div class="head">
+          <div class="meta">
+            <div style="font-size:18px; font-weight:700;" id="teacherName">O‘qituvchi: —</div>
+            <div id="teacherSubject" style="margin-top:4px;"></div>
+          </div>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <span class="badge">Dushanba–Shanba</span>
+            <button class="print-btn" id="btnPrint">Chop etish</button>
+          </div>
+        </div>
+
+        <table class="timetable" id="timetable"></table>
+      </div>
+    </main>
+  </div>
+
+  <script src="{% static 'js/schedule-view-teacher.js' %}"></script>
+</body>
+</html>

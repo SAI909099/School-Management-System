@@ -1,0 +1,190 @@
+/* ========== Общие стили ========== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: #f5f6fa;
+  color: #333;
+}
+
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ========== Sidebar ========== */
+.sidebar {
+  width: 250px;
+  background: #2b2a8f;
+  color: #fff;
+  padding: 20px;
+  font-weight: bold;
+  font-size: 22px;
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.logo-img {
+  max-width: 100%;
+}
+
+.sidebar-title {
+  text-align: center;
+  font-size: 29px;
+  margin-bottom: 25px;
+  font-weight: bold;
+
+}
+
+.menu a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  transition: all 0.3s ease;
+}
+
+.menu img {
+  width: 50px;
+  height: 50px;
+}
+
+.menu a.active,
+.menu a:hover {
+  background: #fff;
+  color: #4D38D7;
+}
+
+.menu a.active img,
+.menu a:hover img {
+  filter: brightness(0) saturate(100%) invert(28%) sepia(72%) saturate(2387%) hue-rotate(231deg) brightness(95%) contrast(101%);
+}
+
+/* ========== Content ========== */
+.content {
+  flex: 1;
+  padding: 20px 30px;
+}
+
+/* Topbar */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.topbar input {
+  width: 300px;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+}
+
+.topbar .icons {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.topbar .icons img {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+/* Заголовок страницы */
+.page-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #2b2a8f;
+  margin-bottom: 20px;
+}
+
+/* ========== Карточки финансов ========== */
+.finance-cards {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.finance-card {
+  flex: 1;
+  min-width: 250px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  border-left: 6px solid transparent;
+  transition: transform 0.2s ease;
+}
+
+.finance-card:hover {
+  transform: translateY(-5px);
+}
+
+.finance-card h3 {
+  font-size: 16px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.finance-card .amount {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.add-btn {
+  padding: 8px 16px;
+  background: #2b2a8f;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.add-btn:hover {
+  background: #4D38D7;
+}
+
+/* Цветовые акценты */
+.finance-card.green {
+  border-left-color: #22c55e;
+}
+
+.finance-card.green .amount {
+  color: #22c55e;
+}
+
+.finance-card.red {
+  border-left-color: #ef4444;
+}
+
+.finance-card.red .amount {
+  color: #ef4444;
+}
+
+.finance-card.blue {
+  border-left-color: #4D38D7;
+}
+
+.finance-card.blue .amount {
+  color: #4D38D7;
+}

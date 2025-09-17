@@ -1,0 +1,114 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Baho qo‘yish</title>
+  <link rel="stylesheet" href="{% static 'css/jadval-style.css' %}">
+  <style>
+    .card { background:#fff; padding:16px; border-radius:12px; box-shadow:0 3px 6px rgba(0,0,0,.1); }
+    .row { display:flex; gap:12px; flex-wrap:wrap; align-items:end; }
+    label { font-weight:600; display:block; margin-bottom:4px; }
+    select, input[type="date"], input[type="text"], input[type="number"] {
+      padding:8px 10px; border:1px solid #ddd; border-radius:8px; min-width:160px;
+    }
+    .btn { padding:10px 14px; border:1px solid #ddd; border-radius:8px; background:#f7f7f7; cursor:pointer; }
+    .btn.primary { background:#4f46e5; color:#fff; border-color:#4f46e5; }
+    .btn.ghost { background:#fff; }
+    .table { width:100%; border-collapse:collapse; margin-top:12px; }
+    .table th, .table td { border:1px solid #eee; padding:8px; }
+    .table th { background:#f7f7f7; text-align:left; }
+    .ok { color:#0a7a33; margin-top:8px; }
+    .err { color:#c01a1a; white-space:pre-wrap; margin-top:8px; }
+    .badge { display:inline-block; padding:2px 8px; border-radius:999px; background:#eef; color:#2b2a8f; font-size:12px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="{% static 'img/Logo.png' %}" alt="Logo" class="logo-img">
+      </div>
+      <h3 class="sidebar-title">School Admin</h3>
+      <nav class="menu">
+        <a href="/dashboard/"><img src="{% static 'icons/Asosiy.png' %}" alt=""> Asosiy</a>
+        <a href="/teachers-admin/"><img src="{% static 'icons/O‘qituvchi.png' %}" alt=""> O‘qituvchi</a>
+        <a href="/students/"><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> O‘quvchi</a>
+        <a href="/schedule/"><img src="{% static 'icons/Jadval.png' %}" alt=""> Jadval</a>
+        <a href="/grades/entry/" class="active"><img src="{% static 'icons/Jadval.png' %}" alt=""> Baho qo‘yish</a>
+        <a href="/billing-admin/"><img src="{% static 'icons/Moliya.png' %}" alt=""> Moliya</a>
+        <a href="/settings-admin/"><img src="{% static 'icons/sozlamalar.png' %}" alt=""> Sozlamalar</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <h2 class="page-title">Baho qo‘yish</h2>
+
+      <div id="msg" class="hidden"></div>
+
+      <div class="card" style="margin-bottom:16px;">
+        <div class="row">
+          <div>
+            <label>Sinf</label>
+            <select id="classSel"></select>
+          </div>
+          <div>
+            <label>Fan</label>
+            <select id="subjectSel">
+              <option value="">— tanlang —</option>
+            </select>
+          </div>
+          <div>
+            <label>Turi</label>
+            <select id="typeSel">
+              <option value="daily">Kundalik</option>
+              <option value="exam">Imtihon</option>
+              <option value="final">Yakuniy</option>
+            </select>
+          </div>
+          <div>
+            <label>Sana</label>
+            <input type="date" id="dateInp">
+          </div>
+          <div>
+            <label>Semestr / Term</label>
+            <input type="text" id="termInp" placeholder="masalan: 2025-1">
+          </div>
+          <button id="btnLoad" class="btn">O‘quvchilarni yuklash</button>
+          <span id="whoBadge" class="badge">Rol: —</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="row" style="justify-content:space-between; margin-bottom:10px;">
+          <div style="display:flex; gap:8px;">
+            <button id="btnFill3" class="btn ghost">Barchasini 3</button>
+            <button id="btnFill4" class="btn ghost">Barchasini 4</button>
+            <button id="btnFill5" class="btn ghost">Barchasini 5</button>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button id="btnClear" class="btn ghost">Tozalash</button>
+            <button id="btnSave" class="btn primary">Saqlash</button>
+          </div>
+        </div>
+
+        <table class="table" id="tbl">
+          <thead>
+            <tr>
+              <th style="width:60px;">№</th>
+              <th>Familiya Ism</th>
+              <th style="width:120px;">Baho (2..5)</th>
+              <th>Izoh</th>
+            </tr>
+          </thead>
+          <tbody><!-- filled by JS --></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <script src="{% static 'js/grades-entry.js' %}"></script>
+</body>
+</html>

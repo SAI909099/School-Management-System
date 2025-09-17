@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>School Operator</title>
+  <link rel="stylesheet" href="{% static 'css/operator-add-style.css' %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="{% static 'img/Logo.png' %}" alt="Logo" class="logo-img">
+      </div>
+      <h3 class="sidebar-title">School Operator</h3>
+      <nav class="menu">
+        <a href="{% url 'operator-main' %}"><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Asosiy</a>
+        <a href="{% url 'operator-davomat' %}"><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> Davomat</a>
+        <a href="{% url 'operator-add' %}" class="active"><img src="{% static 'icons/O‘qituvchi.png' %}" alt=""> Yangi o‘quvchi qo‘shish</a>
+        <a href="{% url 'moliya-sozlamalar' %}"><img src="{% static 'icons/sozlamalar.png' %}" alt=""> Sozlamalar</a>
+      </nav>
+    </aside>
+
+    <!-- Content -->
+    <main class="content">
+      <!-- Topbar -->
+      <div class="topbar">
+        <input type="text" class="search" placeholder="Qidiruv">
+        <div class="icons">
+          <a href="#"><img src="{% static 'icons/Xabarlar.png' %}" alt="Bell"></a>
+          <a href="#"><img src="{% static 'icons/Profil.png' %}" alt="Profile"></a>
+        </div>
+      </div>
+
+      <!-- Title -->
+      <h1 class="page-title">Yangi o‘quvchi qo‘shish</h1>
+
+      <!-- Form -->
+      <form class="student-form" action="#" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="ism">Ism</label>
+          <input id="ism" name="ism" type="text" class="form-control" placeholder="Ismni kiriting">
+        </div>
+
+        <div class="form-group">
+          <label for="familiya">Familiya</label>
+          <input id="familiya" name="familiya" type="text" class="form-control" placeholder="Familiyani kiriting">
+        </div>
+
+        <div class="form-group">
+          <label for="otaona">Ota-ona ismi</label>
+          <input id="otaona" name="otaona" type="text" class="form-control" placeholder="Ota yoki ona ismini kiriting">
+        </div>
+
+        <div class="form-group">
+          <label>Tug‘ilgan sana</label>
+          <div class="dob-row">
+            <input type="text" name="kun" class="form-control dob" placeholder="Kun">
+            <input type="text" name="oy" class="form-control dob" placeholder="Oy">
+            <input type="text" name="yil" class="form-control dob" placeholder="Yil">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="sinf">Sinf</label>
+          <select id="sinf" name="sinf" class="form-control">
+            <option value="">Sinfni tanlang</option>
+            <option>1-sinf</option>
+            <option>2-sinf</option>
+            <option>3-sinf</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="kurator">Kurator</label>
+          <select id="kurator" name="kurator" class="form-control">
+            <option value="">Kuratorni tanlang</option>
+            <option>Azizxon aka</option>
+            <option>Gulbahor opa</option>
+          </select>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">Saqlash</button>
+        </div>
+      </form>
+    </main>
+  </div>
+</body>
+</html>

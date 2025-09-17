@@ -1,0 +1,69 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>School Ota Ona</title>
+  <link rel="stylesheet" href="{% static 'css/parent-baholar-style.css' %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="{% static 'img/Logo.png' %}" alt="Logo" class="logo-img">
+      </div>
+      <h3 class="sidebar-title">School Ota Ona</h3>
+      <nav class="menu">
+        <a href="/otaona/"><img src="{% static 'icons/Asosiy-white.png' %}" alt="Asosiy"> Asosiy</a>
+        <a href="/otaona/davomat/" ><img src="{% static 'icons/O‘quvchi.png' %}" alt="O‘quvchi"> Davomat</a>
+        <a href="/otaona/baholar/"><img src="{% static 'icons/O‘qituvchi.png' %}" alt=""> Baholar</a>
+        <a href="/otaona/sozlamalar/"><img src="{% static 'icons/sozlamalar.png' %}" alt=""> Sozlamalar</a>
+      </nav>
+    </aside>
+
+    <!-- Content -->
+    <main class="content">
+      <!-- Topbar -->
+      <div class="topbar">
+        <input type="text" placeholder="Qidiruv">
+        <div class="icons">
+          <a href="#"><img src="{% static 'icons/Xabarlar.png' %}" alt="Bell"></a>
+          <a href="#"><img src="{% static 'icons/Profil.png' %}" alt="Profile"></a>
+        </div>
+      </div>
+
+      <!-- Cards grid -->
+      <div class="cards-grid">
+        <div class="card">
+          <h3>O‘qituvchi Ism va familiya</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Fan</th>
+                <th>Soat</th>
+                <th>Baho</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Matematika</td><td>1</td><td>4</td></tr>
+              <tr><td>Fizika</td><td>2</td><td>3</td></tr>
+              <tr><td>Rus tili</td><td>3</td><td>4</td></tr>
+            </tbody>
+            <tbody>
+              <tr><td>Ingiliz tili</td><td>4</td><td>4</td></tr>
+              <tr><td>Ona tili</td><td>5</td><td>5</td></tr>
+              <tr><td>Informatika</td><td>6</td><td>4</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>School Operator — Sozlamalar</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="{% static 'img/Logo.png' %}" alt="Logo" class="logo-img">
+      </div>
+      <h3 class="sidebar-title">School Operator</h3>
+      <nav class="menu">
+        <a href="{% url 'operator-main' %}"><img src="{% static 'icons/Asosiy.png' %}" alt=""> Asosiy</a>
+        <a href="{% url 'operator-davomat' %}"><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> Davomat</a>
+        <a href="{% url 'operator-add' %}"><img src="{% static 'icons/Jadval.png' %}" alt=""> Yangi o‘quvchi qo‘shish</a>
+        <a href="{% url 'operator-settings' %}" class="active"><img src="{% static 'icons/sozlamalar.png' %}" alt=""> Sozlamalar</a>
+      </nav>
+    </aside>
+
+    <!-- Content -->
+    <main class="content">
+      <!-- Topbar -->
+      <div class="topbar">
+        <input type="text" placeholder="Qidiruv">
+        <div class="icons">
+          <a href="#"><img src="{% static 'icons/Xabarlar.png' %}" alt="Bell"></a>
+          <a href="#"><img src="{% static 'icons/Profil.png' %}" alt="Profile"></a>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="content-header">
+          <h2>Sozlamalar</h2>
+        </div>
+
+        <div class="form-card">
+          <!-- Bir dona shakl (nested form yo'q) -->
+          <form id="operator-settings-form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <label for="ism">Ism</label>
+            <input type="text" id="ism" name="first_name" placeholder="Ismni kiriting" autocomplete="given-name">
+
+            <label for="login">Login</label>
+            <input type="text" id="login" name="username" placeholder="Loginni kiriting" autocomplete="username">
+
+            <label for="parol">Parol</label>
+            <input type="password" id="parol" name="password" placeholder="Parolni kiriting" autocomplete="new-password">
+
+            <label for="fileUpload">Rasm</label>
+            <div class="file-upload">
+              <input type="file" id="fileUpload" name="avatar" hidden>
+              <label for="fileUpload" class="custom-btn">Файл tanlash</label>
+              <span id="file-name" class="file-name"></span>
+            </div>
+
+            <button type="submit" class="save-btn">Saqlash</button>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Ixtiyoriy: tanlangan fayl nomini ko'rsatish -->
+  <script>
+    (function(){
+      const inp = document.getElementById('fileUpload');
+      const out = document.getElementById('file-name');
+      if (inp && out) {
+        inp.addEventListener('change', () => {
+          out.textContent = inp.files && inp.files[0] ? inp.files[0].name : '';
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

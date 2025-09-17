@@ -25,15 +25,10 @@
   margin-bottom: 20px;
 }
 
-.logo h2 {
-  font-size: 18px;
-  line-height: 1.2;
-}
-
 .sidebar-title {
   margin: 20px 0;
   font-weight: bold;
-  font-size: 29px;
+  font-size: 26px;
 }
 
 .menu a {
@@ -47,7 +42,7 @@
   margin-bottom: 5px;
   transition: 0.3s;
   font-weight: bold;
-  font-size: 22px;
+  font-size: 20px;
 }
 
 .menu a img {
@@ -71,7 +66,7 @@
 .content {
   flex: 1;
   background: #f9f9f9;
-  padding: 20px;
+  padding: 30px;
 }
 
 .topbar {
@@ -89,60 +84,80 @@
 }
 
 .topbar .icons a img {
-  width: 40;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   margin-left: 15px;
 }
 
-.page-title {
-  color: #2b2a8f;
+/* Контент справа */
+.content {
+  padding: 30px;
+}
+
+/* Поиск */
+.search-bar {
+  display: flex;
+  align-items: center;
   margin-bottom: 20px;
 }
 
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-}
-
-.card {
-  background: #fff;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-}
-
-.card h3 {
-  margin-bottom: 10px;
-}
-
-/* Pagination */
-.pagination {
-  margin-top: 20px;
-  display: flex;
-  gap: 10px;
-}
-
-.pagination a {
-  display: inline-block;
+.search-bar input {
+  width: 250px;
   padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.search-bar .search-btn {
+  margin-left: -35px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+}
+
+/* Заголовок */
+.page-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #4D38D7;
+  margin-bottom: 20px;
+}
+
+/* Таблица */
+.table-container {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-container tr {
+  border-bottom: 1px solid #eee;
+}
+
+.table-container td {
+  padding: 15px;
+  font-size: 16px;
+}
+
+.edit-btn {
+  padding: 6px 14px;
   border: 1px solid #ccc;
   border-radius: 6px;
-  text-decoration: none;
-  color: #4D38D7;
+  background: #f9f9f9;
+  cursor: pointer;
   transition: 0.3s;
 }
 
-.pagination a.active,
-.pagination a:hover {
+.edit-btn:hover {
   background: #4D38D7;
   color: #fff;
   border-color: #4D38D7;
 }
-
-.attendance-panel { background:#fff; border-radius:10px; padding:16px; box-shadow:0 2px 12px rgba(0,0,0,.06); }
-.attendance-panel .controls .btn { padding:8px 12px; border:1px solid #ddd; border-radius:8px; background:#f8f8f8; cursor:pointer; }
-.attendance-panel .controls .btn.btn-primary { background:#4f46e5; color:#fff; border-color:#4f46e5; }
-.att-table { width:100%; border-collapse:collapse; margin-top:12px; }
-.att-table th, .att-table td { padding:10px; border-bottom:1px solid #eee; text-align:left; }
-

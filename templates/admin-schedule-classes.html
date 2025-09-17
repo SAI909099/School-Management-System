@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jadval — sinflar bo‘yicha</title>
+  <link rel="stylesheet" href="{% static 'css/jadval-style.css' %}">
+  <style>
+    .layout { display:grid; grid-template-columns: 260px 1fr; gap:16px; }
+    .panel { background:#fff; border-radius:12px; box-shadow:0 3px 6px rgba(0,0,0,.1); padding:12px; }
+    .classes { display:flex; flex-direction:column; gap:8px; max-height:70vh; overflow:auto; }
+    .class-item { padding:8px 10px; border-radius:8px; cursor:pointer; }
+    .class-item.active, .class-item:hover { background:#eef; color:#2b2a8f; }
+    .controls { display:flex; gap:10px; flex-wrap:wrap; align-items:end; margin-bottom:10px; }
+    .controls label { font-weight:600; display:block; }
+    .btn { padding:8px 12px; border:1px solid #ddd; border-radius:8px; background:#f7f7f7; cursor:pointer; }
+    .btn.primary { background:#4f46e5; color:#fff; border-color:#4f46e5; }
+    .timetable { width:100%; border-collapse:collapse; }
+    .timetable th,.timetable td { border:1px solid #ddd; padding:8px; vertical-align:top; }
+    .timetable thead th { background:#f5f5f5; }
+    .cell-wrap { display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
+    .cell-wrap select, .cell-wrap input[type="time"] { padding:6px 8px; border:1px solid #ddd; border-radius:6px; }
+    .room { width:70px; }
+    .timebox { display:flex; gap:6px; align-items:center; margin-bottom:4px; }
+    .badge { display:inline-block; font-size:12px; padding:2px 6px; border-radius:999px; background:#eee; }
+    .conflict { outline: 2px solid #dc3545; box-shadow: 0 0 0 2px rgba(220,53,69,.15) inset; }
+    #msg.ok { color:#0a7a33; margin-top:6px; }
+    #msg.err { color:#c01a1a; white-space:pre-wrap; margin-top:6px; }
+    @media print { .sidebar, .controls, #msg { display:none !important; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo"><img src="{% static 'img/Logo.png' %}" alt="Logo" class="logo-img"></div>
+      <h3 class="sidebar-title">School Admin</h3>
+      <nav class="menu">
+        <a href="/dashboard/"><img src="{% static 'icons/Asosiy.png' %}" alt=""> Asosiy</a>
+        <a href="/students/"><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> O‘quvchi</a>
+        <a href="/teachers-admin/"><img src="{% static 'icons/O‘qituvchi.png' %}" alt=""> O‘qituvchi</a>
+        <a href="/schedule/" ><img src="{% static 'icons/Jadval.png' %}" alt=""> Jadval (o‘qituvchi)</a>
+        <a href="/schedule/classes/" class="active"><img src="{% static 'icons/Jadval.png' %}" alt=""> Jadval (sinflar)</a>
+        <a href="/billing-admin/"><img src="{% static 'icons/Moliya.png' %}" alt=""> Moliya</a>
+        <a href="/settings-admin/"><img src="{% static 'icons/sozlamalar.png' %}" alt=""> Sozlamalar</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <h2 class="page-title">Jadval — sinflar bo‘yicha</h2>
+
+      <div id="msg" class="hidden"></div>
+
+      <div class="layout">
+        <!-- Left: classes list -->
+        <div class="panel">
+          <div style="display:flex; gap:8px; align-items:center; margin-bottom:8px;">
+            <input id="classSearch" type="text" placeholder="Sinf qidirish..." style="flex:1; padding:8px 10px; border:1px solid #ddd; border-radius:8px;">
+          </div>
+          <div id="classesList" class="classes"></div>
+        </div>
+
+        <!-- Right: grid & controls -->
+        <div class="panel">
+          <div class="controls">
+            <div>
+              <label>Uslub: darslar soni</label>
+              <input id="periodCount" type="number" min="1" max="12" value="8" style="width:90px;">
+            </div>
+            <div>
+              <label>Vaqt shabloni</label>
+              <select id="timeTemplate">
+                <option value="default">Default (08:30–14:20)</option>
+                <option value="empty">Bo‘sh</option>
+              </select>
+            </div>
+            <button id="btnBuild" class="btn">Jadvalni qurish</button>
+            <button id="btnLoad" class="btn">Mavjudini yuklash</button>
+            <button id="btnSaveAll" class="btn primary">Barchasini saqlash</button>
+            <button id="btnPrint" class="btn">🖨️ Chop etish</button>
+            <span id="currentClass" class="badge">Sinf: —</span>
+          </div>
+
+          <table class="timetable" id="timetable"></table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="{% static 'js/admin-schedule-classes.js' %}"></script>
+</body>
+</html>

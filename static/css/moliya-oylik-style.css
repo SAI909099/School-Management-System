@@ -1,0 +1,222 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Poppins, sans-serif;
+}
+
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  background: #2b2a8f;
+  color: #fff;
+  padding: 20px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.logo h2 {
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.sidebar-title {
+  margin: 20px 0;
+  font-weight: bold;
+  font-size: 29px;
+}
+
+.menu a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+  margin-bottom: 5px;
+  transition: 0.3s;
+  font-weight: bold;
+  font-size: 22px;
+}
+
+.menu a img {
+  width: 50px;
+  height: 50px;
+  transition: filter 0.3s;
+}
+
+.menu a.active,
+.menu a:hover {
+  background: white;
+  color: #4D38D7;
+}
+
+.menu a:hover img,
+.menu a.active img {
+  filter: brightness(0) saturate(100%) invert(20%) sepia(80%) saturate(2600%) hue-rotate(235deg) brightness(90%) contrast(100%);
+}
+
+
+/* Content */
+.content {
+  flex: 1;
+  background: #f9f9f9;
+  padding: 20px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.topbar input {
+  width: 300px;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+}
+
+.topbar .icons a img {
+  width: 40px;
+  height: 40px;
+  margin-left: 15px;
+}
+
+/* ---- Content (o'ng panel) ---- */
+.content{
+  flex:1;
+  background:#fff;
+  padding:24px 28px;
+}
+
+/* Topbar */
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:32px;
+}
+.topbar .icons a img{
+  width:32px;height:32px;margin-left:14px;
+}
+.topbar .search{
+  width:320px;
+  height:38px;
+  border:1px solid #DADAE3;
+  border-radius:20px;
+  padding:0 14px 0 36px;
+  outline:none;
+  background:#fff url('img/Icons/search.svg') 10px center no-repeat;
+  font-size:14px;
+}
+
+/* Контент справа */
+.content { 
+  padding: 30px;
+}
+
+/* Поиск */
+.search-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-bar input {
+  width: 250px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.search-bar .search-btn {
+  margin-left: -35px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+}
+
+/* Заголовок */
+.page-title {
+  font-size: 30px;
+  font-weight: bold;
+  color: #4D38D7;
+  margin-bottom: 20px;
+}
+
+/* Таблица */
+.table-container {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-container th,
+.table-container td {
+  padding: 14px;
+  border: 1px solid #ddd;
+  text-align: left;
+  font-size: 16px;
+}
+
+.table-container th {
+  font-weight: bold;
+}
+
+/* Чекбоксы */
+.table-container input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #4D38D7; /* цвет чекбокса */
+}
+
+/* Actions */
+.form-actions{
+  margin-top:28px;
+  display:flex;
+  justify-content:flex-end;
+}
+.btn-primary{
+  min-width:220px;
+  height:56px;
+  border:none;
+  border-radius:12px;
+  background:#2b2a8f;
+  color:#fff;
+  font-weight:700;
+  font-size:18px;
+  cursor:pointer;
+  transition:transform .03s ease, opacity .2s ease;
+}
+.btn-primary:active{ transform:scale(0.99); }
+.btn-primary:hover{ opacity:0.95; }
+
+/* (Ixtiyoriy) kichik ekranlar */
+@media (max-width:640px){
+  .topbar .search{ width:100%; }
+  .topbar{ gap:12px; }
+  .student-form{ max-width:100%; }
+  .dob-row .dob{ width:100%; flex:1 1 0; }
+}

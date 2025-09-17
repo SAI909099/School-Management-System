@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>School Moliya</title>
+  <link rel="stylesheet" href="{% static 'css/moliya-style.css' %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="{% static 'img/Logo.png' %}" alt="Logo" class="logo-img">
+      </div>
+      <h3 class="sidebar-title">School Moliya</h3>
+      <nav class="menu">
+        <a href="{% url 'moliya-main' %}" class="active"><img src="{% static 'icons/Asosiy.png' %}" alt=""> Asosiy</a>
+        <a href="{% url 'moliya-chiqim' %}"><img src="{% static 'icons/Chiqim.png' %}" alt=""> Chiqim</a>
+        <a href="{% url 'moliya-oylik' %}"><img src="{% static 'icons/Jadval.png' %}" alt=""> Oyliklar</a>
+        <a href="{% url 'moliya-sozlamalar' %}"><img src="{% static 'icons/sozlamalar.png' %}" alt=""> Sozlamalar</a>
+      </nav>
+    </aside>
+
+    <!-- Content -->
+    <main class="content">
+      <!-- Topbar -->
+      <div class="topbar">
+        <input type="text" placeholder="Qidiruv">
+        <div class="icons">
+          <a href="#"><img src="{% static 'icons/Xabarlar.png' %}" alt="Bell"></a>
+          <a href="#"><img src="{% static 'icons/Profil.png' %}" alt="Profile"></a>
+        </div>
+      </div>
+
+      <h2 class="page-title">Moliya</h2>
+
+      <!-- Finance Cards -->
+      <div class="finance-cards">
+        <div class="finance-card green">
+          <h3>Kirim</h3>
+          <p class="amount">—</p>
+          <button class="add-btn">Qo‘shish +</button>
+        </div>
+
+        <div class="finance-card red">
+          <h3>Chiqim</h3>
+          <p class="amount">—</p>
+          <button class="add-btn">Qo‘shish +</button>
+        </div>
+
+        <div class="finance-card blue">
+          <h3>Sof foyda (oylik)</h3>
+          <p class="amount">—</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Configure API base and load logic -->
+  <script>
+    // Backend bazaviy URL — kerak bo‘lsa moslang (prod/dev uchun)
+    window.API_BASE = '/api/billing';
+  </script>
+  <!-- JWT localStorage['access'] bo‘lsa avtomatik ishlaydi -->
+  <script src="{% static 'js/moliya-main.js' %}" defer></script>
+</body>
+</html>

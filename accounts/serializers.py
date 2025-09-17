@@ -30,10 +30,23 @@ class PhoneTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['last_name'] = user.last_name
         return token
 
+    def _normalize_phone(self, s: str) -> str:
+        if not s:
+            return s
+        # keep only + and digits, remove spaces/dashes/etc.
+        import re
+        s = re.sub(r'[^\d+]', '', s)
+        # if it starts with country code without + but you always store with +, add it:
+        # (optional; comment out if you store without +)
+        if s and not s.startswith('+') and s.startswith('998'):
+            s = '+' + s
+        return s
+
     def validate(self, attrs):
-        # TokenObtainPairSerializer already uses USERNAME_FIELD, which is 'phone'
-        data = super().validate(attrs)
-        data.update({
-            'user': UserSerializer(self.user).data
-        })
-        return data
+        # Accept either 'phone' or 'username' (forms sometimes send username)
+        phone = attrs.get('phone') or attrs.get('username')
+        if phone:
+            phone = self._normalize_phone(phone)
+            # Ensure the serializer puts the normalized value under the correct key
+            attrs[self.username_field] = phone
+        return super().validate(attrs)

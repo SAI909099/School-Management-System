@@ -1,6 +1,9 @@
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
+from django.core.exceptions import ValidationError
+
+
 
 User = settings.AUTH_USER_MODEL
 
@@ -100,6 +103,19 @@ class ScheduleEntry(models.Model):
 
     def __str__(self):
         return f"{self.clazz} {self.get_weekday_display()} {self.start_time}-{self.end_time} {self.subject}"
+
+    def clean(self):
+        # Overlap check for same teacher/weekday/time window
+        overlaps = ScheduleEntry.objects.filter(
+            teacher=self.teacher,
+            weekday=self.weekday,
+        ).exclude(pk=self.pk).filter(
+            start_time__lt=self.end_time,
+            end_time__gt=self.start_time,
+        )
+        if overlaps.exists():
+            raise ValidationError("O‘qituvchi bu vaqtda boshqa darsga qo‘yilgan.")
+
 
 
 class Attendance(models.Model):

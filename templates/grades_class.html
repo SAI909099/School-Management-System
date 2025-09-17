@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Baholar — sinf bo‘yicha</title>
+  <link rel="stylesheet" href="{% static 'css/jadval-style.css' %}">
+  <style>
+    .toolbar { display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; margin-bottom:14px; }
+    .toolbar .btn { padding:8px 12px; border:1px solid #ddd; border-radius:8px; background:#f7f7f7; cursor:pointer; }
+    .toolbar .btn.primary { background:#4f46e5; color:#fff; border-color:#4f46e5; }
+    .panel { background:#fff; border-radius:12px; box-shadow:0 3px 6px rgba(0,0,0,.1); padding:12px; }
+    .table-wrap { overflow:auto; }
+    table.grades { width:100%; border-collapse:collapse; }
+    table.grades th, table.grades td { border:1px solid #e6e6e6; padding:8px; font-size:14px; text-align:center; }
+    table.grades thead th { position:sticky; top:0; background:#f7f7f7; z-index:1; }
+    .student-col { text-align:left; white-space:nowrap; position:sticky; left:0; background:#fff; z-index:2; }
+    .muted { color:#666; font-size:12px; }
+    #msg.ok { color:#0a7a33; margin:6px 0; }
+    #msg.err { color:#c01a1a; white-space:pre-wrap; margin:6px 0; }
+    @media print {
+      .sidebar, .topbar, .toolbar, #msg { display:none !important; }
+      .content { padding:0; background:#fff; }
+      .panel { box-shadow:none; }
+      table.grades th, table.grades td { border:1px solid #000; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar (admin/teacher look) -->
+    <aside class="sidebar">
+      <div class="logo"><img src="{% static 'img/Logo.png' %}" alt="Logo" class="logo-img"></div>
+      <h3 class="sidebar-title">School</h3>
+      <nav class="menu">
+        <a href="/dashboard/"><img src="{% static 'icons/Asosiy.png' %}" alt=""> Asosiy</a>
+        <a href="/teachers-admin/"><img src="{% static 'icons/O‘qituvchi.png' %}" alt=""> O‘qituvchi</a>
+        <a href="/students/"><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> O‘quvchi</a>
+        <a href="/schedule/"><img src="{% static 'icons/Jadval.png' %}" alt=""> Jadval</a>
+        <a href="/schedule/classes/"><img src="{% static 'icons/Jadval.png' %}" alt=""> Jadval (sinf)</a>
+        <a href="/grades/class/" class="active"><img src="{% static 'icons/Jadval.png' %}" alt=""> Baholar (sinf)</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <div class="topbar">
+        <input type="text" placeholder="Qidiruv">
+        <div class="icons">
+          <a><img src="{% static 'icons/Xabarlar.png' %}" alt=""></a>
+          <a><img src="{% static 'icons/Profil.png' %}" alt=""></a>
+        </div>
+      </div>
+
+      <h2 class="page-title">Baholar — sinf bo‘yicha (o‘qish rejimi)</h2>
+
+      <div id="msg" class="hidden"></div>
+
+      <div class="panel">
+        <div class="toolbar">
+          <div>
+            <label>Sinf</label><br>
+            <!-- You can deep-link with ?class=<id>. If empty, first class is chosen. -->
+            <select id="classSel" style="min-width:140px;"></select>
+          </div>
+          <div>
+            <label>Ko‘rinish</label><br>
+            <select id="typeSel">
+              <option value="exam">Imtihon (Exam)</option>
+              <option value="final">Yakuniy (Final)</option>
+            </select>
+          </div>
+          <div>
+            <label>Chorak/Term (ixtiyoriy)</label><br>
+            <input id="termInp" type="text" placeholder="masalan: 2025-1" style="min-width:130px;">
+          </div>
+          <button id="btnLoad" class="btn">Yuklash</button>
+          <button id="btnPrint" class="btn">Chop etish</button>
+          <button id="btnCsv" class="btn">CSV chiqarish</button>
+        </div>
+
+        <div class="muted">Izoh: Har bir katakda <b>oxirgi baho</b> ko‘rsatiladi (agar bir fan bo‘yicha bir nechta imtihon bo‘lsa). Ustiga olib borib tursangiz, barcha sanalar ko‘rinadi.</div>
+
+        <div class="table-wrap" style="margin-top:10px;">
+          <table class="grades" id="gradesTbl">
+            <!-- JS fills -->
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="{% static 'js/grades-class-readonly.js' %}"></script>
+</body>
+</html>

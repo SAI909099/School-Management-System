@@ -193,6 +193,21 @@ class ScheduleEntryViewSet(viewsets.ModelViewSet):
         qs = self.queryset.filter(teacher=t)
         return Response(self.serializer_class(qs, many=True).data)
 
+    @action(detail=False, methods=['get'], url_path='teacher/(?P<teacher_id>[^/.]+)')
+    def by_teacher_id(self, request, teacher_id=None):
+        qs = self.queryset.filter(teacher_id=teacher_id).order_by('weekday', 'start_time')
+        return Response(self.serializer_class(qs, many=True).data)
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        teacher_id = self.request.query_params.get('teacher')
+        class_id = self.request.query_params.get('clazz') or self.request.query_params.get('class')
+        if teacher_id:
+            qs = qs.filter(teacher_id=teacher_id)
+        if class_id:
+            qs = qs.filter(clazz_id=class_id)
+        return qs.order_by('weekday', 'start_time')
+
 
 class AttendanceViewSet(viewsets.ModelViewSet):
     queryset = Attendance.objects.select_related('student', 'clazz', 'subject', 'teacher').all()
@@ -301,6 +316,36 @@ class GradeViewSet(viewsets.ModelViewSet):
             )
             ids.append(obj.id)
         return Response({'ok': True, 'ids': ids})
+
+    @action(detail=False, methods=['get'], url_path='by-class')
+    def by_class(self, request):
+        """
+        Read-only filter:
+        GET /api/grades/by-class/?class=<id>&subject=<id>&type=daily|exam|final&date=YYYY-MM-DD&term=2025-1
+        Returns: list of grades for the class that match the filters.
+        Role rules are applied (teacher sees own domain, parent sees own kids, etc).
+        """
+        qs = self.get_queryset()
+        clazz = request.query_params.get('class')
+        subject = request.query_params.get('subject')
+        gtype = request.query_params.get('type')
+        date = request.query_params.get('date')
+        term = request.query_params.get('term', '')
+
+        if clazz:
+            qs = qs.filter(student__clazz_id=clazz)
+        if subject:
+            qs = qs.filter(subject_id=subject)
+        if gtype:
+            qs = qs.filter(type=gtype)
+        if date:
+            qs = qs.filter(date=date)
+        if term:
+            qs = qs.filter(term=term)
+
+        # Return minimal payload needed to prefill
+        data = qs.values('student_id', 'score', 'comment')
+        return Response(list(data))
 
 
 # ---- GPA helpers ----

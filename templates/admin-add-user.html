@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Foydalanuvchi qo‘shish</title>
+
+  <!-- Global admin styles (lowercase path) -->
+  <link rel="stylesheet" href="{% static 'css/admin-add-user.css' %}">
+  <!-- Optional: page-specific styles, if you add them later -->
+  {# <link rel="stylesheet" href="{% static 'css/admin-add-user.css' %}"> #}
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="{% static 'img/Logo.png' %}" alt="Logo" class="logo-img">
+      </div>
+      <h3 class="sidebar-title">School Admin</h3>
+      <nav class="menu">
+        <a href="/dashboard/"><img src="{% static 'icons/Asosiy.png' %}" alt=""> Asosiy</a>
+        <a href="/teachers-admin/"><img src="{% static 'icons/O‘qituvchi.png' %}" alt=""> O‘qituvchi</a>
+        <a href="/students/"><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> O‘quvchi</a>
+        <a href="/schedule/"><img src="{% static 'icons/Jadval.png' %}" alt=""> Jadval</a>
+        <a href="/users/add/" class="active"><img src="{% static 'icons/Asosiy.png' %}" alt=""> Qo‘shish</a>
+        <a href="/settings-admin/"><img src="{% static 'icons/sozlamalar.png' %}" alt=""> Sozlamalar</a>
+      </nav>
+    </aside>
+
+    <!-- Content -->
+    <main class="content">
+      <!-- Optional topbar (matches your admin style). Uncomment if you want it here.
+      <div class="topbar">
+        <div class="search"><input type="text" placeholder="Qidiruv"></div>
+        <div class="top-icons">
+          <a href="#"><img src="{% static 'icons/Xabarlar.png' %}" alt="Xabarlar"></a>
+          <a href="#"><img src="{% static 'icons/Profil.png' %}" alt="Profil"></a>
+        </div>
+      </div>
+      -->
+
+      <div class="page">
+        <h2 class="page-title">Foydalanuvchi qo‘shish</h2>
+
+        <div id="msg" class="hidden"></div>
+
+        <div class="form-card">
+          <form id="addUserForm" autocomplete="off">
+            <div class="row">
+              <div class="field">
+                <label for="phone">Telefon (login)</label>
+                <input type="text" id="phone" placeholder="+998 90 123 45 67" required />
+                <div class="hint">Format: +998xxxxxxxxx (bo‘sh joy/chaslar farqi muhim emas, avtomatik tozalanadi)</div>
+              </div>
+              <div class="field">
+                <label for="password">Parol</label>
+                <input type="password" id="password" minlength="4" required />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="field">
+                <label for="last_name">Familiya</label>
+                <input type="text" id="last_name" />
+              </div>
+              <div class="field">
+                <label for="first_name">Ism</label>
+                <input type="text" id="first_name" />
+              </div>
+              <div class="field">
+                <label for="role">Rol</label>
+                <select id="role" required>
+                  <option value="teacher">O‘qituvchi</option>
+                  <option value="registrar">Ro‘yxatga oluvchi</option>
+                  <option value="accountant">Hisobchi</option>
+                  <option value="admin">Admin</option>
+                  <option value="parent">Ota/Ona</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Teacher-only section -->
+            <div id="teacherBlock" class="row">
+              <div class="field">
+                <label for="specialty">Mutaxassislik (Fan)</label>
+                <select id="specialty">
+                  <option value="">—</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="is_class_teacher">Sinif rahbari</label>
+                <select id="is_class_teacher">
+                  <option value="false" selected>Yo‘q</option>
+                  <option value="true">Ha</option>
+                </select>
+              </div>
+              <div class="field" style="flex:1 1 100%;">
+                <label for="notes">Izoh</label>
+                <textarea id="notes" rows="2" placeholder="Ixtiyoriy"></textarea>
+              </div>
+            </div>
+
+            <div class="actions">
+              <button type="submit" class="btn primary">Saqlash</button>
+              <button type="button" class="btn" id="resetBtn">Tozalash</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Page script -->
+  <script src="{% static 'js/admin-add-user.js' %}"></script>
+</body>
+</html>

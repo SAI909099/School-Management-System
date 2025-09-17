@@ -14,12 +14,32 @@ class RefreshView(TokenRefreshView):
 
 class MeView(APIView):
     permission_classes = [permissions.IsAuthenticated]
+
     def get(self, request):
-        return Response(UserSerializer(request.user).data)
+        user = request.user
+        data = UserSerializer(user).data
+
+        # Attach teacher profile (if exists)
+        teacher = getattr(user, "teacher_profile", None)
+        if teacher:
+            data["teacher"] = {
+                "id": teacher.id,
+                "subject_id": getattr(teacher.specialty, "id", None),
+                "subject_name": getattr(teacher.specialty, "name", None),
+            }
+
+        # (Optional) include basic contact fields if on your model
+        data["email"] = getattr(user, "email", None)
+        data["phone"] = getattr(user, "phone", None)
+
+        return Response(data)
 
 class RegisterUserView(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated, IsAdminOrRegistrarWrite]
     serializer_class = RegisterUserSerializer
+
+
+
 
 # apps/users/views.py (or similar)
 from rest_framework.views import APIView

@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <title>School Operator — Davomat</title>
+  <!-- CSS -->
+  <link rel="stylesheet" href="{% static 'css/parent-davomat-style.css' %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="{% static 'img/Logo.png' %}" alt="Logo" class="logo-img">
+      </div>
+      <h3 class="sidebar-title">School Operator</h3>
+      <nav class="menu">
+        <a href="{% url 'operator-main' %}">
+          <img src="{% static 'icons/Asosiy-white.png' %}" alt="Asosiy"> Asosiy
+        </a>
+        <a href="{% url 'operator-davomat' %}" class="active">
+          <img src="{% static 'icons/O‘quvchi.png' %}" alt="Davomat"> Davomat
+        </a>
+        <a href="{% url 'moliya-oylik' %}">
+          <img src="{% static 'icons/Jadval.png' %}" alt="Oyliklar"> Oyliklar
+        </a>
+        <a href="{% url 'moliya-sozlamalar' %}">
+          <img src="{% static 'icons/sozlamalar.png' %}" alt="Sozlamalar"> Sozlamalar
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Content -->
+    <main class="content">
+      <!-- Topbar -->
+      <div class="topbar">
+        <input type="text" placeholder="Qidiruv">
+        <div class="icons">
+          <a href="#"><img src="{% static 'icons/Xabarlar.png' %}" alt="Bell"></a>
+          <a href="#"><img src="{% static 'icons/Profil.png' %}" alt="Profile"></a>
+        </div>
+      </div>
+
+      <h2 class="page-title">Davomat</h2>
+
+      <!-- Guruh tanlash -->
+      <div class="filters">
+        <label for="class-select">Guruh:</label>
+        <select id="class-select">
+          <option value="">Sinf/Guruhni tanlang</option>
+        </select>
+      </div>
+
+      <!-- Jadval -->
+      <div class="table-container">
+        <table id="attendance-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>F.I.O</th>
+              <th>Kelgan</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- JS orqali to‘ldiriladi -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="save-box">
+        <button id="attendance-save" class="save-btn">Saqlash</button>
+      </div>
+    </main>
+  </div>
+
+  <!-- JS -->
+  <script>
+    window.API_BASE = '/api';
+  </script>
+  <script src="{% static 'js/oper-davomat.js' %}" defer></script>
+</body>
+</html>

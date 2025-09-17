@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <title>School Moliya</title>
+  <link rel="stylesheet" href="{% static 'css/moliya-chiqim-style.css' %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="{% static 'img/Logo.png' %}" alt="Logo" class="logo-img">
+      </div>
+      <h3 class="sidebar-title">School Moliya</h3>
+      <nav class="menu">
+        <a href="{% url 'moliya-main' %}"><img src="{% static 'icons/Asosiy-white.png' %}" alt="Asosiy"> Asosiy</a>
+        <a href="{% url 'moliya-chiqim' %}" class="active"><img src="{% static 'icons/Chiqim.png' %}" alt="O‘quvchi"> Chiqim</a>
+        <a href="{% url 'moliya-oylik' %}"><img src="{% static 'icons/Jadval.png' %}" alt="O‘qituvchi"> Oyliklar</a>
+        <a href="{% url 'moliya-sozlamalar' %}"><img src="{% static 'icons/sozlamalar.png' %}" alt="Sozlamalar"> Sozlamalar</a>
+      </nav>
+    </aside>
+
+    <!-- Content -->
+    <main class="content">
+      <div class="topbar">
+        <input type="text" placeholder="Qidiruv">
+        <div class="icons">
+          <a href="#"><img src="{% static 'icons/Xabarlar.png' %}" alt="Bell"></a>
+          <a href="#"><img src="{% static 'icons/Profil.png' %}" alt="Profile"></a>
+        </div>
+      </div>
+
+      <!-- Заголовок -->
+      <h2 class="page-title">Chiqimlar ro'yxati</h2>
+
+      <!-- Таблица -->
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Sana</th>
+              <th>Summa</th>
+              <th>Usul</th>
+              <th>Izoh</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- JS orqali to‘ldiriladi -->
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    window.API_BASE = '/api/billing';
+  </script>
+  <script src="{% static 'js/moliya-chiqim.js' %}" defer></script>
+</body>
+</html>
