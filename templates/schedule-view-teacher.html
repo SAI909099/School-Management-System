@@ -5,11 +5,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jadval — o‘qituvchi bo‘yicha (ko‘rish)</title>
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/jadval-style.css' %}">
   <style>
     .panel { background:#fff; border-radius:12px; box-shadow:0 3px 6px rgba(0,0,0,.08); padding:14px; }
     .controls { display:flex; gap:10px; flex-wrap:wrap; align-items:end; margin-bottom:12px; }
-    .controls label { font-weight:600; display:block; }
+    .controls label { font-weight:bold  ; display:block; }
     .btn { padding:8px 12px; border:1px solid #ddd; border-radius:8px; background:#f7f7f7; cursor:pointer; }
     .badge { background:#eef; color:#2b2a8f; padding:4px 10px; border-radius:999px; }
     .timetable { width:100%; border-collapse:collapse; }
@@ -34,11 +37,12 @@
     <!-- Sidebar -->
     <aside class="sidebar">
       <div class="logo"><img src="{% static 'img/Logo.png' %}" alt="Logo" class="logo-img"></div>
-      <h3 class="sidebar-title">School</h3>
+      <h3 class="sidebar-title">School O‘qituvchi</h3>
       <nav class="menu">
-        <a href="/dashboard/"><img src="{% static 'icons/Asosiy.png' %}" alt=""> Asosiy</a>
-        <a href="/schedule/view/class/"><img src="{% static 'icons/Jadval.png' %}" alt=""> Jadval (sinf)</a>
-        <a href="/schedule/view/teacher/" class="active"><img src="{% static 'icons/Jadval.png' %}" alt=""> Jadval (o‘qituvchi)</a>
+       <a href="/teachers/" ><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Asosiy</a>
+        <a href="/classes/"  ><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> Siniflar</a>
+        <a href="/schedule/view/teacher/" ><img src="{% static 'icons/O‘qituvchi.png' %}" alt=""> Jadval</a>
+        <!-- <a href="/sozlamalar/"><img src="{% static 'icons/sozlamalar.png' %}" alt=""> Sozlamalar</a> -->
       </nav>
     </aside>
 
