@@ -19,10 +19,12 @@
       </div>
       <h3 class="sidebar-title">School Operator</h3>
       <nav class="menu">
-        <a href="{% url 'operator-main' %}" class="active"><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Asosiy</a>
-        <a href="{% url 'operator-davomat' %}"><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> Davomat</a>
-        <a href="{% url 'moliya-oylik' %}"><img src="{% static 'icons/Jadval.png' %}" alt=""> Oyliklar</a>
-        <a href="{% url 'moliya-sozlamalar' %}"><img src="{% static 'icons/sozlamalar.png' %}" alt=""> Sozlamalar</a>
+        <a href="/operator/analytics/"><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Asosiy</a>
+      <!-- <a href="{% url 'operator-main' %}"><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Asosiy 12</a> -->
+      <a href="{% url 'operator-davomat' %}"><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> Davomat</a>
+      <a href="{% url 'operator-add' %}"><img src="{% static 'icons/Jadval.png' %}" alt=""> Yangi o’quvchi</a>
+      <!-- <a href="{% url 'moliya-sozlamalar' %}"><img src="{% static 'icons/sozlamalar.png' %}" alt=""> Sozlamalar</a> -->
+      <!-- <a href="/operator/analytics/"><img src="{% static 'icons/Jadval.png' %}" alt=""> Analitika</a> -->
       </nav>
     </aside>
 
