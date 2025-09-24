@@ -21,12 +21,13 @@
 .logo {
   display: flex;
   align-items: center;
+  gap: 10px;
   margin-bottom: 20px;
 }
 
-.logo img {
-  width: 250px;
-  height: 65px;
+.logo h2 {
+  font-size: 18px;
+  line-height: 1.2;
 }
 
 .sidebar-title {
@@ -45,17 +46,19 @@
   border-radius: 6px;
   margin-bottom: 5px;
   transition: 0.3s;
+  font-weight: bold;
+  font-size: 22px;
 }
 
 .menu a img {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   transition: filter 0.3s;
 }
 
 .menu a.active,
 .menu a:hover {
-  background: #fff;
+  background: white;
   color: #4D38D7;
 }
 
@@ -63,6 +66,7 @@
 .menu a.active img {
   filter: brightness(0) saturate(100%) invert(20%) sepia(80%) saturate(2600%) hue-rotate(235deg) brightness(90%) contrast(100%);
 }
+
 
 
 /* Content */
