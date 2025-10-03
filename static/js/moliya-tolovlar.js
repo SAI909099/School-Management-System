@@ -1,8 +1,9 @@
-/* Student payments page */
+/* Student payments page (Uzbek labels, show class, no discount/penalty) */
 (function () {
   const API = (window.API_BASE || '/api/billing').replace(/\/+$/, '');
   const token = localStorage.getItem('access');
   if (!token) { window.location.replace('/'); return; }
+
   const HEADERS = { 'Authorization': 'Bearer ' + token };
   const JSON_HEADERS = { ...HEADERS, 'Content-Type': 'application/json' };
 
@@ -31,9 +32,10 @@
   const btnPayCancel = document.getElementById('btnPayCancel');
 
   // State
-  let classes = [];    // [{id,name}]
-  let plansByClass = new Map(); // class_id -> {id, amount_uzs}
-  let currentPay = null; // {invoice_id, student_id, name}
+  let classes = [];                       // [{id,name}]
+  let classNameById = new Map();          // id -> name
+  let plansByClass = new Map();           // class_id -> {id, amount_uzs}
+  let currentPay = null;                  // {invoice_id, student_id, name}
 
   // Helpers
   function todayMonth() {
@@ -42,10 +44,24 @@
   }
   function som(n){ return (Number(n||0)).toLocaleString('uz-UZ') + " so'm"; }
   function yymm(dateStr){ return (dateStr||'').slice(0,7); }
-  function badge(status, balance){
-    if (status === 'paid' && Number(balance) < 0) return `<span class="pill prepaid">prepaid</span>`;
-    return `<span class="pill ${status}">${status}</span>`;
+
+  // Translate status → Uzbek label
+  function statusUz(status, balance) {
+    if (status === 'paid' && Number(balance) < 0) return 'Oldindan';
+    switch (status) {
+      case 'paid': return 'To‘langan';
+      case 'partial': return 'Qisman';
+      case 'unpaid': return 'To‘lanmagan';
+      default: return String(status || '').toUpperCase();
+    }
   }
+  function badge(status, balance){
+    const uz = statusUz(status, balance);
+    // keep css class names for colors
+    if (uz === 'Oldindan') return `<span class="pill prepaid">${uz}</span>`;
+    return `<span class="pill ${status}">${uz}</span>`;
+  }
+
   async function getJSON(url){
     const r = await fetch(url, { headers: HEADERS });
     if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
@@ -71,6 +87,9 @@
   async function loadClasses(){
     const data = await getJSON('/api/dir/classes/');
     classes = data || [];
+    classNameById.clear();
+    classes.forEach(c => classNameById.set(Number(c.id), c.name));
+
     // Filters
     classSel.innerHTML = '<option value="">— hammasi —</option>';
     classes.forEach(c => classSel.add(new Option(c.name, c.id)));
@@ -88,7 +107,6 @@
 
   // Try bulk-apply endpoint; fallback to looping per class
   async function applyPlans(amount, classIds) {
-    // 1) Try bulk endpoint
     try {
       const body = classIds && classIds.length
         ? { amount_uzs: Number(amount), class_ids: classIds.map(Number) }
@@ -96,7 +114,6 @@
       const res = await postJSON(API + '/plans/bulk-apply/', body);
       return res;
     } catch (e) {
-      // 2) Fallback to per-class create/update
       const targets = (classIds && classIds.length)
         ? classIds.map(String)
         : classes.map(c => String(c.id));
@@ -121,6 +138,26 @@
     }
   }
 
+  // Cache for student info: id -> {name, classId}
+  const studentCache = new Map();
+  async function getStudentInfo(studentId){
+    if (studentCache.has(studentId)) return studentCache.get(studentId);
+    try{
+      // Directory search; pick exact id
+      const sj = await getJSON(`/api/dir/students/?q=${studentId}`);
+      const m = (sj||[]).find(x=>x.id===studentId);
+      const name = m ? ((m.full_name || `${m.first_name||''} ${m.last_name||''}`).trim()) : `#${studentId}`;
+      const classId = m?.clazz ?? m?.class ?? m?.clazz_id ?? null;
+      const info = { name, classId };
+      studentCache.set(studentId, info);
+      return info;
+    }catch{
+      const info = { name: `#${studentId}`, classId: null };
+      studentCache.set(studentId, info);
+      return info;
+    }
+  }
+
   // Fetch invoices with filters; handle prepaid on client
   async function loadInvoices(){
     const params = new URLSearchParams();
@@ -135,19 +172,6 @@
     const data = await getJSON(url);
     let rows = Array.isArray(data) ? data : [];
 
-    // Name cache (best-effort)
-    const nameCache = new Map();
-    async function studentName(studentId){
-      if (nameCache.has(studentId)) return nameCache.get(studentId);
-      try{
-        const sj = await getJSON(`/api/dir/students/?q=${studentId}`);
-        const m = (sj||[]).find(x=>x.id===studentId);
-        const nm = m ? ((m.full_name || `${m.first_name||''} ${m.last_name||''}`).trim()) : `#${studentId}`;
-        nameCache.set(studentId, nm);
-        return nm;
-      }catch{ nameCache.set(studentId, `#${studentId}`); return `#${studentId}`; }
-    }
-
     // “prepaid” filter (balance < 0)
     if (statusSel.value === '__prepaid') {
       rows = rows.filter(r => Number(r.balance_uzs) < 0);
@@ -157,16 +181,19 @@
 
     tblBody.innerHTML = '';
     for (const r of rows) {
-      const sname = await studentName(r.student);
-      if (q && !sname.toLowerCase().includes(q)) continue;
+      const info = await getStudentInfo(r.student);
+      const sname = info.name;
+      const clsName = info.classId ? (classNameById.get(Number(info.classId)) || '') : '';
+
+      // search by name or class text
+      if (q && !(sname.toLowerCase().includes(q) || clsName.toLowerCase().includes(q))) continue;
+
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td>${sname}</td>
-        <td>${'' /* (optional) class name if you expand serializer */}</td>
+        <td>${clsName}</td>
         <td>${yymm(r.month)}</td>
         <td>${som(r.amount_uzs)}</td>
-        <td>${som(r.discount_uzs)}</td>
-        <td>${som(r.penalty_uzs)}</td>
         <td>${som(r.paid_uzs)}</td>
         <td>${som(r.balance_uzs)}</td>
         <td>${badge(r.status, r.balance_uzs)}</td>
@@ -223,7 +250,7 @@
       note: payNote.value||'',
     };
     try{
-      await postJSON(API + '/payments-model/', body); // your CRUD viewset name
+      await postJSON(API + '/payments-model/', body);
       payDlg.close();
       await loadInvoices();
     }catch(e){ alert('Xatolik: '+e.message); }
@@ -235,7 +262,7 @@
     const amt = Number(planAmountAll.value||0);
     if (!amt) return alert('Narxni kiriting.');
     try{
-      const res = await applyPlans(amt, null);
+      await applyPlans(amt, null);
       await loadPlans();
       alert('Barcha sinflar uchun saqlandi.');
     }catch(e){
@@ -245,12 +272,12 @@
 
   // Bulk plan: SELECTED
   btnPlanApplySelected.addEventListener('click', async ()=>{
-    const amt = Number(planAmountAll.value||0);
+    const amt = Number(planAmountAll.value || 0);
     if (!amt) return alert('Narxni kiriting.');
     const selected = Array.from(planMultiSel.selectedOptions).map(o => Number(o.value));
     if (!selected.length) return alert('Kamida bitta sinfni tanlang.');
     try{
-      const res = await applyPlans(amt, selected);
+      await applyPlans(amt, selected);
       await loadPlans();
       alert('Tanlangan sinflar uchun saqlandi.');
     }catch(e){

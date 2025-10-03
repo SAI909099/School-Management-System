@@ -170,10 +170,59 @@ class InvoiceViewSet(viewsets.ModelViewSet):
         inv.save(update_fields=['status'])
         return Response(self.serializer_class(inv).data)
 
+    def list(self, request, *args, **kwargs):
+        response = super().list(request, *args, **kwargs)
+        # If DRF has already serialized, we need to rebuild with context to include cumulative balances.
+        # Easier approach: override to build data ourselves:
+
+        qs = self.filter_queryset(self.get_queryset())
+        month_str = request.query_params.get('month')  # YYYY-MM
+        serializer_context = self.get_serializer_context()
+
+        if month_str:
+            month_dt = parse_month(month_str)
+            # Build cumulative balances up to the filtered month for each invoice's student
+            # (total_due - paid) for all invoices where month <= filtered month
+            from collections import defaultdict
+            cum_by_student = defaultdict(int)
+
+            # prefetch all relevant invoices (for performance, limit to involved students)
+            student_ids = list(qs.values_list('student_id', flat=True).distinct())
+            all_up_to = Invoice.objects.filter(
+                student_id__in=student_ids,
+                month__lte=month_dt
+            ).values('student_id', 'month', 'amount_uzs', 'discount_uzs', 'penalty_uzs', 'paid_uzs').order_by(
+                'student_id', 'month')
+
+            # We’ll compute cumulative for each month and store only the value at the filtered month
+            cum_at_month = {}
+            for row in all_up_to:
+                sid = row['student_id']
+                due = (row['amount_uzs'] - row['discount_uzs'] + row['penalty_uzs'])
+                paid = row['paid_uzs']
+                cum_by_student[sid] += int(due) - int(paid)
+
+            # For the serializer to show it per invoice (in that month),
+            # map (student, month_filtered) -> cum_balance
+            cum_balances = {(sid, month_dt.isoformat()): bal for sid, bal in cum_by_student.items()}
+            serializer_context['cum_balances'] = cum_balances
+
+            ser = self.get_serializer(qs, many=True, context=serializer_context)
+            return Response(ser.data)
+
+        # No month filter: just return default
+        return Response(self.get_serializer(qs, many=True, context=serializer_context).data)
+
 
 # =========================
 # Payments
 # =========================
+
+# billing/views.py (add imports near the top)
+from decimal import Decimal
+from django.utils.timezone import now as tz_now
+from .utils import parse_month, next_month
+from .models import TuitionPlan, Invoice, Payment
 
 class PaymentViewSet(viewsets.ModelViewSet):
     queryset = Payment.objects.select_related('invoice', 'student', 'student__clazz').all()
@@ -192,7 +241,6 @@ class PaymentViewSet(viewsets.ModelViewSet):
                 qs = qs.filter(Q(student__clazz__class_teacher=t) | Q(student__clazz__schedule__teacher=t))
             except Exception:
                 qs = qs.none()
-        # Filters
         month = self.request.query_params.get('month')
         if month:
             qs = qs.filter(invoice__month=parse_month(month))
@@ -200,6 +248,92 @@ class PaymentViewSet(viewsets.ModelViewSet):
         if student:
             qs = qs.filter(student_id=student)
         return qs.distinct()
+
+    # NEW: split/allocate surplus of a payment to future months
+    def create(self, request, *args, **kwargs):
+        # Validate & create the primary payment normally
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        payment = serializer.save()  # this updates invoice.paid_uzs via Payment.save()
+
+        inv = payment.invoice
+        student = payment.student
+        remaining = Decimal(payment.amount_uzs)
+
+        # How much of this payment was actually needed for the current invoice?
+        inv.refresh_from_db()
+        needed_here = inv.total_due_uzs - (inv.paid_uzs - payment.amount_uzs)
+        if needed_here < 0:
+            needed_here = Decimal(0)
+
+        # Surplus after covering the current invoice
+        surplus = remaining - needed_here
+        # If “payment” itself pushed invoice into negative (rare edge), clamp
+        if surplus < 0:
+            surplus = Decimal(0)
+
+        # If there is surplus, allocate it forward month-by-month
+        if surplus > 0:
+            # figure per-month tuition amount
+            plan_amt = None
+            plan = getattr(student.clazz, 'tuition_plan', None) if getattr(student, 'clazz', None) else None
+            if plan:
+                plan_amt = Decimal(plan.amount_uzs)
+
+            cur_month = inv.month
+            # start from the NEXT month
+            m = next_month(cur_month)
+
+            # Keep allocating until surplus is gone
+            # Safety cap (24 months) to avoid infinite loops if data is odd
+            for _ in range(24):
+                if surplus <= 0:
+                    break
+
+                # ensure invoice exists for month m
+                next_inv, _c = Invoice.objects.get_or_create(
+                    student=student,
+                    month=m,
+                    defaults={
+                        'amount_uzs': plan_amt or inv.amount_uzs,   # fallback to current-month amount
+                        'discount_uzs': 0,
+                        'penalty_uzs': 0,
+                        'paid_uzs': 0,
+                        'status': 'unpaid',
+                        'due_date': m.replace(day=min(10, 28)),     # default due day; tweak if needed
+                        'notes': 'Auto-created by overpayment allocation'
+                    }
+                )
+
+                # how much still needed for that month
+                next_inv.refresh_from_db()
+                need = next_inv.total_due_uzs - next_inv.paid_uzs
+                if need <= 0:
+                    # already fully paid (perhaps from a previous allocation) → move to the next month
+                    m = next_month(m)
+                    continue
+
+                allocate = surplus if surplus <= need else need
+
+                # create a child payment for that next invoice
+                Payment.objects.create(
+                    student=student,
+                    invoice=next_inv,
+                    amount_uzs=allocate,
+                    method=payment.method,
+                    paid_at=payment.paid_at or tz_now(),
+                    receipt_no=payment.receipt_no,
+                    note=f"Auto-alloc from {inv.month.strftime('%Y-%m')}"
+                )
+                surplus -= allocate
+
+                # move to the next month after trying this one
+                if surplus > 0:
+                    m = next_month(m)
+
+        headers = self.get_success_headers(serializer.data)
+        return Response(self.get_serializer(payment).data, status=status.HTTP_201_CREATED, headers=headers)
+
 
 
 # =========================
@@ -254,16 +388,102 @@ class StudentBillingViewSet(viewsets.ViewSet):
 # Summary / Reports
 # =========================
 
+# billing/views.py  (REPLACE the last SummaryView with this one)
+
+from datetime import date as _date, timedelta
+from django.db.models import Sum, Q
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+
+from .models import Payment, SalaryPayout  # ⬅ ensure SalaryPayout is imported
+try:
+    from .models import Expense
+except Exception:
+    Expense = None
+
 class SummaryView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    """
+    GET /api/billing/summary/?from=YYYY-MM-DD&to=YYYY-MM-DD&include_salaries=1
+    Response:
+    {
+      from, to,
+      income, expense, balance, debtors_count,
+      income_by_method: {cash, card, transfer},
+      expense_by_method:{cash, card, transfer}   # salaries are counted into 'transfer'
+    }
+    """
+    permission_classes = [IsAuthenticated]
+
+    def _month_bounds(self, today: _date):
+        first = today.replace(day=1)
+        next_month = (first.replace(day=28) + timedelta(days=4)).replace(day=1)
+        last = next_month - timedelta(days=1)
+        return first, last
 
     def get(self, request):
-        # TODO: replace with real aggregation
+        # range
+        f_str = request.query_params.get('from')
+        t_str = request.query_params.get('to')
+        if not (f_str and t_str):
+            today = _date.today()
+            first, last = self._month_bounds(today)
+            f_str = f_str or first.isoformat()
+            t_str = t_str or last.isoformat()
+
+        # include salaries?
+        inc_sal = request.query_params.get('include_salaries') in ('1', 'true', 'yes')
+
+        # incomes (student payments)
+        pay_qs = Payment.objects.filter(paid_at__date__gte=f_str, paid_at__date__lte=t_str)
+        income_total = pay_qs.aggregate(total=Sum('amount_uzs'))['total'] or 0
+        income_by_method = {'cash': 0, 'card': 0, 'transfer': 0}
+        for m, _ in getattr(Payment, 'METHOD', (('cash','Naqd'), ('card','Karta'), ('transfer','O‘tkazma'))):
+            income_by_method[m] = pay_qs.filter(method=m).aggregate(total=Sum('amount_uzs'))['total'] or 0
+
+        # expenses = manual expenses (+ salaries if requested)
+        expense_total = 0
+        expense_by_method = {'cash': 0, 'card': 0, 'transfer': 0}
+
+        # 1) Manual expenses
+        if Expense is not None:
+            ex_qs = Expense.objects.filter(date__gte=f_str, date__lte=t_str)
+            expense_total += ex_qs.aggregate(total=Sum('amount_uzs'))['total'] or 0
+            for m, _ in getattr(Expense, 'METHOD', (('cash','Naqd'), ('card','Karta'), ('transfer','O‘tkazma'))):
+                expense_by_method[m] += ex_qs.filter(method=m).aggregate(total=Sum('amount_uzs'))['total'] or 0
+
+        # 2) Salaries (paid only) — count as 'transfer' by default
+        if inc_sal:
+            sal_qs = SalaryPayout.objects.filter(paid=True)
+            # date window: use paid_at.date if exists, else the month (first day)
+            sal_qs = sal_qs.filter(
+                Q(paid_at__date__gte=f_str, paid_at__date__lte=t_str) |
+                Q(paid_at__isnull=True, month__gte=f_str, month__lte=t_str)
+            )
+
+            sal_sum = sal_qs.aggregate(total=Sum('amount_uzs'))['total'] or 0
+            expense_total += sal_sum
+            expense_by_method['transfer'] += sal_sum  # map salaries into 'transfer' bucket
+
+        # optional: real debtors_count
+        debtors_count = 0
+        try:
+            from .models import Invoice
+            debtors_count = Invoice.objects.filter(~Q(status='paid')).values('student').distinct().count()
+        except Exception:
+            pass
+
+        balance = int(income_total) - int(expense_total)
+
         return Response({
-            "income": 3000000,
-            "expense": 450000,
-            "balance": 2550000,
-            "debtors_count": 12,
+            'from': f_str,
+            'to': t_str,
+            'income': int(income_total),
+            'expense': int(expense_total),
+            'balance': int(balance),
+            'debtors_count': int(debtors_count),
+            'income_by_method': {k: int(v or 0) for k, v in income_by_method.items()},
+            'expense_by_method': {k: int(v or 0) for k, v in expense_by_method.items()},
         })
 
 
@@ -272,7 +492,7 @@ class PaymentsView(APIView):
 
     def get(self, request):
         t = request.query_params.get('type', 'income')
-        # TODO: replace with queryset results
+        # TODO.txt: replace with queryset results
         if t == 'income':
             data = [
                 {"id": 1, "date": str(date.today()), "amount": 1000000, "payer_name": "Test.T"},
@@ -290,7 +510,7 @@ class DebtorsView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        # TODO: replace with real debt query
+        # TODO.txt: replace with real debt query
         data = [
             {"student_id": 1, "student_name": "Ali Aliyev", "class_name": "7-A", "parent_phone": "+998901112233", "debt": 150000},
             {"student_id": 2, "student_name": "Dilnoza Karimova", "class_name": "7-A", "parent_phone": "+998909998877", "debt": 200000},

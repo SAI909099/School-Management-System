@@ -7,15 +7,22 @@ class TuitionPlanSerializer(serializers.ModelSerializer):
         model = TuitionPlan
         fields = ('id', 'clazz', 'amount_uzs')
 
+# billing/serializers.py
 class InvoiceSerializer(serializers.ModelSerializer):
     total_due_uzs = serializers.SerializerMethodField()
     balance_uzs = serializers.SerializerMethodField()
+    # NEW:
+    cumulative_balance_uzs = serializers.SerializerMethodField()
+    prepaid_uzs = serializers.SerializerMethodField()
 
     class Meta:
         model = Invoice
         fields = (
-            'id','student','month','amount_uzs','discount_uzs','penalty_uzs','paid_uzs','status','due_date','notes',
-            'total_due_uzs','balance_uzs'
+            'id','student','month','amount_uzs','discount_uzs','penalty_uzs',
+            'paid_uzs','status','due_date','notes',
+            'total_due_uzs','balance_uzs',
+            # NEW:
+            'cumulative_balance_uzs','prepaid_uzs'
         )
         read_only_fields = ('paid_uzs','status')
 
@@ -24,6 +31,21 @@ class InvoiceSerializer(serializers.ModelSerializer):
 
     def get_balance_uzs(self, obj):
         return int(obj.balance_uzs)
+
+    def get_cumulative_balance_uzs(self, obj):
+        # context: cum_balances is a dict {(student_id, month_iso): int_balance}
+        m = getattr(self, 'context', {}).get('cum_balances', {})
+        key = (obj.student_id, obj.month.isoformat())
+        val = m.get(key)
+        return int(val) if val is not None else None
+
+    def get_prepaid_uzs(self, obj):
+        cum = self.get_cumulative_balance_uzs(obj)
+        if cum is None:
+            return None
+        # if cumulative is negative, that’s prepaid
+        return abs(cum) if cum < 0 else 0
+
 
 class PaymentSerializer(serializers.ModelSerializer):
     class Meta:

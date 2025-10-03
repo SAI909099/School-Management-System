@@ -1,8 +1,10 @@
-/* SAFE TEACHER ENTRY — exam/final by default; daily can be enabled via data-allow-daily="true" */
+/* SAFE TEACHER ENTRY — exam/final by default; daily can be enabled via data-allow-daily="true"
+   and locked via data-lock-daily="true" (teacher daily page). */
 (function () {
-  // --------- read flags & API from DOM (no inline JS required) ---------
+  // --------- read flags & API from DOM ---------
   const root = document.querySelector('.container[data-page="grades-entry"]');
   const ALLOW_DAILY = !!(root && root.dataset.allowDaily === 'true');
+  const LOCK_DAILY  = !!(root && root.dataset.lockDaily === 'true');
   const API = (document.body.dataset.apiBase || '/api').replace(/\/+$/, '');
 
   // --------- auth guard ---------
@@ -94,19 +96,23 @@
   }
 
   // --------- DOM refs ---------
-  const classSel  = $('#classSel');
-  const subjectSel= $('#subjectSel');
-  const typeSel   = $('#typeSel');
-  const dateInp   = $('#dateInp');
-  const termInp   = $('#termInp');
-  const tbl       = $('#tbl tbody');
-  const btnLoad   = $('#btnLoad');
-  const btnFill3  = $('#btnFill3');
-  const btnFill4  = $('#btnFill4');
-  const btnFill5  = $('#btnFill5');
-  const btnClear  = $('#btnClear');
-  const btnSave   = $('#btnSave');
-  const whoBadge  = $('#whoBadge');
+  const classSel   = $('#classSel');
+  const subjectSel = $('#subjectSel');
+  const typeSel    = $('#typeSel');
+  const dateInp    = $('#dateInp');
+  const termInp    = $('#termInp');
+  const tbl        = $('#tbl tbody');
+  const btnLoad    = $('#btnLoad');
+  const btnFill3   = $('#btnFill3');
+  const btnFill4   = $('#btnFill4');
+  const btnFill5   = $('#btnFill5');
+  const btnClear   = $('#btnClear');
+  const btnSave    = $('#btnSave');
+  const whoBadge   = $('#whoBadge');
+
+  // Optional day navigation (daily page)
+  const btnPrevDay = $('#btnPrevDay');
+  const btnNextDay = $('#btnNextDay');
 
   // --------- state ---------
   let students = [];  // [{id, first_name, last_name}]
@@ -184,15 +190,25 @@
   // --------- render / inputs ---------
   function ensureTypeOptions() {
     if (!typeSel) return;
-    const want = ['exam', 'final'].concat(ALLOW_DAILY ? ['daily'] : []);
-    // remove extras
+    const want = LOCK_DAILY
+      ? ['daily']
+      : ['exam', 'final'].concat(ALLOW_DAILY ? ['daily'] : []);
+    // Remove extras
     [...typeSel.options].forEach(o => { if (!want.includes(o.value)) o.remove(); });
-    // add missing in order
+    // Add missing in order
     const have = new Set([...typeSel.options].map(o => o.value));
-    if (!have.has('exam'))  typeSel.append(el('option', { value: 'exam' }, 'Imtihon'));
-    if (!have.has('final')) typeSel.append(el('option', { value: 'final' }, 'Yakuniy'));
-    if (ALLOW_DAILY && !have.has('daily')) typeSel.append(el('option', { value: 'daily' }, 'Kundalik'));
-    if (!want.includes(typeSel.value)) typeSel.value = 'exam';
+    if (!LOCK_DAILY) {
+      if (!have.has('exam'))  typeSel.append(el('option', { value: 'exam' }, 'Imtihon'));
+      if (!have.has('final')) typeSel.append(el('option', { value: 'final' }, 'Yakuniy'));
+      if (ALLOW_DAILY && !have.has('daily')) typeSel.append(el('option', { value: 'daily' }, 'Kundalik'));
+    } else {
+      // force daily only
+      typeSel.innerHTML = '';
+      typeSel.append(el('option', { value: 'daily' }, 'Kundalik'));
+      typeSel.value = 'daily';
+      typeSel.disabled = true;
+    }
+    if (!want.includes(typeSel.value)) typeSel.value = want[0];
   }
 
   function renderTable(prefillMap = new Map()) {
@@ -264,10 +280,13 @@
     if (!classSel || !subjectSel || !typeSel || !dateInp) return new Map();
     const classId = classSel.value;
     const subjectId = subjectSel.value;
-    const gtype = typeSel.value;
+    const gtype = LOCK_DAILY ? 'daily' : typeSel.value;
     const dt = dateInp.value;
     if (!classId || !subjectId || !dt) return new Map();
-    const allowed = ['exam', 'final'].concat(ALLOW_DAILY ? ['daily'] : []);
+
+    const allowed = LOCK_DAILY
+      ? ['daily']
+      : ['exam', 'final'].concat(ALLOW_DAILY ? ['daily'] : []);
     if (!allowed.includes(gtype)) return new Map();
 
     if (prefillAborter) prefillAborter.abort();
@@ -296,7 +315,7 @@
 
     const classId = classSel.value;
     const subjectId = subjectSel.value;
-    let gtype = typeSel.value;
+    let gtype = LOCK_DAILY ? 'daily' : typeSel.value;
     const dt = dateInp.value;
     const term = (termInp ? termInp.value.trim() : '');
 
@@ -304,10 +323,15 @@
     if (!subjectId) { msg(false, 'Fan tanlanmadi'); return; }
     if (!dt) { msg(false, 'Sana tanlanmadi'); return; }
 
-    const allowedTypes = ['exam', 'final'].concat(ALLOW_DAILY ? ['daily'] : []);
+    const allowedTypes = LOCK_DAILY
+      ? ['daily']
+      : ['exam', 'final'].concat(ALLOW_DAILY ? ['daily'] : []);
     if (!allowedTypes.includes(gtype)) {
-      msg(false, ALLOW_DAILY ? 'Baho turi noto‘g‘ri.' : 'Kundalik baholar kiritilmaydi. Faqat Imtihon yoki Yakuniy.');
-      if (!ALLOW_DAILY) gtype = 'exam';
+      msg(false, LOCK_DAILY
+        ? 'Bu sahifada faqat Kundalik turiga ruxsat berilgan.'
+        : (ALLOW_DAILY ? 'Baho turi noto‘g‘ri.' : 'Kundalik baholar kiritilmaydi. Faqat Imtihon yoki Yakuniy.'));
+      if (LOCK_DAILY) gtype = 'daily';
+      else if (!ALLOW_DAILY) gtype = 'exam';
     }
 
     const entries = [];
@@ -332,7 +356,7 @@
       "class": Number(classId),
       "date": dt,
       "subject": Number(subjectId),
-      "type": gtype,            // exam | final | (daily if enabled)
+      "type": gtype,            // exam | final | daily
       "term": term,
       "entries": entries
     };
@@ -358,6 +382,35 @@
   if (btnFill5) btnFill5.addEventListener('click', () => fillAll(5));
   if (btnClear) btnClear.addEventListener('click', clearAll);
   if (btnSave)  btnSave.addEventListener('click', saveGrades);
+
+  if (btnPrevDay) btnPrevDay.addEventListener('click', async () => {
+    if (!dateInp) return;
+    const d = new Date(dateInp.value || todayISO());
+    d.setDate(d.getDate() - 1);
+    dateInp.value = d.toISOString().slice(0,10);
+    if (classSel?.value) {
+      try {
+        setLoading(true);
+        await loadStudentsByClass(classSel.value);
+        const pre = await prefillExisting();
+        renderTable(pre);
+      } finally { setLoading(false); }
+    }
+  });
+  if (btnNextDay) btnNextDay.addEventListener('click', async () => {
+    if (!dateInp) return;
+    const d = new Date(dateInp.value || todayISO());
+    d.setDate(d.getDate() + 1);
+    dateInp.value = d.toISOString().slice(0,10);
+    if (classSel?.value) {
+      try {
+        setLoading(true);
+        await loadStudentsByClass(classSel.value);
+        const pre = await prefillExisting();
+        renderTable(pre);
+      } finally { setLoading(false); }
+    }
+  });
 
   if (btnLoad) btnLoad.addEventListener('click', async () => {
     if (!classSel) return;
@@ -397,7 +450,7 @@
   // --------- init ----------
   (async function init() {
     try {
-      ensureTypeOptions(); // add/remove daily based on data-allow-daily
+      ensureTypeOptions(); // adds/removes options; locks if data-lock-daily
       setLoading(true);
       await Promise.all([loadRole(), loadClasses(), loadSubjects()]);
       await loadTeacherDefaultClass();

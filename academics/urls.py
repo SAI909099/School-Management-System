@@ -16,6 +16,7 @@ from .views import (
 
     # Operator & stats
     OperatorEnrollView, SchoolStatsView, StaffDirectoryView, StaffSetPasswordView, ParentDirectoryViewSet,
+    StaffDeleteView,
 )
 
 app_name = "academics"
@@ -62,5 +63,6 @@ urlpatterns = [
     path('stats/school/', SchoolStatsView.as_view(), name='school-stats'),
     path('staff/directory/', StaffDirectoryView.as_view(), name='staff-directory'),
     path('staff/set-password/', StaffSetPasswordView.as_view(), name='staff-set-password'),
+    path('staff/delete/', StaffDeleteView.as_view(), name='staff-delete'),
 
 ]

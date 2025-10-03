@@ -223,6 +223,7 @@ class GPAConfig(models.Model):
 
 class Grade(models.Model):
     TYPE = (
+        ('daily', 'Kundalik'),
         ('exam', 'Imtihon'),
         ('final', 'Yakuniy'),
     )

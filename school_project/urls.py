@@ -51,7 +51,8 @@ urlpatterns += [
     path("schedule/view/teacher/<int:teacher_id>/",TemplateView.as_view(template_name="schedule/view_teacher.html"),name="schedule-view-teacher"),
     path("schedule/teacher/me/view/", TemplateView.as_view(template_name="public-teacher-schedule.html"),name="public-teacher-schedule-me"),
 
-    path("grades/entry/", TemplateView.as_view(template_name="grades/entry.html"),name="grades-entry"),
+    path('grades/daily/', TemplateView.as_view(template_name='parent-daily.html'), name='grades-daily'),
+    # path("grades/entry/", TemplateView.as_view(template_name="grades/entry.html"),name="grades-entry"),
     path("grades/class/", TemplateView.as_view(template_name="grades_class.html"), name="grades-class"),
 
 
@@ -80,6 +81,25 @@ urlpatterns += [
 
     path("start/", TemplateView.as_view(template_name="role-redirect.html"), name="role-redirect"),
 
+    path("classes/manage/", TemplateView.as_view(template_name="admin-class-manager.html"), name="classes-manage"),
+
+
     # 👈 Jadval page
 
+]
+
+
+
+from django.views.generic import TemplateView
+
+urlpatterns += [
+    # existing:
+    path("grades/entry/",TemplateView.as_view(template_name="grades/entry.html",
+            extra_context={"allow_daily": True, "API_BASE": "/api"},),name="grades-entry",),
+
+    # NEW: Teacher daily-only page (locks to Kundalik)
+    path("grades/entry/daily/",TemplateView.as_view(template_name="grades/entry_daily.html",extra_context={"allow_daily": True, "API_BASE": "/api"},
+        ),
+        name="grades-entry-daily",
+    ),
 ]

@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kundalik baholar</title>
+  <link rel="stylesheet" href="{% static 'css/jadval-style.css' %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .card{background:#fff;padding:16px;border-radius:12px;box-shadow:0 3px 6px rgba(0,0,0,.1);}
+    .row{display:flex;gap:12px;flex-wrap:wrap;align-items:end}
+    label{font-weight:600;display:block;margin-bottom:4px}
+    select,input[type="date"]{padding:8px 10px;border:1px solid #ddd;border-radius:8px;min-width:160px}
+    .btn{padding:10px 14px;border:1px solid #ddd;border-radius:8px;background:#f7f7f7;cursor:pointer}
+    .btn.primary{background:#4f46e5;color:#fff;border-color:#4f46e5}
+    .table{width:100%;border-collapse:collapse;margin-top:12px}
+    .table th,.table td{border:1px solid #eee;padding:8px}
+    .table th{background:#f7f7f7;text-align:left}
+    .badge{display:inline-block;padding:2px 8px;border-radius:999px;background:#eef;color:#2b2a8f;font-size:12px}
+    .hint{font-size:12px;color:#666}
+    .score{font-weight:600}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="{% static 'img/Logo.png' %}" alt="Logo" class="logo-img">
+      </div>
+      <h3 class="sidebar-title">School O'qituvchi</h3>
+      <nav class="menu">
+        <a href="/teachers/"><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Asosiy</a>
+        <a href="/classes/"><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> Siniflar</a>
+        <a href="/schedule/view/teacher/"><img src="{% static 'icons/O‘qituvchi.png' %}" alt=""> Jadval</a>
+        <a href="/grades/entry/"><img src="{% static 'icons/Jadval.png' %}" alt=""> Baho qo‘yish</a>
+        <a class="active" href="/grades/daily/"><img src="{% static 'icons/Jadval.png' %}" alt=""> Kundalik baholar</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <h2 class="page-title">Kundalik baholar (faqat ko‘rish)</h2>
+
+      <div class="card">
+        <div class="row">
+          <div>
+            <label>Sinf</label>
+            <select id="classSel"></select>
+          </div>
+          <div>
+            <label>Fan</label>
+            <select id="subjectSel"><option value="">— tanlang —</option></select>
+          </div>
+          <div>
+            <label>Hafta</label>
+            <input type="date" id="weekInp">
+            <div class="hint">Istalgan sana (shu haftaga olinadi, Dush–Shan)</div>
+          </div>
+          <button id="btnLoad" class="btn primary">Yuklash</button>
+          <span id="whoBadge" class="badge">Rol: —</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <table class="table" id="tbl">
+          <thead>
+            <tr id="theadRow">
+              <th style="width:60px;">№</th>
+              <th>Familiya Ism</th>
+              <!-- dates injected here -->
+            </tr>
+          </thead>
+          <tbody><!-- rows injected here --></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <script src="{% static 'js/grades-daily.js' %}"></script>
+</body>
+</html>

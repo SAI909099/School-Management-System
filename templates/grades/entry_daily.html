@@ -3,13 +3,11 @@
 <html lang="uz">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Baho qo‘yish</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Kundalik — Baho qo‘yish</title>
   <meta name="color-scheme" content="light">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="referrer" content="same-origin">
-
-  <!-- CSP: if your API is same-origin keep as-is; if not, add its origin to connect-src -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self';
                  script-src 'self';
@@ -22,17 +20,14 @@
                  form-action 'self';
                  upgrade-insecure-requests">
 
-  <!-- Base styles -->
   <link rel="stylesheet" href="{% static 'css/jadval-style.css' %}">
-
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root { --brand:#4f46e5; --bg:#fff; --muted:#f7f7f7; --bd:#ddd; --bd2:#eee; --ok:#0a7a33; --err:#c01a1a; }
-    body { font-family: 'Poppins', system-ui, -apple-system, Arial, sans-serif; margin:0; }
+    body { font-family:'Poppins',system-ui,-apple-system,Arial,sans-serif; margin:0; }
     .card { background:var(--bg); padding:16px; border-radius:12px; box-shadow:0 3px 6px rgba(0,0,0,.1); }
     .row { display:flex; gap:12px; flex-wrap:wrap; align-items:end; }
     label { font-weight:600; display:block; margin-bottom:4px; }
@@ -50,15 +45,11 @@
     .err { color:var(--err); white-space:pre-wrap; margin-top:8px; }
     .badge { display:inline-block; padding:2px 8px; border-radius:999px; background:#eef; color:#2b2a8f; font-size:12px; }
     .hidden { display:none !important; }
-    .bad { border-color: var(--err) !important; background: #fff6f6 !important; }
+    .bad { border-color: var(--err) !important; background:#fff6f6 !important; }
     .loading { display:flex; align-items:center; gap:8px; font-size:14px; color:#555; }
-    .spinner {
-      width:16px; height:16px; border:2px solid #ccc; border-top-color:var(--brand); border-radius:50%;
-      animation: spin 0.8s linear infinite;
-    }
+    .spinner { width:16px; height:16px; border:2px solid #ccc; border-top-color:var(--brand); border-radius:50%; animation: spin .8s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
     .menu a.active { background:#eef2ff; border-radius:8px; }
-    /* Layout fallbacks (in case global CSS doesn't define these) */
     .container { display:flex; min-height:100vh; }
     .sidebar { width:260px; background:#fff; border-right:1px solid var(--bd2); padding:16px; }
     .content { flex:1; padding:20px; }
@@ -66,42 +57,30 @@
     .menu { display:flex; flex-direction:column; gap:8px; margin-top:12px; }
     .menu a { display:flex; align-items:center; gap:8px; padding:8px; text-decoration:none; color:#111; }
     .page-title { margin-top:0; }
-    .skip-link { position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
-    .skip-link:focus { position:static; width:auto; height:auto; padding:8px; background:#eef2ff; border-radius:8px; }
   </style>
 </head>
 <body data-api-base="{{ API_BASE|default:'/api' }}">
-  <a href="#main-content" class="skip-link">Asosiy mazmunga o‘tish</a>
-
-  <noscript>
-    <div class="card" style="margin:12px;color:#b91c1c;">
-      JavaScript o‘chirilgan. Sahifa to‘liq ishlashi uchun JavaScript yoqilishi kerak.
-    </div>
-  </noscript>
-
-  <!-- Toggle daily grades without inline JS using data-allow-daily -->
-  <div class="container" data-page="grades-entry" data-allow-daily="{% if allow_daily %}true{% else %}false{% endif %}">
+  <div class="container" data-page="grades-entry" data-allow-daily="true" data-lock-daily="true">
     <!-- Sidebar -->
     <aside class="sidebar">
       <div class="logo">
-        <img src="{% static 'img/Logo.png' %}" alt="Maktab logotipi" class="logo-img" loading="lazy" decoding="async" draggable="false">
+        <img src="{% static 'img/Logo.png' %}" alt="Maktab logotipi" class="logo-img" loading="lazy" decoding="async">
       </div>
       <h3 class="sidebar-title">School O‘qituvchi</h3>
       <nav class="menu" aria-label="Asosiy menyu">
-        <a href="/teachers/"><img src="{% static 'icons/Asosiy-white.png' %}" alt="" loading="lazy" decoding="async" draggable="false"> Asosiy</a>
-        <a href="/classes/"><img src="{% static 'icons/O‘quvchi.png' %}" alt="" loading="lazy" decoding="async" draggable="false"> Siniflar</a>
-        <a href="/schedule/view/teacher/"><img src="{% static 'icons/O‘qituvchi.png' %}" alt="" loading="lazy" decoding="async" draggable="false"> Jadval</a>
-        <a class="active" aria-current="page" href="/grades/entry/"><img src="{% static 'icons/Jadval.png' %}" alt="" loading="lazy" decoding="async" draggable="false"> Baho qo‘yish</a>
+        <a href="/teachers/"><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Asosiy</a>
+        <a href="/classes/"><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> Siniflar</a>
+        <a href="/schedule/view/teacher/"><img src="{% static 'icons/O‘qituvchi.png' %}" alt=""> Jadval</a>
+        <a class="active" aria-current="page" href="/grades/entry/daily/"><img src="{% static 'icons/Jadval.png' %}" alt=""> Kundalik baho</a>
       </nav>
     </aside>
 
     <!-- Content -->
-    <main id="main-content" class="content" tabindex="-1">
-      <h2 class="page-title">Baho qo‘yish</h2>
+    <main class="content">
+      <h2 class="page-title">Kundalik — Baho qo‘yish</h2>
 
       <!-- Status / messages -->
       <div id="msg" class="hidden" role="status" aria-live="polite"></div>
-
       <div id="loading" class="loading hidden" role="status" aria-live="polite">
         <span class="spinner" aria-hidden="true"></span><span>Yuklanmoqda…</span>
       </div>
@@ -121,15 +100,18 @@
           </div>
           <div>
             <label for="typeSel">Turi</label>
-            <!-- daily option is added by JS only if data-allow-daily="true" -->
+            <!-- JS will lock this to "daily" and disable -->
             <select id="typeSel">
-              <option value="exam">Imtihon</option>
-              <option value="final">Yakuniy</option>
+              <option value="daily" selected>Kundalik</option>
             </select>
           </div>
           <div>
             <label for="dateInp">Sana</label>
-            <input type="date" id="dateInp" inputmode="numeric" aria-required="true">
+            <div style="display:flex; gap:6px; align-items:center;">
+              <button id="btnPrevDay" class="btn ghost" type="button" aria-label="Oldingi kun">←</button>
+              <input type="date" id="dateInp" inputmode="numeric" aria-required="true">
+              <button id="btnNextDay" class="btn ghost" type="button" aria-label="Keyingi kun">→</button>
+            </div>
           </div>
           <div>
             <label for="termInp">Semestr / Term</label>
@@ -169,7 +151,6 @@
     </main>
   </div>
 
-  <!-- App script (no inline JS; works with CSP) -->
-  <script defer src="{% static 'js/grades-entry.js' %}"></script>
+  <script defer src="{% static 'js/grades-entry1.js' %}"></script>
 </body>
 </html>

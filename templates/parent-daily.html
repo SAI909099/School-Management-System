@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Kundalik baholar</title>
+
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 script-src 'self';
+                 style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+                 font-src https://fonts.gstatic.com;
+                 img-src 'self' data:;
+                 connect-src 'self';
+                 frame-ancestors 'self';
+                 base-uri 'self'; form-action 'self'">
+
+  <link rel="stylesheet" href="{% static 'css/jadval-style.css' %}">
+  <style>
+    :root { --brand:#4f46e5; --bd:#ddd; --bd2:#eee; --muted:#f7f7f7; }
+    body { font-family: system-ui, -apple-system, Arial, sans-serif; margin:0; }
+    .container { max-width:1000px; margin:0 auto; padding:16px; }
+    .card { background:#fff; border:1px solid var(--bd2); border-radius:12px; padding:16px; box-shadow:0 3px 6px rgba(0,0,0,.06); }
+    .row { display:flex; gap:12px; flex-wrap:wrap; align-items:end; margin-bottom:12px; }
+    label { font-weight:600; display:block; margin-bottom:4px; }
+    select, input[type="date"] { padding:8px 10px; border:1px solid var(--bd); border-radius:8px; }
+    table { width:100%; border-collapse:collapse; }
+    th, td { border:1px solid var(--bd2); padding:8px; }
+    th { background:var(--muted); text-align:left; }
+    .cell { text-align:center; font-weight:600; }
+    .muted { color:#666; font-weight:400; }
+    .hidden { display:none; }
+    .spinner { width:16px; height:16px; border:2px solid #ccc; border-top-color:var(--brand); border-radius:50%; animation:spin .8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body data-api-base="{{ API_BASE|default:'/api' }}">
+  <div class="container">
+    <h2>Kundalik baholar</h2>
+
+    <div id="msg" class="hidden"></div>
+
+    <div class="card">
+      <div class="row">
+        <div>
+          <label for="childSel">Bola</label>
+          <select id="childSel"></select>
+        </div>
+        <div>
+          <label for="weekInp">Hafta</label>
+          <input type="date" id="weekInp">
+        </div>
+        <button id="btnLoad" class="btn">Yuklash</button>
+        <div id="loading" class="hidden" style="display:flex; align-items:center; gap:8px;">
+          <span class="spinner" aria-hidden="true"></span> Yuklanmoqda…
+        </div>
+      </div>
+
+      <div id="meta" class="muted"></div>
+
+      <div class="card" style="margin-top:12px;">
+        <table id="gridTbl">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+        <div id="empty" class="muted" style="margin-top:8px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <script defer src="{% static 'js/parents-daily.js' %}"></script>
+</body>
+</html>

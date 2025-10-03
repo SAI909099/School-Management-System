@@ -38,11 +38,10 @@
       <div class="logo"><img src="{% static 'img/Logo.png' %}" alt="Logo" class="logo-img"></div>
       <h3 class="sidebar-title">School Moliya</h3>
       <nav class="menu">
-        <a href="{% url 'moliya-main' %}"><img src="{% static 'icons/Asosiy.png' %}" alt=""> Asosiy</a>
+        <a href="{% url 'moliya-main' %}" ><img src="{% static 'icons/Asosiy.png' %}" alt=""> Asosiy</a>
         <a href="{% url 'moliya-chiqim' %}"><img src="{% static 'icons/Chiqim.png' %}" alt=""> Chiqim</a>
         <a href="{% url 'moliya-oylik' %}"><img src="{% static 'icons/Jadval.png' %}" alt=""> Oyliklar</a>
-        <a href="{% url 'moliya-tolovlar' %}" class="active"><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> To‘lovlar</a>
-        <a href="{% url 'moliya-sozlamalar' %}"><img src="{% static 'icons/sozlamalar.png' %}" alt=""> Sozlamalar</a>
+        <a href="{% url 'moliya-tolovlar' %}" class="active"><img src="{% static 'icons/Moliya.png' %}" alt=""> To`lovlar</a>
       </nav>
     </aside>
 
@@ -113,7 +112,7 @@
         </div>
       </div>
 
-      <!-- Table -->
+      <!-- Table (Chegirma/Jarima olib tashlandi) -->
       <div class="card">
         <table class="table" id="tbl">
           <thead>
@@ -122,8 +121,6 @@
               <th>Sinf</th>
               <th>Oy</th>
               <th>Summa</th>
-              <th>Chegirma</th>
-              <th>Jarima</th>
               <th>To‘langan</th>
               <th>Qoldiq</th>
               <th>Status</th>

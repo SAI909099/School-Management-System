@@ -1,10 +1,7 @@
 /**
- * moliya-main.js (with charts + auth + date range)
- * Uses:
+ * moliya-main.js (Option B — expense computed from rows)
+ * Endpoints used:
  *  - GET /api/billing/summary/?from=YYYY-MM-DD&to=YYYY-MM-DD
- *      -> { income, expense, balance, debtors_count, from, to,
- *           income_by_method:{cash,card,transfer},
- *           expense_by_method:{cash,card,transfer} }
  *  - GET /api/billing/payments/?type=income&from=...&to=...
  *  - GET /api/billing/payments/?type=expense&from=...&to=...&include_salaries=1
  */
@@ -62,6 +59,7 @@
     return r.json();
   }
   function dateList(from, to) {
+    if (!from || !to) return [];
     const out = [];
     const a = new Date(from + "T00:00:00");
     const b = new Date(to + "T00:00:00");
@@ -76,11 +74,12 @@
     if (k === "cash" || k === "naqd") return "cash";
     if (k === "card" || k === "karta") return "card";
     if (k === "transfer" || k === "o‘tkazma" || k === "otkazma") return "transfer";
+    if (k === "salary") return "salary";
     return "cash";
   }
 
   function destroyCharts() {
-    [lineChart, pieIncome, pieExpense].forEach(ch => { if (ch) ch.destroy(); });
+    [lineChart, pieIncome, pieExpense].forEach(ch => { if (ch) ch?.destroy?.(); });
     lineChart = pieIncome = pieExpense = null;
   }
 
@@ -107,7 +106,7 @@
       }
     });
 
-    // Pie: income methods
+    // Pie: income methods (3 slices)
     pieIncome = new Chart(pi.getContext("2d"), {
       type: "doughnut",
       data: {
@@ -117,12 +116,14 @@
       options: { plugins: { legend: { position: "bottom" } } }
     });
 
-    // Pie: expense methods
+    // Pie: expense methods (4 slices — include salary so KPI matches)
     pieExpense = new Chart(pe.getContext("2d"), {
       type: "doughnut",
       data: {
-        labels: ["Naqd", "Karta", "O‘tkazma"],
-        datasets: [{ data: [expMethods.cash, expMethods.card, expMethods.transfer] }]
+        labels: ["Naqd", "Karta", "O‘tkazma", "Oylik"],
+        datasets: [{ data: [
+          expMethods.cash, expMethods.card, expMethods.transfer, expMethods.salary
+        ] }]
       },
       options: { plugins: { legend: { position: "bottom" } } }
     });
@@ -145,38 +146,31 @@
     if (to)   qs.set("to",   to);
 
     try {
-      // 1) Summary (totals + by method)
+      // 1) Summary (useful for quick income totals & debtors)
       const summary = await getJSON(`${API}/summary/${qs.toString() ? "?" + qs.toString() : ""}`);
       const income = Number(summary.income || 0);
-      const expense = Number(summary.expense || 0);
-      const prof = Number((summary.balance != null) ? summary.balance : income - expense);
 
+      // Fill INCOME KPI from summary
       const ib = summary.income_by_method || {};
-      const eb = summary.expense_by_method || {};
-
       incomeTotal.textContent = som(income);
       incomeCash.textContent = som(ib.cash || 0);
       incomeCard.textContent = som(ib.card || 0);
       incomeTransfer.textContent = som(ib.transfer || 0);
 
-      expenseTotal.textContent = som(expense);
-      expenseCash.textContent = som(eb.cash || 0);
-      expenseCard.textContent = som(eb.card || 0);
-      expenseTransfer.textContent = som(eb.transfer || 0);
-
-      profit.textContent = som(prof);
-      balance.textContent = som(prof);
-      debtorsCount.textContent = String(summary.debtors_count ?? "—");
-
       const f = summary.from || from || "";
       const t = summary.to   || to   || "";
       periodLabel.textContent = (f && t) ? `${f} — ${t}` : "—";
       rangeInfo.textContent = (f && t) ? `Davr: ${f} — ${t}` : "";
+      debtorsCount.textContent = String(summary.debtors_count ?? "—");
 
-      // 2) Time series (daily)
+      // 2) Rows for charts and EXPENSE KPI (match Chiqim page exactly)
+      const rowsQs = new URLSearchParams();
+      if (from) rowsQs.set("from", from);
+      if (to)   rowsQs.set("to",   to);
+
       const [incRows, expRows] = await Promise.all([
-        getJSON(`${API}/payments/?type=income&${qs.toString()}`),
-        getJSON(`${API}/payments/?type=expense&include_salaries=1&${qs.toString()}`)
+        getJSON(`${API}/payments/?type=income&${rowsQs.toString()}`),
+        getJSON(`${API}/payments/?type=expense&include_salaries=1&${rowsQs.toString()}`)
       ]);
 
       const labels = dateList(f || from, t || to);
@@ -197,20 +191,37 @@
       const incomeDaily = labels.map(d => incMap[d] || 0);
       const expenseDaily = labels.map(d => expMap[d] || 0);
 
-      // Method breakdowns from rows (for charts — summary already filled numbers)
+      // Method breakdowns from rows
       const incMethods = { cash:0, card:0, transfer:0 };
       (Array.isArray(incRows) ? incRows : []).forEach(r => {
         const k = methodKey(r.method);
-        incMethods[k] += amt(r);
-      });
-      const expMethods = { cash:0, card:0, transfer:0 };
-      (Array.isArray(expRows) ? expRows : []).forEach(r => {
-        const k = methodKey(r.method);
-        expMethods[k] += amt(r);
+        if (k in incMethods) incMethods[k] += amt(r);
       });
 
+      const expMethods = { cash:0, card:0, transfer:0, salary:0 };
+      let expenseTotalCalc = 0;
+      (Array.isArray(expRows) ? expRows : []).forEach(r => {
+        const a = amt(r);
+        expenseTotalCalc += a;
+        const k = methodKey(r.method);
+        if (k in expMethods) expMethods[k] += a;
+      });
+
+      // Overwrite EXPENSE KPI from rows (so it matches Chiqim)
+      expenseTotal.textContent    = som(expenseTotalCalc);
+      expenseCash.textContent     = som(expMethods.cash || 0);
+      expenseCard.textContent     = som(expMethods.card || 0);
+      expenseTransfer.textContent = som(expMethods.transfer || 0);
+
+      // Profit/balance using computed expense
+      const profCalc = income - expenseTotalCalc;
+      profit.textContent  = som(profCalc);
+      balance.textContent = som(profCalc);
+
       destroyCharts();
-      renderCharts(labels, incomeDaily, expenseDaily, incMethods, expMethods);
+      if (labels.length) {
+        renderCharts(labels, incomeDaily, expenseDaily, incMethods, expMethods);
+      }
 
     } catch (e) {
       console.error("Summary load failed:", e);

@@ -153,3 +153,4 @@ CORS_ALLOW_ALL_ORIGINS = config('CORS_ALLOW_ALL', cast=bool, default=True)
 TEMPLATES[0]["DIRS"] += [BASE_DIR / "templates"]
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
+ALLOW_DAILY_GRADES = True
