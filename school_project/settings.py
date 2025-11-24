@@ -1,17 +1,14 @@
 from pathlib import Path
 from decouple import config
+from datetime import timedelta
 import os
-from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
 DEBUG = config('DEBUG', cast=bool, default=True)
 SECRET_KEY = config('SECRET_KEY', default='dev-secret-change-me')
+
 ALLOWED_HOSTS = [h for h in config('ALLOWED_HOSTS', default='*').split(',') if h]
-
-
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -23,7 +20,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'drf_spectacular',
-
     'accounts',
     'academics',
     'billing',
@@ -42,19 +38,17 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'school_project.urls'
 
-
-
 TEMPLATES = [
 {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-            'django.template.context_processors.debug',
-            'django.template.context_processors.request',
-            'django.contrib.auth.context_processors.auth',
-            'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
             ],
         },
     },
@@ -63,12 +57,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'school_project.wsgi.application'
 ASGI_APPLICATION = 'school_project.asgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
-
-# Database: Postgres via env, fallback to sqlite for quick start
+# DATABASE
 if config('DB_NAME', default=''):
     DATABASES = {
         'default': {
@@ -76,7 +65,7 @@ if config('DB_NAME', default=''):
             'NAME': config('DB_NAME'),
             'USER': config('DB_USER', default='postgres'),
             'PASSWORD': config('DB_PASSWORD', default=''),
-            'HOST': config('DB_HOST', default='127.0.0.1'),
+            'HOST': config('DB_HOST', default='postgres'),
             'PORT': config('DB_PORT', default='5432'),
         }
     }
@@ -90,31 +79,20 @@ else:
 
 AUTH_USER_MODEL = 'accounts.User'
 
-# Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
-
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
-
-
 LANGUAGE_CODE = 'uz'
 TIME_ZONE = 'Asia/Tashkent'
 USE_I18N = True
 USE_TZ = True
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+if DEBUG:
+    STATICFILES_DIRS = [BASE_DIR / "static"]
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
@@ -134,11 +112,10 @@ REST_FRAMEWORK = {
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'School Project API',
-    'DESCRIPTION': 'Uzbek-first school management APIs (Sprint 0/1)',
+    'DESCRIPTION': 'Uzbek-first school management APIs',
     'VERSION': '0.1.0',
 }
 
-from datetime import timedelta
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=4),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
@@ -148,9 +125,5 @@ SIMPLE_JWT = {
 }
 
 CORS_ALLOW_ALL_ORIGINS = config('CORS_ALLOW_ALL', cast=bool, default=True)
-
-
-TEMPLATES[0]["DIRS"] += [BASE_DIR / "templates"]
-STATICFILES_DIRS = [BASE_DIR / "static"]
 
 ALLOW_DAILY_GRADES = True
