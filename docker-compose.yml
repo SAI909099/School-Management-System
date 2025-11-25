@@ -12,7 +12,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - "5433:5432"   # school project uses its own DB port
+      - "5433:5432"
 
   backend:
     build: .
@@ -21,9 +21,10 @@ services:
     depends_on:
       - postgres
     expose:
-      - "8000"  # only internal
+      - "8000"
     volumes:
-      - ./media:/app/media  # only media should be mounted (safe)
+      - ./media:/app/media
+      - static_volume:/app/staticfiles   # 🔥 STATIC SHARED VOLUME FOR COLLECTSTATIC
 
   nginx:
     image: nginx:stable
@@ -34,8 +35,9 @@ services:
       - "8080:80"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./media:/app/media       # serve uploaded files
-      # ❗ DO NOT MOUNT STATICFILES — they live inside backend container
+      - static_volume:/app/staticfiles   # 🔥 SAME STATIC VOLUME, nginx reads from here
+      - ./media:/app/media               # serve uploads
 
 volumes:
   postgres_data:
+  static_volume:
