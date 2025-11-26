@@ -1,4 +1,4 @@
-version: "3.9"
+# version is obsolete → removed for clean config
 
 services:
 
@@ -26,21 +26,12 @@ services:
       - ./media:/app/media
       - static_volume:/app/staticfiles
 
-  # 🔥 MEDSERVISE RUNS ON ITS OWN INTERNAL PORT
-  medservise:
-    image: medservise-backend   # your existing image
-    restart: always
-    env_file: /var/www/Medservise/.env
-    expose:
-      - "8000"
-
   nginx:
     image: nginx:stable
     container_name: nginx
     restart: always
     depends_on:
       - backend
-      - medservise
     ports:
       - "80:80"
       - "443:443"
