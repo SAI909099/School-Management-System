@@ -24,7 +24,15 @@ services:
       - "8000"
     volumes:
       - ./media:/app/media
-      - static_volume:/app/staticfiles   # shared static files
+      - static_volume:/app/staticfiles
+
+  # 🔥 MEDSERVISE RUNS ON ITS OWN INTERNAL PORT
+  medservise:
+    image: medservise-backend   # your existing image
+    restart: always
+    env_file: /var/www/medservise/.env
+    expose:
+      - "8000"
 
   nginx:
     image: nginx:stable
@@ -32,6 +40,7 @@ services:
     restart: always
     depends_on:
       - backend
+      - medservise
     ports:
       - "80:80"
       - "443:443"
@@ -39,8 +48,8 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - static_volume:/app/staticfiles
       - ./media:/app/media
-      - certbot-etc:/etc/letsencrypt      # SSL certificates
-      - certbot-var:/var/lib/letsencrypt  # ACME challenge files
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
 
   certbot:
     image: certbot/certbot
@@ -50,8 +59,8 @@ services:
     volumes:
       - certbot-etc:/etc/letsencrypt
       - certbot-var:/var/lib/letsencrypt
-    entrypoint: ""       # <-- IMPORTANT (fixes the certbot error)
-    command: ""          # Do not run automatically
+    entrypoint: ""
+    command: ""
 
 volumes:
   postgres_data:
