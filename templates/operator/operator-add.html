@@ -1,10 +1,10 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>School Operator — Yangi o‘quvchi</title>
+  <title>School Operator — New Student</title>
   <link rel="stylesheet" href="{% static 'css/operator-add-style.css' %}" />
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -19,19 +19,17 @@
       </div>
       <h3 class="sidebar-title">School Operator</h3>
       <nav class="menu">
-       <a href="/operator/analytics/"><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Asosiy</a>
-      <!-- <a href="{% url 'operator-main' %}"><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Asosiy 12</a> -->
-      <a href="{% url 'operator-davomat' %}"><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> Davomat</a>
-      <a href="{% url 'moliya-oylik' %}"><img src="{% static 'icons/Jadval.png' %}" alt=""> Yangi o’quvchi</a>
-      <!-- <a href="{% url 'moliya-sozlamalar' %}"><img src="{% static 'icons/sozlamalar.png' %}" alt=""> Sozlamalar</a> -->
-      <!-- <a href="/operator/analytics/"><img src="{% static 'icons/Jadval.png' %}" alt=""> Analitika</a> -->
+       <a href="/operator/analytics/"><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Home</a>
+      <!-- <a href="{% url 'operator-main' %}"><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Home 12</a> -->
+      <a href="{% url 'operator-davomat' %}"><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> Attendance</a>
+      <a href="{% url 'moliya-oylik' %}"><img src="{% static 'icons/Jadval.png' %}" alt=""> New Student</a>
     </aside>
 
     <!-- Content -->
     <main class="content">
       <!-- Topbar -->
       <div class="topbar">
-        <input type="text" class="search" placeholder="Qidiruv" />
+        <input type="text" class="search" placeholder="Search" />
         <div class="icons">
           <a href="#"><img src="{% static 'icons/Xabarlar.png' %}" alt="Bell" /></a>
           <a href="#"><img src="{% static 'icons/Profil.png' %}" alt="Profile" /></a>
@@ -39,7 +37,7 @@
       </div>
 
       <!-- Title -->
-      <h1 class="page-title">Yangi o‘quvchi qo‘shish</h1>
+      <h1 class="page-title">Add New Student</h1>
 
       <!-- Messages -->
       <div id="msg" class="hidden"></div>
@@ -49,55 +47,55 @@
         {% csrf_token %}
         <div class="form-grid">
           <div class="form-group">
-            <label for="ism">Ism <span class="req">*</span></label>
-            <input id="ism" name="ism" type="text" class="form-control" placeholder="Ismni kiriting" required />
+            <label for="ism">First Name <span class="req">*</span></label>
+            <input id="ism" name="ism" type="text" class="form-control" placeholder="Enter first name" required />
           </div>
 
           <div class="form-group">
-            <label for="familiya">Familiya <span class="req">*</span></label>
-            <input id="familiya" name="familiya" type="text" class="form-control" placeholder="Familiyani kiriting" required />
+            <label for="familiya">Last Name <span class="req">*</span></label>
+            <input id="familiya" name="familiya" type="text" class="form-control" placeholder="Enter last name" required />
           </div>
 
           <div class="form-group">
-            <label for="otaona">Ota-ona ismi</label>
-            <input id="otaona" name="otaona" type="text" class="form-control" placeholder="Ota yoki ona ismini kiriting" />
+            <label for="otaona">Parent Name</label>
+            <input id="otaona" name="otaona" type="text" class="form-control" placeholder="Enter parent name" />
           </div>
 
           <div class="form-group">
-            <label>Tug‘ilgan sana</label>
+            <label>Date of Birth</label>
             <div class="dob-row">
-              <input type="text" name="kun" class="form-control dob" placeholder="Kun" inputmode="numeric" />
-              <input type="text" name="oy"  class="form-control dob" placeholder="Oy"  inputmode="numeric" />
-              <input type="text" name="yil" class="form-control dob" placeholder="Yil" inputmode="numeric" />
+              <input type="text" name="kun" class="form-control dob" placeholder="Day" inputmode="numeric" />
+              <input type="text" name="oy"  class="form-control dob" placeholder="Month" inputmode="numeric" />
+              <input type="text" name="yil" class="form-control dob" placeholder="Year" inputmode="numeric" />
             </div>
           </div>
 
           <div class="form-group">
-            <label for="sinf">Sinf <span class="req">*</span></label>
+            <label for="sinf">Class <span class="req">*</span></label>
             <!-- will be populated from /api/dir/classes/ -->
             <select id="sinf" name="sinf" class="form-control" required>
-              <option value="">Sinfni tanlang</option>
+              <option value="">Select class</option>
             </select>
           </div>
 
           <div class="form-group">
-            <label for="phone1">Telefon 1 (login bo‘ladi) <span class="req">*</span></label>
+            <label for="phone1">Phone 1 (will be login) <span class="req">*</span></label>
             <input id="phone1" name="phone1" type="tel" class="form-control" placeholder="+998901234567" required />
           </div>
 
           <div class="form-group">
-            <label for="phone2">Telefon 2 (ixtiyoriy)</label>
+            <label for="phone2">Phone 2 (optional)</label>
             <input id="phone2" name="phone2" type="tel" class="form-control" placeholder="+998901234568" />
           </div>
         </div>
 
         <div class="form-actions">
-          <button type="submit" id="btnSave" class="btn-primary">Saqlash</button>
+          <button type="submit" id="btnSave" class="btn-primary">Save</button>
         </div>
       </form>
 
       <p class="hint">
-        Eslatma: Telefon 1 ota-ona login sifatida yaratiladi. Telefon 2 bo‘lsa ham, login sifatida Telefon 1 ishlatiladi.
+        Note: Phone 1 will be created as the parent’s login. Even if Phone 2 is provided, Phone 1 will still be used as the login.
       </p>
     </main>
   </div>

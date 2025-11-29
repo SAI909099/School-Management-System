@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Operator — Ota-onalar ro‘yxati</title>
+  <title>Operator — Parents List</title>
 
   <!-- Bootstrap first -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
@@ -16,10 +16,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
-    /* Make the admin shell expand full width even with Bootstrap loaded */
     .admin-shell.container { max-width: 100% !important; }
-
-    /* Page-specific tweaks that live nicely inside the admin shell */
     body { background:#f7f8fa; }
     .page-title { font-weight:600; }
     .table thead th { white-space: nowrap; }
@@ -43,67 +40,56 @@
         <nav class="menu">
           <a href="/dashboard/" >
             <img src="{% static 'icons/Asosiy-white.png' %}" alt="Home">
-            <span>Asosiy</span>
+            <span>Home</span>
           </a>
           <a href="/operator/parents/" class="active" >
-            <img src="{% static 'icons/O‘quvchi.png' %}" alt="O'quvchi">
-            <span>O‘quvchi</span>
+            <img src="{% static 'icons/O‘quvchi.png' %}" alt="Student">
+            <span>Students</span>
           </a>
           <a href="/operator/teachers/" >
-            <img src="{% static 'icons/O‘qituvchi.png' %}" alt="O‘qituvchi">
-            <span>O‘qituvchi</span>
+            <img src="{% static 'icons/O‘qituvchi.png' %}" alt="Teacher">
+            <span>Teachers</span>
           </a>
           <a href="/schedule/classes/">
-            <img src="{% static 'icons/Jadval.png' %}" alt="Jadval">
-            <span>Jadval</span>
+            <img src="{% static 'icons/Jadval.png' %}" alt="Schedule">
+            <span>Schedule</span>
           </a>
           <a href="/moliya/">
-            <img src="{% static 'icons/Moliya.png' %}" alt="Moliya">
-            <span>Moliya</span>
+            <img src="{% static 'icons/Moliya.png' %}" alt="Finance">
+            <span>Finance</span>
           </a>
-            <a href="/users/add/" ><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Qo‘shish</a>
-
-    <!--      <a href="#">-->
-    <!--        <img src="{% static 'icons/sozlamalar.png' %}" alt="Sozlamalar">-->
-    <!--        <span>Sozlamalar</span>-->
-    <!--      </a>-->
+            <a href="/users/add/" ><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Add</a>
         </nav>
       </aside>
 
     <!-- RIGHT: Content -->
     <main class="content">
-      <!-- Top bar (optional) -->
       <header class="topbar mb-3">
         <div class="search">
-          <input type="text" placeholder="Qidiruv">
+          <input type="text" placeholder="Search">
         </div>
-        <div class="top-icons">
-          <!-- icons if you need -->
-        </div>
+        <div class="top-icons"></div>
       </header>
 
-      <!-- Page body wrapped in Bootstrap for comfy spacing -->
       <div class="page container-fluid py-3">
         <div class="d-flex align-items-center justify-content-between mb-3">
-          <h1 class="page-title h3 mb-0">👨‍👩‍👧‍👦 Ota-onalar</h1>
-          <!-- Back button removed; sidebar provides navigation -->
+          <h1 class="page-title h3 mb-0">👨‍👩‍👧‍👦 Parents</h1>
         </div>
 
         <div class="parent-card mb-3">
           <div class="row g-2 align-items-end">
             <div class="col-12 col-md-5">
-              <label for="search" class="form-label mb-1">Qidirish (ism, familiya, telefon, sinf)</label>
-              <input id="search" type="text" class="form-control" placeholder="Masalan: Aliyev, 1-A, +998..." />
+              <label for="search" class="form-label mb-1">Search (name, surname, phone, class)</label>
+              <input id="search" type="text" class="form-control" placeholder="Example: Aliyev, 1-A, +998..." />
             </div>
             <div class="col-12 col-md-4">
-              <label for="class-filter" class="form-label mb-1">Sinf bo‘yicha filtr</label>
+              <label for="class-filter" class="form-label mb-1">Filter by class</label>
               <select id="class-filter" class="form-select">
-                <option value="">Barchasi</option>
-                <!-- JS to‘ldiradi -->
+                <option value="">All</option>
               </select>
             </div>
             <div class="col-12 col-md-3 text-md-end">
-              <button id="btn-refresh" class="btn btn-primary mt-2 mt-md-0">Yangilash</button>
+              <button id="btn-refresh" class="btn btn-primary mt-2 mt-md-0">Refresh</button>
             </div>
           </div>
         </div>
@@ -113,14 +99,14 @@
             <table class="table table-hover align-middle">
               <thead class="table-light">
                 <tr>
-                  <th style="min-width:200px">Ota-ona</th>
-                  <th>Telefon</th>
-                  <th style="min-width:260px">Farzandlari (Ism Familiya — Sinf)</th>
-                  <th style="min-width:160px">Amal</th>
+                  <th style="min-width:200px">Parent</th>
+                  <th>Phone</th>
+                  <th style="min-width:260px">Children (Full name — Class)</th>
+                  <th style="min-width:160px">Actions</th>
                 </tr>
               </thead>
               <tbody id="parents-tbody">
-                <!-- JS to‘ldiradi -->
+                <!-- JS fills -->
               </tbody>
             </table>
           </div>
@@ -139,21 +125,21 @@
       <div class="modal-content">
         <form id="set-password-form">
           <div class="modal-header">
-            <h5 class="modal-title">Parolni o‘rnatish</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Yopish"></button>
+            <h5 class="modal-title">Set Password</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <input type="hidden" id="guardian-id" />
             <div class="mb-3">
-              <label class="form-label">Yangi parol</label>
+              <label class="form-label">New Password</label>
               <input type="password" id="new-password" class="form-control" minlength="6" required />
-              <div class="invalid-feedback">Parol kamida 6 belgi bo‘lishi kerak.</div>
+              <div class="invalid-feedback">Password must be at least 6 characters.</div>
             </div>
-            <div class="form-text">Minimal uzunlik: 6 ta belgi.</div>
+            <div class="form-text">Minimum length: 6 characters.</div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Bekor qilish</button>
-            <button type="submit" class="btn btn-primary">Saqlash</button>
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save</button>
           </div>
         </form>
       </div>

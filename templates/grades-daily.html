@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kundalik baholar</title>
+  <title>Daily Grades</title>
   <link rel="stylesheet" href="{% static 'css/jadval-style.css' %}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,36 +30,36 @@
       <div class="logo">
         <img src="{% static 'img/Logo.png' %}" alt="Logo" class="logo-img">
       </div>
-      <h3 class="sidebar-title">School O'qituvchi</h3>
+      <h3 class="sidebar-title">School Teacher</h3>
       <nav class="menu">
-        <a href="/teachers/"><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Asosiy</a>
-        <a href="/classes/"><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> Siniflar</a>
-        <a href="/schedule/view/teacher/"><img src="{% static 'icons/O‘qituvchi.png' %}" alt=""> Jadval</a>
-        <a href="/grades/entry/"><img src="{% static 'icons/Jadval.png' %}" alt=""> Baho qo‘yish</a>
-        <a class="active" href="/grades/daily/"><img src="{% static 'icons/Jadval.png' %}" alt=""> Kundalik baholar</a>
+        <a href="/teachers/"><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Home</a>
+        <a href="/classes/"><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> Classes</a>
+        <a href="/schedule/view/teacher/"><img src="{% static 'icons/O‘qituvchi.png' %}" alt=""> Schedule</a>
+        <a href="/grades/entry/"><img src="{% static 'icons/Jadval.png' %}" alt=""> Enter Grades</a>
+        <a class="active" href="/grades/daily/"><img src="{% static 'icons/Jadval.png' %}" alt=""> Daily Grades</a>
       </nav>
     </aside>
 
     <main class="content">
-      <h2 class="page-title">Kundalik baholar (faqat ko‘rish)</h2>
+      <h2 class="page-title">Daily Grades (view only)</h2>
 
       <div class="card">
         <div class="row">
           <div>
-            <label>Sinf</label>
+            <label>Class</label>
             <select id="classSel"></select>
           </div>
           <div>
-            <label>Fan</label>
-            <select id="subjectSel"><option value="">— tanlang —</option></select>
+            <label>Subject</label>
+            <select id="subjectSel"><option value="">— select —</option></select>
           </div>
           <div>
-            <label>Hafta</label>
+            <label>Week</label>
             <input type="date" id="weekInp">
-            <div class="hint">Istalgan sana (shu haftaga olinadi, Dush–Shan)</div>
+            <div class="hint">Any date (week will be taken Mon–Sat)</div>
           </div>
-          <button id="btnLoad" class="btn primary">Yuklash</button>
-          <span id="whoBadge" class="badge">Rol: —</span>
+          <button id="btnLoad" class="btn primary">Load</button>
+          <span id="whoBadge" class="badge">Role: —</span>
         </div>
       </div>
 
@@ -68,7 +68,7 @@
           <thead>
             <tr id="theadRow">
               <th style="width:60px;">№</th>
-              <th>Familiya Ism</th>
+              <th>Last Name First Name</th>
               <!-- dates injected here -->
             </tr>
           </thead>

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jadval — o‘qituvchi bo‘yicha (ko‘rish)</title>
+  <title>Schedule — by Teacher (view)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -36,41 +36,41 @@
     <!-- Sidebar -->
     <aside class="sidebar">
       <div class="logo"><img src="{% static 'img/Logo.png' %}" alt="Logo" class="logo-img"></div>
-      <h3 class="sidebar-title">School O‘qituvchi</h3>
+      <h3 class="sidebar-title">School Teacher</h3>
       <nav class="menu">
-        <a href="/teachers/"><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Asosiy</a>
-        <a href="/classes/"><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> Siniflar</a>
-        <a href="/schedule/view/teacher/" class="active"><img src="{% static 'icons/O‘qituvchi.png' %}" alt=""> Jadval</a>
-        <a href="/grades/entry/"><img src="{% static 'icons/Jadval.png' %}" alt=""> Baho qo‘yish</a>
+        <a href="/teachers/"><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Home</a>
+        <a href="/classes/"><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> Classes</a>
+        <a href="/schedule/view/teacher/" class="active"><img src="{% static 'icons/O‘qituvchi.png' %}" alt=""> Schedule</a>
+        <a href="/grades/entry/"><img src="{% static 'icons/Jadval.png' %}" alt=""> Enter Grades</a>
       </nav>
     </aside>
 
     <!-- Content -->
     <main class="content">
-      <h2 class="page-title">Jadval — o‘qituvchi bo‘yicha (ko‘rish)</h2>
+      <h2 class="page-title">Schedule — by Teacher (view)</h2>
 
       <div class="panel">
         <div class="controls">
           <div>
-            <label>Fan bo‘yicha filter (ixtiyoriy)</label>
+            <label>Filter by Subject (optional)</label>
             <select id="subjectFilter" style="min-width:220px;">
-              <option value="">(hammasi)</option>
+              <option value="">(all)</option>
             </select>
           </div>
           <div id="teacherWrap">
-            <label>O‘qituvchi</label>
+            <label>Teacher</label>
             <select id="teacherSel" style="min-width:260px;"></select>
           </div>
           <div>
-            <label>Hafta</label>
+            <label>Week</label>
             <select id="weekTemplate">
-              <option value="default">Dushanba–Shanba</option>
+              <option value="default">Monday–Saturday</option>
             </select>
           </div>
-          <button id="btnReload" class="btn">Yuklash</button>
+          <button id="btnReload" class="btn">Load</button>
           <div class="print-actions" style="margin-left:auto; display:flex; gap:8px;">
-            <button id="btnCsv" class="btn">CSV chiqarish</button>
-            <button id="btnPrint" class="btn">Chop etish</button>
+            <button id="btnCsv" class="btn">Export CSV</button>
+            <button id="btnPrint" class="btn">Print</button>
           </div>
           <span id="meta" class="badge">—</span>
         </div>

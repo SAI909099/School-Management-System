@@ -1,15 +1,14 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Baho qo‘yish</title>
+  <title>Grade Entry</title>
   <meta name="color-scheme" content="light">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="referrer" content="same-origin">
 
-  <!-- CSP: if your API is same-origin keep as-is; if not, add its origin to connect-src -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self';
                  script-src 'self';
@@ -22,10 +21,8 @@
                  form-action 'self';
                  upgrade-insecure-requests">
 
-  <!-- Base styles -->
   <link rel="stylesheet" href="{% static 'css/jadval-style.css' %}">
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -58,7 +55,6 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
     .menu a.active { background:#eef2ff; border-radius:8px; }
-    /* Layout fallbacks (in case global CSS doesn't define these) */
     .container { display:flex; min-height:100vh; }
     .sidebar { width:260px; background:#fff; border-right:1px solid var(--bd2); padding:16px; }
     .content { flex:1; padding:20px; }
@@ -71,86 +67,79 @@
   </style>
 </head>
 <body data-api-base="{{ API_BASE|default:'/api' }}">
-  <a href="#main-content" class="skip-link">Asosiy mazmunga o‘tish</a>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
 
   <noscript>
     <div class="card" style="margin:12px;color:#b91c1c;">
-      JavaScript o‘chirilgan. Sahifa to‘liq ishlashi uchun JavaScript yoqilishi kerak.
+      JavaScript is disabled. JavaScript must be enabled for the page to work fully.
     </div>
   </noscript>
 
-  <!-- Toggle daily grades without inline JS using data-allow-daily -->
   <div class="container" data-page="grades-entry" data-allow-daily="{% if allow_daily %}true{% else %}false{% endif %}">
-    <!-- Sidebar -->
     <aside class="sidebar">
       <div class="logo">
-        <img src="{% static 'img/Logo.png' %}" alt="Maktab logotipi" class="logo-img" loading="lazy" decoding="async" draggable="false">
+        <img src="{% static 'img/Logo.png' %}" alt="School Logo" class="logo-img" loading="lazy" decoding="async" draggable="false">
       </div>
-      <h3 class="sidebar-title">School O‘qituvchi</h3>
-      <nav class="menu" aria-label="Asosiy menyu">
-        <a href="/teachers/"><img src="{% static 'icons/Asosiy-white.png' %}" alt="" loading="lazy" decoding="async" draggable="false"> Asosiy</a>
-        <a href="/classes/"><img src="{% static 'icons/O‘quvchi.png' %}" alt="" loading="lazy" decoding="async" draggable="false"> Siniflar</a>
-        <a href="/schedule/view/teacher/"><img src="{% static 'icons/O‘qituvchi.png' %}" alt="" loading="lazy" decoding="async" draggable="false"> Jadval</a>
-        <a class="active" aria-current="page" href="/grades/entry/"><img src="{% static 'icons/Jadval.png' %}" alt="" loading="lazy" decoding="async" draggable="false"> Baho qo‘yish</a>
+      <h3 class="sidebar-title">School Teacher</h3>
+      <nav class="menu" aria-label="Main menu">
+        <a href="/teachers/"><img src="{% static 'icons/Asosiy-white.png' %}" alt="" loading="lazy" decoding="async" draggable="false"> Home</a>
+        <a href="/classes/"><img src="{% static 'icons/O‘quvchi.png' %}" alt="" loading="lazy" decoding="async" draggable="false"> Classes</a>
+        <a href="/schedule/view/teacher/"><img src="{% static 'icons/O‘qituvchi.png' %}" alt="" loading="lazy" decoding="async" draggable="false"> Schedule</a>
+        <a class="active" aria-current="page" href="/grades/entry/"><img src="{% static 'icons/Jadval.png' %}" alt="" loading="lazy" decoding="async" draggable="false"> Grade Entry</a>
       </nav>
     </aside>
 
-    <!-- Content -->
     <main id="main-content" class="content" tabindex="-1">
-      <h2 class="page-title">Baho qo‘yish</h2>
+      <h2 class="page-title">Grade Entry</h2>
 
-      <!-- Status / messages -->
       <div id="msg" class="hidden" role="status" aria-live="polite"></div>
 
       <div id="loading" class="loading hidden" role="status" aria-live="polite">
-        <span class="spinner" aria-hidden="true"></span><span>Yuklanmoqda…</span>
+        <span class="spinner" aria-hidden="true"></span><span>Loading…</span>
       </div>
 
-      <!-- Controls -->
       <div class="card" style="margin-bottom:16px;">
-        <div class="row" role="group" aria-label="Filtrlar">
+        <div class="row" role="group" aria-label="Filters">
           <div>
-            <label for="classSel">Sinf</label>
+            <label for="classSel">Class</label>
             <select id="classSel" aria-required="true"></select>
           </div>
           <div>
-            <label for="subjectSel">Fan</label>
+            <label for="subjectSel">Subject</label>
             <select id="subjectSel" aria-required="true">
-              <option value="">— tanlang —</option>
+              <option value="">— select —</option>
             </select>
           </div>
           <div>
-            <label for="typeSel">Turi</label>
-            <!-- daily option is added by JS only if data-allow-daily="true" -->
+            <label for="typeSel">Type</label>
             <select id="typeSel">
-              <option value="exam">Imtihon</option>
-              <option value="final">Yakuniy</option>
+              <option value="exam">Exam</option>
+              <option value="final">Final</option>
             </select>
           </div>
           <div>
-            <label for="dateInp">Sana</label>
+            <label for="dateInp">Date</label>
             <input type="date" id="dateInp" inputmode="numeric" aria-required="true">
           </div>
           <div>
-            <label for="termInp">Semestr / Term</label>
-            <input type="text" id="termInp" placeholder="masalan: 2025-1" autocomplete="off" spellcheck="false">
+            <label for="termInp">Semester / Term</label>
+            <input type="text" id="termInp" placeholder="e.g. 2025-1" autocomplete="off" spellcheck="false">
           </div>
-          <button id="btnLoad" class="btn" type="button">O‘quvchilarni yuklash</button>
-          <span id="whoBadge" class="badge" aria-label="Foydalanuvchi roli">Rol: —</span>
+          <button id="btnLoad" class="btn" type="button">Load Students</button>
+          <span id="whoBadge" class="badge" aria-label="User role">Role: —</span>
         </div>
       </div>
 
-      <!-- Table -->
       <div class="card" aria-live="off">
         <div class="row" style="justify-content:space-between; margin-bottom:10px;">
           <div style="display:flex; gap:8px;">
-            <button id="btnFill3" class="btn ghost" type="button">Barchasini 3</button>
-            <button id="btnFill4" class="btn ghost" type="button">Barchasini 4</button>
-            <button id="btnFill5" class="btn ghost" type="button">Barchasini 5</button>
+            <button id="btnFill3" class="btn ghost" type="button">Set All 3</button>
+            <button id="btnFill4" class="btn ghost" type="button">Set All 4</button>
+            <button id="btnFill5" class="btn ghost" type="button">Set All 5</button>
           </div>
           <div style="display:flex; gap:8px;">
-            <button id="btnClear" class="btn ghost" type="button">Tozalash</button>
-            <button id="btnSave" class="btn primary" type="button">Saqlash</button>
+            <button id="btnClear" class="btn ghost" type="button">Clear</button>
+            <button id="btnSave" class="btn primary" type="button">Save</button>
           </div>
         </div>
 
@@ -158,18 +147,17 @@
           <thead>
             <tr>
               <th scope="col" style="width:60px;">№</th>
-              <th scope="col">Familiya Ism</th>
-              <th scope="col" style="width:120px;">Baho (2..5)</th>
-              <th scope="col">Izoh</th>
+              <th scope="col">Last Name & First Name</th>
+              <th scope="col" style="width:120px;">Grade (2..5)</th>
+              <th scope="col">Comment</th>
             </tr>
           </thead>
-          <tbody><!-- JS will render rows here --></tbody>
+          <tbody></tbody>
         </table>
       </div>
     </main>
   </div>
 
-  <!-- App script (no inline JS; works with CSP) -->
   <script defer src="{% static 'js/grades-entry.js' %}"></script>
 </body>
 </html>

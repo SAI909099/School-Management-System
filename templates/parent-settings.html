@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>School Ota Ona</title>
+  <title>School Parent</title>
   <link rel="stylesheet" href="{% static 'css/parent-settings-style.css' %}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,12 +18,12 @@
       <div class="logo">
         <img src="{% static 'img/Logo.png' %}" alt="Logo" class="logo-img">
       </div>
-      <h3 class="sidebar-title">School Ota Ona</h3>
+      <h3 class="sidebar-title">School Parent</h3>
       <nav class="menu">
-        <a href="/otaona/"><img src="{% static 'icons/Asosiy-white.png' %}" alt="Asosiy"> Asosiy</a>
-        <a href="/otaona/davomat/" ><img src="{% static 'icons/O‘quvchi.png' %}" alt="O‘quvchi"> Davomat</a>
-        <a href="/otaona/baholar/"><img src="{% static 'icons/O‘qituvchi.png' %}" alt=""> Baholar</a>
-        <a href="/otaona/sozlamalar/"><img src="{% static 'icons/sozlamalar.png' %}" alt=""> Sozlamalar</a>
+        <a href="/otaona/"><img src="{% static 'icons/Asosiy-white.png' %}" alt="Home"> Home</a>
+        <a href="/otaona/davomat/"><img src="{% static 'icons/O‘quvchi.png' %}" alt="Attendance"> Attendance</a>
+        <a href="/otaona/baholar/"><img src="{% static 'icons/O‘qituvchi.png' %}" alt=""> Grades</a>
+        <a href="/otaona/sozlamalar/"><img src="{% static 'icons/sozlamalar.png' %}" alt=""> Settings</a>
       </nav>
     </aside>
 
@@ -31,7 +31,7 @@
     <main class="content">
       <!-- Topbar -->
       <div class="topbar">
-        <input type="text" placeholder="Qidiruv">
+        <input type="text" placeholder="Search">
         <div class="icons">
           <a href="#"><img src="{% static 'icons/Xabarlar.png' %}" alt="Bell"></a>
           <a href="#"><img src="{% static 'icons/Profil.png' %}" alt="Profile"></a>
@@ -40,27 +40,27 @@
 
       <div class="content">
         <div class="content-header">
-          <h2>Sozlamalar</h2>
+          <h2>Settings</h2>
         </div>
 
         <div class="form-card">
           <form>
-            <label for="ism">Ism</label>
-            <input type="text" id="ism" name="ism" placeholder="Ismni kiriting">
+            <label for="ism">First Name</label>
+            <input type="text" id="ism" name="ism" placeholder="Enter first name">
 
             <label for="login">Login</label>
-            <input type="text" id="login" name="login" placeholder="Loginni kiriting">
+            <input type="text" id="login" name="login" placeholder="Enter login">
 
-            <label for="parol">Parol</label>
-            <input type="password" id="parol" name="parol" placeholder="Parolni kiriting">
+            <label for="parol">Password</label>
+            <input type="password" id="parol" name="parol" placeholder="Enter password">
 
-            <label for="rasm">Rasim</label>
+            <label for="rasm">Image</label>
             <div class="file-upload">
               <input type="file" id="fileUpload" hidden>
-              <label for="fileUpload" class="custom-btn">Выбрать файл</label>
+              <label for="fileUpload" class="custom-btn">Choose file</label>
             </div>
 
-            <button type="submit" class="save-btn">Saqlash</button>
+            <button type="submit" class="save-btn">Save</button>
           </form>
         </div>
       </div>

@@ -1,10 +1,10 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>School Moliya</title>
+  <title>School Finance</title>
   <link rel="stylesheet" href="{% static 'css/moliy-sozlama-style.css' %}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,12 +17,12 @@
       <div class="logo">
         <img src="{% static 'img/Logo.png' %}" alt="Logo" class="logo-img">
       </div>
-      <h3 class="sidebar-title">School Moliya</h3>
+      <h3 class="sidebar-title">School Finance</h3>
       <nav class="menu">
-        <a href="{% url 'moliya-main' %}"><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Asosiy</a>
-        <a href="#"><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> Davomat</a>
-        <a href="{% url 'moliya-oylik' %}"><img src="{% static 'icons/Jadval.png' %}" alt=""> Oyliklar</a>
-        <a href="{% url 'moliya-sozlamalar' %}" class="active"><img src="{% static 'icons/sozlamalar.png' %}" alt=""> Sozlamalar</a>
+        <a href="{% url 'moliya-main' %}"><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Home</a>
+        <a href="#"><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> Attendance</a>
+        <a href="{% url 'moliya-oylik' %}"><img src="{% static 'icons/Jadval.png' %}" alt=""> Salaries</a>
+        <a href="{% url 'moliya-sozlamalar' %}" class="active"><img src="{% static 'icons/sozlamalar.png' %}" alt=""> Settings</a>
       </nav>
     </aside>
 
@@ -30,7 +30,7 @@
     <main class="content">
       <!-- Topbar -->
       <div class="topbar">
-        <input type="text" placeholder="Qidiruv">
+        <input type="text" placeholder="Search">
         <div class="icons">
           <a href="#"><img src="{% static 'icons/Xabarlar.png' %}" alt="Bell"></a>
           <a href="#"><img src="{% static 'icons/Profil.png' %}" alt="Profile"></a>
@@ -39,38 +39,38 @@
 
       <div class="content">
         <div class="content-header">
-          <h2>Sozlamalar</h2>
+          <h2>Settings</h2>
         </div>
 
         <div class="form-card">
-          <!-- Bir dona form, ichida hech qanday nested form yo‘q -->
+          <!-- Single form, no nested forms -->
           <form id="settings-form" method="post" enctype="multipart/form-data">
             {% csrf_token %}
 
-            <label for="ism">Ism</label>
-            <input type="text" id="ism" name="first_name" placeholder="Ismni kiriting" autocomplete="given-name">
+            <label for="ism">First Name</label>
+            <input type="text" id="ism" name="first_name" placeholder="Enter first name" autocomplete="given-name">
 
-            <label for="login">Login</label>
-            <input type="text" id="login" name="username" placeholder="Loginni kiriting" autocomplete="username">
+            <label for="login">Username</label>
+            <input type="text" id="login" name="username" placeholder="Enter username" autocomplete="username">
 
-            <label for="parol">Parol</label>
-            <input type="password" id="parol" name="password" placeholder="Parolni kiriting" autocomplete="new-password">
+            <label for="parol">Password</label>
+            <input type="password" id="parol" name="password" placeholder="Enter password" autocomplete="new-password">
 
-            <label for="fileUpload">Rasm</label>
+            <label for="fileUpload">Image</label>
             <div class="file-upload">
               <input type="file" id="fileUpload" name="avatar" hidden>
-              <label for="fileUpload" class="custom-btn">Файл tanlash</label>
+              <label for="fileUpload" class="custom-btn">Choose file</label>
               <span id="file-name" class="file-name"></span>
             </div>
 
-            <button type="submit" class="save-btn">Saqlash</button>
+            <button type="submit" class="save-btn">Save</button>
           </form>
         </div>
       </div>
     </main>
   </div>
 
-  <!-- Ixtiyoriy: fayl nomini ko‘rsatish uchun kichik JS -->
+  <!-- Optional: JS to show selected file name -->
   <script>
     (function(){
       const inp = document.getElementById('fileUpload');
@@ -83,8 +83,8 @@
     })();
   </script>
 
-<script>window.API_BASE = '/api/billing';</script>
-<script src="{% static 'js/moliya-sozlamalar.js' %}" defer></script>
+  <script>window.API_BASE = '/api/billing';</script>
+  <script src="{% static 'js/moliya-sozlamalar.js' %}" defer></script>
 
 </body>
 </html>

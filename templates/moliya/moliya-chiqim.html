@@ -1,9 +1,9 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>School Moliya — Chiqimlar</title>
+  <title>School Finance — Expenses</title>
   <link rel="stylesheet" href="{% static 'css/moliya-chiqim-style.css' %}">
   <style>
     .card{background:#fff;border-radius:12px;box-shadow:0 3px 6px rgba(0,0,0,.08);padding:14px 16px;margin-bottom:14px}
@@ -41,51 +41,51 @@
       <div class="logo">
         <img src="{% static 'img/Logo.png' %}" alt="Logo" class="logo-img">
       </div>
-      <h3 class="sidebar-title">School Moliya</h3>
+      <h3 class="sidebar-title">School Finance</h3>
       <nav class="menu">
-        <a href="{% url 'moliya-main' %}" ><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Asosiy</a>
-        <a href="{% url 'moliya-chiqim' %}" class="active"><img src="{% static 'icons/Chiqim.png' %}" alt=""> Chiqim</a>
-        <a href="{% url 'moliya-oylik' %}"><img src="{% static 'icons/Jadval.png' %}" alt=""> Oyliklar</a>
-        <a href="{% url 'moliya-tolovlar' %}"><img src="{% static 'icons/Moliya.png' %}" alt=""> To`lovlar</a>
+        <a href="{% url 'moliya-main' %}" ><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Home</a>
+        <a href="{% url 'moliya-chiqim' %}" class="active"><img src="{% static 'icons/Chiqim.png' %}" alt=""> Expense</a>
+        <a href="{% url 'moliya-oylik' %}"><img src="{% static 'icons/Jadval.png' %}" alt=""> Salaries</a>
+        <a href="{% url 'moliya-tolovlar' %}"><img src="{% static 'icons/Moliya.png' %}" alt=""> Payments</a>
       </nav>
     </aside>
 
     <!-- Content -->
     <main class="content">
       <div class="topbar">
-        <input type="text" id="q" placeholder="Qidiruv (izoh, tur, usul)">
+        <input type="text" id="q" placeholder="Search (note, type, method)">
         <div class="icons">
           <a href="#"><img src="{% static 'icons/Xabarlar.png' %}" alt="Bell"></a>
           <a href="#"><img src="{% static 'icons/Profil.png' %}" alt="Profile"></a>
         </div>
       </div>
 
-      <h2 class="page-title">Chiqimlar ro‘yxati</h2>
+      <h2 class="page-title">Expense List</h2>
 
       <!-- Filters -->
       <div class="card">
         <div class="row">
           <div>
-            <label>Dan</label>
+            <label>From</label>
             <input type="date" id="fromDate">
           </div>
           <div>
-            <label>Gacha</label>
+            <label>To</label>
             <input type="date" id="toDate">
           </div>
           <div>
-            <label>Oyliklarni qo‘shish</label>
+            <label>Include Salaries</label>
             <select id="incSalary">
-              <option value="1">Ha</option>
-              <option value="0">Yo‘q</option>
+              <option value="1">Yes</option>
+              <option value="0">No</option>
             </select>
           </div>
-          <button id="btnFilter" class="btn">Yuklash</button>
-          <button id="btnThisMonth" class="btn ghost">Joriy oy</button>
-          <button id="btnReset" class="btn ghost">Tozalash</button>
-          <button id="btnNew" class="btn primary">Yangi chiqim +</button>
+          <button id="btnFilter" class="btn">Load</button>
+          <button id="btnThisMonth" class="btn ghost">This month</button>
+          <button id="btnReset" class="btn ghost">Clear</button>
+          <button id="btnNew" class="btn primary">New Expense +</button>
           <div class="right totals">
-            <span class="muted">Jami:</span>
+            <span class="muted">Total:</span>
             <b id="sumBox">—</b>
             <button id="btnExport" class="btn">CSV</button>
           </div>
@@ -94,20 +94,20 @@
 
       <!-- Table -->
       <div class="card">
-        <div class="muted" style="margin-bottom:8px;">Satrlar: <span id="rowsCount">0</span></div>
+        <div class="muted" style="margin-bottom:8px;">Rows: <span id="rowsCount">0</span></div>
         <div class="table-container">
           <table id="tbl">
             <thead>
               <tr>
                 <th>#</th>
-                <th>Sana</th>
-                <th>Tur</th>
-                <th>Izoh</th>
-                <th>Usul</th>
-                <th>Summa</th>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Note</th>
+                <th>Method</th>
+                <th>Amount</th>
               </tr>
             </thead>
-            <tbody><!-- JS orqali to‘ldiriladi --></tbody>
+            <tbody><!-- Filled via JS --></tbody>
           </table>
         </div>
       </div>
@@ -117,46 +117,46 @@
   <!-- New Expense dialog -->
   <dialog id="expDlg">
     <div class="dlg-body">
-      <h3>Yangi chiqim</h3>
+      <h3>New Expense</h3>
       <div class="grid" style="margin-top:10px;">
         <div>
-          <label>Sana</label>
+          <label>Date</label>
           <input type="date" id="expDate">
         </div>
         <div>
-          <label>Miqdor (so‘m)</label>
+          <label>Amount (UZS)</label>
           <input type="number" id="expAmount" min="1000" step="1000" placeholder="100000">
         </div>
         <div>
-          <label>Usul</label>
+          <label>Method</label>
           <select id="expMethod">
-            <option value="cash">Naqd</option>
-            <option value="card">Karta</option>
-            <option value="transfer">O‘tkazma</option>
+            <option value="cash">Cash</option>
+            <option value="card">Card</option>
+            <option value="transfer">Transfer</option>
           </select>
         </div>
         <div>
-          <label>Kategoriya</label>
+          <label>Category</label>
           <select id="expCategory">
-            <option value="salary">Oylik to‘lov</option>
-            <option value="food">Oziq-ovqat</option>
-            <option value="tools">Asbob-uskunalar</option>
-<!--            <option value="rent">Ijara</option>-->
-<!--            <option value="utilities">Kommunal to‘lovlar</option>-->
+            <option value="salary">Salary payment</option>
+            <option value="food">Food</option>
+            <option value="tools">Tools & equipment</option>
+<!--            <option value="rent">Rent</option>-->
+<!--            <option value="utilities">Utilities</option>-->
             <option value="transport">Transport</option>
 <!--            <option value="marketing">Marketing</option>-->
-            <option value="repair">Taʼmirlash</option>
-            <option value="other">Boshqa</option>
+            <option value="repair">Repair</option>
+            <option value="other">Other</option>
           </select>
         </div>
         <div class="full">
-          <label>Izoh</label>
-          <input type="text" id="expReason" placeholder="ixtiyoriy">
+          <label>Note</label>
+          <input type="text" id="expReason" placeholder="optional">
         </div>
       </div>
       <div class="row" style="margin-top:12px;">
-        <button id="btnSaveExp" class="btn primary">Saqlash</button>
-        <button id="btnCancelExp" class="btn right">Yopish</button>
+        <button id="btnSaveExp" class="btn primary">Save</button>
+        <button id="btnCancelExp" class="btn right">Close</button>
       </div>
     </div>
   </dialog>

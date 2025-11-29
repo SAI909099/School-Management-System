@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jadval</title>
+  <title>Schedule</title>
   <link rel="stylesheet" href="{% static 'css/jadval-style.css' %}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,12 +19,12 @@
       </div>
       <h3 class="sidebar-title">School Admin</h3>
       <nav class="menu">
-        <a href="/dashboard/"><img src="{% static 'icons/Asosiy.png' %}" alt=""> Asosiy</a>
-        <a href="/students/"><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> O‘quvchi</a>
-        <a href="/teachers-admin/"><img src="{% static 'icons/O‘qituvchi.png' %}" alt=""> O‘qituvchi</a>
-        <a href="/schedule/" class="active"><img src="{% static 'icons/Jadval.png' %}" alt=""> Jadval</a>
-        <a href="/billing-admin/"><img src="{% static 'icons/Moliya.png' %}" alt=""> Moliya</a>
-        <a href="/settings-admin/"><img src="{% static 'icons/sozlamalar.png' %}" alt=""> Sozlamalar</a>
+        <a href="/dashboard/"><img src="{% static 'icons/Asosiy.png' %}" alt=""> Home</a>
+        <a href="/students/"><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> Students</a>
+        <a href="/teachers-admin/"><img src="{% static 'icons/O‘qituvchi.png' %}" alt=""> Teachers</a>
+        <a href="/schedule/" class="active"><img src="{% static 'icons/Jadval.png' %}" alt=""> Schedule</a>
+        <a href="/billing-admin/"><img src="{% static 'icons/Moliya.png' %}" alt=""> Finance</a>
+        <a href="/settings-admin/"><img src="{% static 'icons/sozlamalar.png' %}" alt=""> Settings</a>
       </nav>
     </aside>
 
@@ -32,36 +32,36 @@
     <main class="content">
       <!-- Topbar -->
       <div class="topbar">
-        <input type="text" placeholder="Qidiruv">
+        <input type="text" placeholder="Search">
         <div class="icons">
           <a href="#"><img src="{% static 'icons/Xabarlar.png' %}" alt="Bell"></a>
           <a href="#"><img src="{% static 'icons/Profil.png' %}" alt="Profile"></a>
         </div>
       </div>
 
-      <h2 class="page-title">Jadval (o‘qituvchi bo‘yicha)</h2>
+      <h2 class="page-title">Schedule (by teacher)</h2>
 
       <!-- Controls -->
       <div class="card" style="margin-bottom:16px;">
         <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end;">
           <div>
-            <label>O‘qituvchi</label><br>
+            <label>Teacher</label><br>
             <select id="teacherSel"></select>
           </div>
           <div>
-            <label>Uslub: darslar soni</label><br>
+            <label>Mode: number of lessons</label><br>
             <input id="periodCount" type="number" min="1" max="12" value="8" style="width:90px;">
           </div>
           <div>
-            <label>Vaqt shabloni</label><br>
+            <label>Time template</label><br>
             <select id="timeTemplate">
               <option value="default">Default (08:30–14:20)</option>
-              <option value="empty">Bo‘sh (vaqtni qo‘lda kiriting)</option>
+              <option value="empty">Empty (enter times manually)</option>
             </select>
           </div>
-          <button id="btnBuild" class="btn" style="padding:10px 14px;">Jadvalni qurish</button>
-          <button id="btnLoad" class="btn" style="padding:10px 14px;">Mavjudini yuklash</button>
-          <button id="btnSaveAll" class="btn" style="padding:10px 14px;">Barchasini saqlash</button>
+          <button id="btnBuild" class="btn" style="padding:10px 14px;">Build schedule</button>
+          <button id="btnLoad" class="btn" style="padding:10px 14px;">Load existing</button>
+          <button id="btnSaveAll" class="btn" style="padding:10px 14px;">Save all</button>
         </div>
         <div id="msg" class="hidden" style="margin-top:10px;"></div>
       </div>
@@ -74,7 +74,7 @@
       </div>
 
       <p style="margin-top:10px;color:#666;">
-        Maslahat: hujayraga sinf, fan, xona kiriting. Bo‘sh qoldirilsa – mavjud dars o‘chiriladi.
+        Tip: enter class, subject, room into the cell. If left empty — the existing lesson will be removed.
       </p>
     </main>
   </div>

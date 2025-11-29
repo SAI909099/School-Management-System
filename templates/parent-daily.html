@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Kundalik baholar — Oylik/Haftalik</title>
+  <title>Daily Grades — Monthly/Weekly</title>
 
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self';
@@ -37,7 +37,6 @@
     .spinner { width:16px; height:16px; border:2px solid #ccc; border-top-color:var(--brand); border-radius:50%; animation:spin .8s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* grid table */
     .table-wrap { overflow-x:auto; }
     table { width:max-content; min-width:100%; border-collapse:collapse; }
     th, td { border:1px solid var(--bd2); padding:6px 8px; white-space:nowrap; }
@@ -47,7 +46,6 @@
     .dayhead { text-align:center; font-weight:600; }
     .dayhead small { display:block; font-weight:400; color:#444; }
 
-    /* list view */
     .grade-list { display:flex; flex-direction:column; gap:12px; }
     .day-group { border:1px solid var(--bd2); border-radius:10px; overflow:hidden; }
     .day-header { background:var(--muted); padding:8px 12px; font-weight:600; display:flex; gap:8px; align-items:baseline; }
@@ -59,7 +57,6 @@
     .score-badge { min-width:32px; height:32px; display:inline-flex; align-items:center; justify-content:center; border-radius:999px; border:1px solid var(--bd); font-weight:700; }
     .comment { color:#444; }
 
-    /* segmented controls */
     .seg { display:inline-flex; border:1px solid var(--bd); border-radius:8px; overflow:hidden; }
     .seg label { margin:0; }
     .seg input { display:none; }
@@ -70,59 +67,45 @@
 <body data-api-base="{{ API_BASE|default:'/api' }}">
   <div class="container">
 
-    <!--<aside class="sidebar">
-      <div class="logo">
-        <img src="{% static 'img/Logo.png' %}" alt="Logo" class="logo-img" loading="lazy" decoding="async">
-      </div>
-      <nav class="menu" aria-label="Ota-ona menyusi">
-        <a href="/otaona/"><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Asosiy</a>
-        <a href="/otaona/davomat/"><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> Davomat</a>
-        <a href="/otaona/baholar/"><img src="{% static 'icons/O‘qituvchi.png' %}" alt=""> Baholar</a>
-        <a href="/otaona/sozlamalar/"><img src="{% static 'icons/sozlamalar.png' %}" alt=""> Sozlamalar</a>
-      </nav>
-    </aside>-->
-
-<!--    <h2>Kundalik baholar — Oylik va <br>Haftalik ko‘rinish</h2>-->
-
     <div id="msg" class="hidden"></div>
 
     <div class="card">
-      <div class="row" role="group" aria-label="Filtrlar">
+      <div class="row" role="group" aria-label="Filters">
         <div>
-          <label for="childSel">Bola</label>
+          <label for="childSel">Child</label>
           <select id="childSel" aria-required="true"></select>
         </div>
 
         <div>
-          <label>Ko‘rinish</label>
-          <div class="seg" role="radiogroup" aria-label="Oylik/Haftalik">
-            <label><input type="radio" name="period" value="month" checked><span>Oy</span></label>
-            <label><input type="radio" name="period" value="week"><span>Hafta</span></label>
+          <label>View</label>
+          <div class="seg" role="radiogroup" aria-label="Monthly/Weekly">
+            <label><input type="radio" name="period" value="month" checked><span>Month</span></label>
+            <label><input type="radio" name="period" value="week"><span>Week</span></label>
           </div>
         </div>
 
         <div id="wrapMonth">
-          <label for="monthInp">Oy</label>
+          <label for="monthInp">Month</label>
           <input type="month" id="monthInp" aria-required="true">
         </div>
 
         <div id="wrapWeek" class="hidden">
-          <label for="weekInp">Hafta (istalgan sana)</label>
+          <label for="weekInp">Week (any date)</label>
           <input type="date" id="weekInp" aria-required="true">
         </div>
 
         <div>
           <label>Format</label>
           <div class="seg" role="radiogroup" aria-label="Format">
-            <label><input type="radio" name="view" value="list" checked><span>Ro‘yxat</span></label>
-            <label><input type="radio" name="view" value="grid"><span>Jadval</span></label>
+            <label><input type="radio" name="view" value="list" checked><span>List</span></label>
+            <label><input type="radio" name="view" value="grid"><span>Table</span></label>
           </div>
         </div>
 
-        <button id="btnLoad" class="btn" type="button">Yuklash</button>
+        <button id="btnLoad" class="btn" type="button">Load</button>
 
         <div id="loading" class="hidden" style="display:flex; align-items:center; gap:8px;">
-          <span class="spinner" aria-hidden="true"></span> Yuklanmoqda…
+          <span class="spinner" aria-hidden="true"></span> Loading…
         </div>
       </div>
 

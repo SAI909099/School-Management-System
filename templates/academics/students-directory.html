@@ -1,9 +1,9 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>O‘quvchilar ro‘yxati</title>
+  <title>Students List</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="{% static 'css/students-directory.css' %}">
 </head>
@@ -12,7 +12,7 @@
     <!-- LEFT: Classes -->
     <aside class="classes-panel">
       <div class="search-wrap">
-        <input id="student-search" type="text" placeholder="Maktab bo‘ylab qidiruv..." />
+        <input id="student-search" type="text" placeholder="Search across school..." />
       </div>
 
       <ul id="classes-list" class="classes-list">
@@ -23,9 +23,9 @@
     <!-- RIGHT: Students table -->
     <main class="students-panel">
       <div class="panel-top">
-        <h2 id="panel-title">Barcha o‘quvchilar</h2>
+        <h2 id="panel-title">All Students</h2>
         <div class="panel-actions">
-          <button id="btn-clear" class="btn-outline">Tozalash</button>
+          <button id="btn-clear" class="btn-outline">Clear</button>
         </div>
       </div>
 
@@ -34,11 +34,11 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>F.I.O</th>
-              <th>Sinf</th>
-              <th>Kurator</th>
-              <th>Ota-ona</th>
-              <th>Tel</th>
+              <th>Full Name</th>
+              <th>Class</th>
+              <th>Curator</th>
+              <th>Parent</th>
+              <th>Phone</th>
             </tr>
           </thead>
           <tbody id="students-body">
@@ -47,7 +47,7 @@
         </table>
 
         <div id="empty-state" class="empty-state" style="display:none;">
-          Ma’lumot topilmadi.
+          No data found.
         </div>
       </div>
     </main>

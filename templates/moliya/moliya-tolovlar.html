@@ -1,10 +1,10 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Moliya — O‘quvchi to‘lovlari</title>
+  <title>Finance — Student Payments</title>
   <link rel="stylesheet" href="{% static 'css/moliya-style.css' %}">
   <style>
     .card{background:#fff;border-radius:12px;box-shadow:0 3px 6px rgba(0,0,0,.08);padding:16px;margin-bottom:14px}
@@ -36,95 +36,95 @@
     <!-- Sidebar -->
     <aside class="sidebar">
       <div class="logo"><img src="{% static 'img/Logo.png' %}" alt="Logo" class="logo-img"></div>
-      <h3 class="sidebar-title">School Moliya</h3>
+      <h3 class="sidebar-title">School Finance</h3>
       <nav class="menu">
-        <a href="{% url 'moliya-main' %}" ><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Asosiy</a>
-        <a href="{% url 'moliya-chiqim' %}"><img src="{% static 'icons/Chiqim.png' %}" alt=""> Chiqim</a>
-        <a href="{% url 'moliya-oylik' %}"><img src="{% static 'icons/Jadval.png' %}" alt=""> Oyliklar</a>
-        <a href="{% url 'moliya-tolovlar' %}" class="active"><img src="{% static 'icons/Moliya.png' %}" alt=""> To`lovlar</a>
+        <a href="{% url 'moliya-main' %}" ><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Home</a>
+        <a href="{% url 'moliya-chiqim' %}"><img src="{% static 'icons/Chiqim.png' %}" alt=""> Expense</a>
+        <a href="{% url 'moliya-oylik' %}"><img src="{% static 'icons/Jadval.png' %}" alt=""> Salaries</a>
+        <a href="{% url 'moliya-tolovlar' %}" class="active"><img src="{% static 'icons/Moliya.png' %}" alt=""> Payments</a>
       </nav>
     </aside>
 
     <!-- Content -->
     <main class="content">
       <div class="topbar">
-        <input type="text" id="qSearch" placeholder="Ism / familiya / sinf">
+        <input type="text" id="qSearch" placeholder="First name / last name / class">
         <div class="icons">
           <a href="#"><img src="{% static 'icons/Xabarlar.png' %}" alt=""></a>
           <a href="#"><img src="{% static 'icons/Profil.png' %}" alt=""></a>
         </div>
       </div>
 
-      <h2 class="page-title">O‘quvchi to‘lovlari</h2>
+      <h2 class="page-title">Student Payments</h2>
 
       <!-- Filters -->
       <div class="card">
         <div class="row">
           <div>
-            <label>Oy</label>
+            <label>Month</label>
             <input type="month" id="monthInp">
           </div>
           <div>
-            <label>Sinf</label>
-            <select id="classSel"><option value="">— hammasi —</option></select>
+            <label>Class</label>
+            <select id="classSel"><option value="">— all —</option></select>
           </div>
           <div>
             <label>Status</label>
             <select id="statusSel">
-              <option value="">— hammasi —</option>
-              <option value="unpaid">To‘lanmagan</option>
-              <option value="partial">Qisman</option>
-              <option value="paid">To‘langan</option>
-              <option value="__prepaid">Oldindan (prepaid)</option>
+              <option value="">— all —</option>
+              <option value="unpaid">Unpaid</option>
+              <option value="partial">Partial</option>
+              <option value="paid">Paid</option>
+              <option value="__prepaid">Prepaid (advance)</option>
             </select>
           </div>
-          <button id="btnLoad" class="btn">Yuklash</button>
+          <button id="btnLoad" class="btn">Load</button>
           <div class="right">
-            <button id="btnGenerate" class="btn">Oy uchun hisob yozish</button>
+            <button id="btnGenerate" class="btn">Generate invoices for month</button>
           </div>
         </div>
       </div>
 
       <!-- Tuition plan bulk panel -->
       <div class="card">
-        <h3>Oylik narx (hammasiga yoki tanlangan sinflarga)</h3>
+        <h3>Monthly Fee (apply to all or selected classes)</h3>
 
         <!-- Apply to ALL -->
         <div class="row">
           <div>
-            <label>Narx (so‘m)</label>
-            <input type="number" id="planAmountAll" min="0" step="1000" placeholder="masalan 450000">
+            <label>Amount (UZS)</label>
+            <input type="number" id="planAmountAll" min="0" step="1000" placeholder="e.g. 450000">
           </div>
-          <button id="btnPlanApplyAll" class="btn primary">Barcha sinflarga qo‘llash</button>
+          <button id="btnPlanApplyAll" class="btn primary">Apply to all classes</button>
         </div>
 
         <!-- Apply to SELECTED -->
         <div class="row">
           <div>
-            <label>Tanlangan sinflar</label>
+            <label>Selected classes</label>
             <select id="planMultiSel" multiple size="6"></select>
           </div>
-          <button id="btnPlanApplySelected" class="btn">Tanlangan sinflarga qo‘llash</button>
+          <button id="btnPlanApplySelected" class="btn">Apply to selected classes</button>
         </div>
 
         <div class="row">
-          <div class="hint">* Agar bitta sinf narxi boshqacha bo‘lsa keyin alohida o‘zgartirish mumkin.</div>
+          <div class="hint">* If a single class has a different price, you can change it individually later.</div>
         </div>
       </div>
 
-      <!-- Table (Chegirma/Jarima olib tashlandi) -->
+      <!-- Table -->
       <div class="card">
         <table class="table" id="tbl">
           <thead>
             <tr>
-              <th>O‘quvchi</th>
-              <th>Sinf</th>
-              <th>Oy</th>
-              <th>Summa</th>
-              <th>To‘langan</th>
-              <th>Qoldiq</th>
+              <th>Student</th>
+              <th>Class</th>
+              <th>Month</th>
+              <th>Amount</th>
+              <th>Paid</th>
+              <th>Remaining</th>
               <th>Status</th>
-              <th style="width:120px;">Amal</th>
+              <th style="width:120px;">Action</th>
             </tr>
           </thead>
           <tbody><!-- JS fills --></tbody>
@@ -136,21 +136,21 @@
   <!-- Add Payment modal -->
   <dialog id="payDlg">
     <div class="dlg-body">
-      <h3>To‘lov qo‘shish</h3>
+      <h3>Add Payment</h3>
       <div style="margin:8px 0 12px;color:#666"><span id="dlgWho">—</span></div>
       <div class="mini-grid">
-        <label>Miqdor (so‘m)</label><input type="number" id="payAmount" min="1" step="1000">
-        <label>Usul</label>
+        <label>Amount (UZS)</label><input type="number" id="payAmount" min="1" step="1000">
+        <label>Method</label>
         <select id="payMethod">
-          <option value="cash">Naqd</option>
-          <option value="card">Karta</option>
-          <option value="transfer">O‘tkazma</option>
+          <option value="cash">Cash</option>
+          <option value="card">Card</option>
+          <option value="transfer">Transfer</option>
         </select>
-        <label>Izoh</label><input type="text" id="payNote" placeholder="ixtiyoriy">
+        <label>Note</label><input type="text" id="payNote" placeholder="optional">
       </div>
       <div class="row" style="margin-top:12px;">
-        <button id="btnPaySave" class="btn primary">Saqlash</button>
-        <button id="btnPayCancel" class="btn right">Bekor qilish</button>
+        <button id="btnPaySave" class="btn primary">Save</button>
+        <button id="btnPayCancel" class="btn right">Cancel</button>
       </div>
     </div>
   </dialog>

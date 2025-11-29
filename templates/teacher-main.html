@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>School O‘qituvchi</title>
+  <title>School Teacher</title>
   <link rel="stylesheet" href="{% static 'css/teacher-main-style.css' %}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,13 +18,13 @@
       <div class="logo">
         <img src="{% static 'img/Logo.png' %}" alt="Logo" class="logo-img">
       </div>
-      <h3 class="sidebar-title">School O‘qituvchi</h3>
+      <h3 class="sidebar-title">School Teacher</h3>
       <nav class="menu">
-        <a href="/teachers/" ><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Asosiy</a>
-        <a href="/classes/"  ><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> Siniflar</a>
-        <a href="/schedule/view/teacher/" ><img src="{% static 'icons/O‘qituvchi.png' %}" alt=""> Jadval</a>
-        <!-- <a href="/sozlamalar/"><img src="{% static 'icons/sozlamalar.png' %}" alt=""> Sozlamalar</a> -->
-        <a href="/grades/entry/" ><img src="{% static 'icons/Jadval.png' %}" alt=""> Baho qo‘yish</a>
+        <a href="/teachers/"><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Home</a>
+        <a href="/classes/"><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> Classes</a>
+        <a href="/schedule/view/teacher/"><img src="{% static 'icons/O‘qituvchi.png' %}" alt=""> Schedule</a>
+        <!-- <a href="/settings/"><img src="{% static 'icons/sozlamalar.png' %}" alt=""> Settings</a> -->
+        <a href="/grades/entry/"><img src="{% static 'icons/Jadval.png' %}" alt=""> Enter Grades</a>
       </nav>
     </aside>
 
@@ -32,7 +32,7 @@
     <main class="content">
       <!-- Topbar -->
       <div class="topbar">
-        <input type="text" placeholder="Qidiruv">
+        <input type="text" placeholder="Search">
         <div class="icons">
           <a href="#"><img src="{% static 'icons/Xabarlar.png' %}" alt="Bell"></a>
           <a href="#"><img src="{% static 'icons/Profil.png' %}" alt="Profile"></a>
@@ -45,16 +45,16 @@
           <img src="{% static 'img/avatarprofile.png' %}" alt="User">
         </div>
         <div class="profile-info">
-          <h2>F.I.O: </h2>
-          <p>Fan: Matematika</p>
-          <p>Telefon: +998 90 123 45 67</p>
+          <h2>Full Name: </h2>
+          <p>Subject: Mathematics</p>
+          <p>Phone: +998 90 123 45 67</p>
           <p>Email: teacher@mail.com</p>
-          <p>Manzil: Qo'qon, Chorsu</p>
+          <p>Address: Kokand, Chorsu</p>
         </div>
       </div>
     </main>
   </div>
 
-    <script src="{% static 'js/teacher-main.js' %}"></script>
+  <script src="{% static 'js/teacher-main.js' %}"></script>
 </body>
 </html>

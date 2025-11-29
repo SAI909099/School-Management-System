@@ -1,9 +1,9 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Sinf boshqaruvi</title>
+  <title>Class Management</title>
   <link rel="stylesheet" href="{% static 'css/moliya-style.css' %}">
   <style>
     .card{background:#fff;border-radius:12px;box-shadow:0 3px 6px rgba(0,0,0,.08);padding:14px 16px;margin:16px 0}
@@ -28,32 +28,32 @@
     </div>
     <h3 class="sidebar-title">School Admin</h3>
     <nav class="menu">
-      <a href="/dashboard/"><img src="{% static 'icons/Asosiy-white.png' %}"> Asosiy</a>
-      <a href="/schedule/classes/"><img src="{% static 'icons/Jadval.png' %}"> Jadval</a>
-      <a class="active" href="/classes/manage/"><img src="{% static 'icons/O‘quvchi.png' %}"> Sinf boshqaruvi</a>
+      <a href="/dashboard/"><img src="{% static 'icons/Asosiy-white.png' %}"> Home</a>
+      <a href="/schedule/classes/"><img src="{% static 'icons/Jadval.png' %}"> Schedule</a>
+      <a class="active" href="/classes/manage/"><img src="{% static 'icons/O‘quvchi.png' %}"> Class Management</a>
     </nav>
   </aside>
 
   <main class="content">
     <div class="topbar">
-      <input type="text" id="q" placeholder="Qidiruv (ism/familiya)">
+      <input type="text" id="q" placeholder="Search (first/last name)">
       <div class="icons">
         <a href="#"><img src="{% static 'icons/Xabarlar.png' %}" alt="Bell"></a>
         <a href="#"><img src="{% static 'icons/Profil.png' %}" alt="Profile"></a>
       </div>
     </div>
 
-    <h2 class="page-title">Sinf boshqaruvi</h2>
+    <h2 class="page-title">Class Management</h2>
 
     <!-- Class picker + rename -->
     <div class="card">
       <div class="row">
-        <label>Sinf:</label>
+        <label>Class:</label>
         <select id="classSel"></select>
 
-        <span class="muted">Nomini o‘zgartirish:</span>
-        <input type="text" id="classNameInp" placeholder="Yangi nom">
-        <button id="btnRename" class="btn">Saqlash</button>
+        <span class="muted">Rename:</span>
+        <input type="text" id="classNameInp" placeholder="New name">
+        <button id="btnRename" class="btn">Save</button>
 
         <span id="classMeta" class="muted" style="margin-left:auto"></span>
       </div>
@@ -62,18 +62,18 @@
     <!-- Student list -->
     <div class="card">
       <div class="row" style="margin-bottom:6px;">
-        <span class="muted">O‘quvchilar: <b id="countBox">0</b> ta</span>
-        <span class="muted" style="margin-left:auto">Qidiruv:</span>
-        <input type="text" id="studentSearch" placeholder="Ism/familiya">
+        <span class="muted">Students: <b id="countBox">0</b></span>
+        <span class="muted" style="margin-left:auto">Search:</span>
+        <input type="text" id="studentSearch" placeholder="First/last name">
       </div>
       <table class="table" id="tbl">
         <thead>
           <tr>
             <th>#</th>
-            <th>Familiya Ism</th>
-            <th>Hozirgi sinf</th>
-            <th>Ko‘chirish</th>
-            <th>Amal</th>
+            <th>Last Name First Name</th>
+            <th>Current Class</th>
+            <th>Transfer</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody><!-- JS fills --></tbody>

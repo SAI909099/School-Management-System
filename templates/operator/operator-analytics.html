@@ -1,9 +1,9 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>School Operator — Analitika</title>
+  <title>School Operator — Analytics</title>
   <link rel="stylesheet" href="{% static 'css/parent-davomat-style.css' %}" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -34,64 +34,61 @@
     </div>
     <h3 class="sidebar-title">School Operator</h3>
     <nav class="menu">
-      <a href="/operator/analytics/"><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Asosiy</a>
-      <!-- <a href="{% url 'operator-main' %}"><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Asosiy 12</a> -->
-      <a href="{% url 'operator-davomat' %}"><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> Davomat</a>
-      <a href="{% url 'operator-add' %}"><img src="{% static 'icons/Jadval.png' %}" alt=""> Yangi o’quvchi</a>
-      <!-- <a href="{% url 'moliya-sozlamalar' %}"><img src="{% static 'icons/sozlamalar.png' %}" alt=""> Sozlamalar</a> -->
-      <!-- <a href="/operator/analytics/"><img src="{% static 'icons/Jadval.png' %}" alt=""> Analitika</a> -->
+      <a href="/operator/analytics/"><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Home</a>
+      <a href="{% url 'operator-davomat' %}"><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> Attendance</a>
+      <a href="{% url 'operator-add' %}"><img src="{% static 'icons/Jadval.png' %}" alt=""> New Student</a>
     </nav>
   </aside>
 
   <!-- Content -->
   <main class="content">
     <div class="topbar">
-      <input type="text" placeholder="Qidiruv" />
+      <input type="text" placeholder="Search" />
       <div class="icons">
         <a href="#"><img src="{% static 'icons/Xabarlar.png' %}" alt="Bell" /></a>
         <a href="#"><img src="{% static 'icons/Profil.png' %}" alt="Profile" /></a>
       </div>
     </div>
 
-    <h2 class="page-title">Maktab analitikasi</h2>
+    <h2 class="page-title">School Analytics</h2>
 
     <!-- KPIs -->
     <section class="kpi-grid">
-      <div class="kpi"><h4>Umumiy o‘quvchilar</h4><div class="val" id="kpiStudents">—</div></div>
-      <div class="kpi"><h4>Faol o‘quvchilar</h4><div class="val" id="kpiActive">—</div></div>
-      <div class="kpi"><h4>Sinf (guruh)lar soni</h4><div class="val" id="kpiClasses">—</div></div>
-      <div class="kpi"><h4>O‘qituvchilar</h4><div class="val" id="kpiTeachers">—</div></div>
+      <div class="kpi"><h4>Total Students</h4><div class="val" id="kpiStudents">—</div></div>
+      <div class="kpi"><h4>Active Students</h4><div class="val" id="kpiActive">—</div></div>
+      <div class="kpi"><h4>Number of Classes (Groups)</h4><div class="val" id="kpiClasses">—</div></div>
+      <div class="kpi"><h4>Teachers</h4><div class="val" id="kpiTeachers">—</div></div>
     </section>
 
     <!-- Classes chart -->
     <div class="card">
-      <h3>Sinf bo‘yicha o‘quvchilar soni (Top 12)</h3>
+      <h3>Students per Class (Top 12)</h3>
       <canvas id="clsBar" height="120"></canvas>
     </div>
 
     <!-- Registrations chart with controls -->
     <div class="card" id="regCard" style="display:none;">
       <div class="row">
-        <h3 id="regTitle" style="margin:0;">Ro‘yxatdan o‘tganlar</h3>
+        <h3 id="regTitle" style="margin:0;">Registrations</h3>
         <div style="margin-left:auto"></div>
-        <label for="regMode">Ko‘rsatish:</label>
+        <label for="regMode">Show:</label>
         <select id="regMode">
-          <option value="month">Oylik</option>
-          <option value="year">Yillik</option>
+          <option value="month">Monthly</option>
+          <option value="year">Yearly</option>
         </select>
-        <label for="regYear" id="lblRegYear">Yil:</label>
+        <label for="regYear" id="lblRegYear">Year:</label>
         <select id="regYear"></select>
-        <button id="btnRegReload" class="btn">Yangilash</button>
+        <button id="btnRegReload" class="btn">Refresh</button>
       </div>
       <canvas id="regLine" height="120"></canvas>
     </div>
 
     <!-- Table -->
     <div class="card">
-      <h3>Barcha sinflar</h3>
+      <h3>All Classes</h3>
       <table class="table" id="tblClasses">
         <thead>
-          <tr><th>#</th><th>Sinf</th><th>O‘quvchilar soni</th></tr>
+          <tr><th>#</th><th>Class</th><th>Number of Students</th></tr>
         </thead>
         <tbody></tbody>
       </table>

@@ -1,10 +1,10 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>School Moliya</title>
+  <title>School Finance</title>
   <link rel="stylesheet" href="{% static 'css/moliya-style.css' %}">
   <style>
     .card{background:#fff;border-radius:12px;box-shadow:0 3px 6px rgba(0,0,0,.08);padding:16px;margin-bottom:14px}
@@ -36,12 +36,12 @@
       <div class="logo">
         <img src="{% static 'img/Logo.png' %}" alt="Logo" class="logo-img">
       </div>
-      <h3 class="sidebar-title">School Moliya</h3>
+      <h3 class="sidebar-title">School Finance</h3>
       <nav class="menu">
-        <a href="{% url 'moliya-main' %}" class="active"><img src="{% static 'icons/Asosiy.png' %}" alt=""> Asosiy</a>
-        <a href="{% url 'moliya-chiqim' %}"><img src="{% static 'icons/Chiqim.png' %}" alt=""> Chiqim</a>
-        <a href="{% url 'moliya-oylik' %}"><img src="{% static 'icons/Jadval.png' %}" alt=""> Oyliklar</a>
-        <a href="{% url 'moliya-tolovlar' %}"><img src="{% static 'icons/Moliya.png' %}" alt=""> To`lovlar</a>
+        <a href="{% url 'moliya-main' %}" class="active"><img src="{% static 'icons/Asosiy.png' %}" alt=""> Home</a>
+        <a href="{% url 'moliya-chiqim' %}"><img src="{% static 'icons/Chiqim.png' %}" alt=""> Expense</a>
+        <a href="{% url 'moliya-oylik' %}"><img src="{% static 'icons/Jadval.png' %}" alt=""> Salaries</a>
+        <a href="{% url 'moliya-tolovlar' %}"><img src="{% static 'icons/Moliya.png' %}" alt=""> Payments</a>
       </nav>
     </aside>
 
@@ -49,28 +49,28 @@
     <main class="content">
       <!-- Topbar -->
       <div class="topbar">
-        <input type="text" placeholder="Qidiruv">
+        <input type="text" placeholder="Search">
         <div class="icons">
           <a href="#"><img src="{% static 'icons/Xabarlar.png' %}" alt="Bell"></a>
           <a href="#"><img src="{% static 'icons/Profil.png' %}" alt="Profile"></a>
         </div>
       </div>
 
-      <h2 class="page-title">Moliya</h2>
+      <h2 class="page-title">Finance</h2>
 
       <!-- Date range -->
       <div class="card">
         <div class="row">
           <div>
-            <label>Dan</label>
+            <label>From</label>
             <input type="date" id="fromDate">
           </div>
           <div>
-            <label>Gacha</label>
+            <label>To</label>
             <input type="date" id="toDate">
           </div>
-          <button id="btnLoad" class="btn">Yuklash</button>
-          <button id="btnThisMonth" class="btn ghost">Joriy oy</button>
+          <button id="btnLoad" class="btn">Load</button>
+          <button id="btnThisMonth" class="btn ghost">This month</button>
           <div style="margin-left:auto" class="muted" id="rangeInfo"></div>
         </div>
       </div>
@@ -78,32 +78,32 @@
       <!-- KPI cards -->
       <div class="kpi-grid">
         <div class="kpi">
-          <h3>Kirim</h3>
+          <h3>Income</h3>
           <div class="big" id="incomeTotal">—</div>
           <div class="meta">
-            <div>Naqd: <b id="incomeCash">—</b></div>
-            <div>Karta: <b id="incomeCard">—</b></div>
-            <div>O‘tkazma: <b id="incomeTransfer">—</b></div>
+            <div>Cash: <b id="incomeCash">—</b></div>
+            <div>Card: <b id="incomeCard">—</b></div>
+            <div>Transfer: <b id="incomeTransfer">—</b></div>
           </div>
         </div>
 
         <div class="kpi">
-          <h3>Chiqim</h3>
+          <h3>Expense</h3>
           <div class="big" id="expenseTotal">—</div>
           <div class="meta">
-            <div>Naqd: <b id="expenseCash">—</b></div>
-            <div>Karta: <b id="expenseCard">—</b></div>
-            <div>O‘tkazma: <b id="expenseTransfer">—</b></div>
+            <div>Cash: <b id="expenseCash">—</b></div>
+            <div>Card: <b id="expenseCard">—</b></div>
+            <div>Transfer: <b id="expenseTransfer">—</b></div>
           </div>
         </div>
 
         <div class="kpi">
-          <h3>Sof foyda</h3>
+          <h3>Net Profit</h3>
           <div class="big" id="profit">—</div>
           <div class="meta">
-            <div>Balans: <b id="balance">—</b></div>
-            <div>Qarzdorlar: <b id="debtorsCount">—</b></div>
-            <div>Davr: <b id="periodLabel">—</b></div>
+            <div>Balance: <b id="balance">—</b></div>
+            <div>Debtors: <b id="debtorsCount">—</b></div>
+            <div>Period: <b id="periodLabel">—</b></div>
           </div>
         </div>
       </div>
@@ -111,15 +111,15 @@
       <!-- Charts -->
       <div class="charts">
         <div class="chart-card">
-          <h3>Kunlik kirim / chiqim</h3>
+          <h3>Daily income / expense</h3>
           <canvas id="lineChart" height="140"></canvas>
         </div>
         <div class="chart-card">
-          <h3>Kirim (usul bo‘yicha)</h3>
+          <h3>Income (by method)</h3>
           <canvas id="pieIncome" height="220"></canvas>
         </div>
         <div class="chart-card">
-          <h3>Chiqim (usul bo‘yicha)</h3>
+          <h3>Expense (by method)</h3>
           <canvas id="pieExpense" height="220"></canvas>
         </div>
       </div>
@@ -127,7 +127,6 @@
   </div>
 
   <script>window.API_BASE = '/api/billing';</script>
-  <!-- Chart.js (CDN) – you can also serve it locally via staticfiles -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="{% static 'js/moliya-main.js' %}" defer></script>
 </body>

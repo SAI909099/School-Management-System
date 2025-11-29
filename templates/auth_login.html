@@ -1,6 +1,6 @@
 {#{% extends 'base.html' %}#}
 {% load static %}
-{#{% block title %}Kirish{% endblock %}#}
+{#{% block title %}Login{% endblock %}#}
 {% block extra_css %}<link rel="stylesheet" href="{% static 'css/login.css' %}?v=2">{% endblock %}
 
 {% block content %}
@@ -11,7 +11,7 @@
   </div>
 
   <div class="login-card">
-    <h1>Kamolot Akademyasi</h1>
+    <h1>Kamolot Academy</h1>
 
     <!-- IMPORTANT: no action attribute -->
     <form id="login-form" method="post">
@@ -21,14 +21,14 @@
         <input class="input" id="id_login" type="text" name="phone" placeholder="+998 ** *** ** **">
       </div>
       <div class="form-row">
-        <label class="label" for="id_password">Parol</label>
+        <label class="label" for="id_password">Password</label>
         <input class="input" id="id_password" type="password" name="password" placeholder="••••••••">
       </div>
-      <button class="login-button" type="submit">Kirish</button>
+      <button class="login-button" type="submit">Login</button>
     </form>
 
     <div id="login-error" style="margin-top:10px;color:#ef4444;font-weight:700;"></div>
-    <div class="login-quote">Eng yaxshi sarmoya bu - ta’limga bo‘lgan sarmoyadir!</div>
+    <div class="login-quote">The best investment is the investment in education!</div>
   </div>
 </div>
 
@@ -69,7 +69,7 @@
       window.location.href = '/start/';
     } catch (e2) {
       console.error(e2);
-      if (err) err.textContent = 'Kirishda xatolik. Telefon/parolni tekshiring.';
+      if (err) err.textContent = 'Login error. Please check phone/password.';
     }
   });
 })();

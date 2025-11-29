@@ -1,10 +1,10 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>School Moliya — Oyliklar</title>
+  <title>School Finance — Salaries</title>
   <link rel="stylesheet" href="{% static 'css/moliya-oylik-style.css' %}">
   <style>
     .card{background:#fff;border-radius:12px;box-shadow:0 3px 6px rgba(0,0,0,.08);padding:16px;margin-bottom:14px}
@@ -26,36 +26,36 @@
   <div class="container">
     <aside class="sidebar">
       <div class="logo"><img src="{% static 'img/Logo.png' %}" alt="Logo" class="logo-img"></div>
-      <h3 class="sidebar-title">School Moliya</h3>
+      <h3 class="sidebar-title">School Finance</h3>
       <nav class="menu">
-        <a href="{% url 'moliya-main' %}" ><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Asosiy</a>
-        <a href="{% url 'moliya-chiqim' %}"><img src="{% static 'icons/Chiqim.png' %}" alt=""> Chiqim</a>
-        <a href="{% url 'moliya-oylik' %}" class="active"><img src="{% static 'icons/Jadval.png' %}" alt=""> Oyliklar</a>
-        <a href="{% url 'moliya-tolovlar' %}"><img src="{% static 'icons/Moliya.png' %}" alt=""> To`lovlar</a>
+        <a href="{% url 'moliya-main' %}" ><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Home</a>
+        <a href="{% url 'moliya-chiqim' %}"><img src="{% static 'icons/Chiqim.png' %}" alt=""> Expense</a>
+        <a href="{% url 'moliya-oylik' %}" class="active"><img src="{% static 'icons/Jadval.png' %}" alt=""> Salaries</a>
+        <a href="{% url 'moliya-tolovlar' %}"><img src="{% static 'icons/Moliya.png' %}" alt=""> Payments</a>
       </nav>
     </aside>
 
     <main class="content">
       <div class="topbar">
-        <input type="text" id="qSearch" class="search" placeholder="Qidiruv (ism / rol)">
+        <input type="text" id="qSearch" class="search" placeholder="Search (name / role)">
         <div class="icons">
           <a href="#"><img src="{% static 'icons/Xabarlar.png' %}" alt="Bell"></a>
           <a href="#"><img src="{% static 'icons/Profil.png' %}" alt="Profile"></a>
         </div>
       </div>
 
-      <h2 class="page-title">Ishchilar oyliklari</h2>
+      <h2 class="page-title">Employee Salaries</h2>
 
       <div class="card">
         <div class="row">
           <div>
-            <label>Oy</label>
+            <label>Month</label>
             <input type="month" id="monthInp">
           </div>
-          <button id="btnReload" class="btn">Yuklash</button>
+          <button id="btnReload" class="btn">Load</button>
           <div class="right">
-            <button id="btnSave" class="btn primary">Saqlash</button>
-            <button id="btnFinalize" class="btn red">Oy yakunlash (lock)</button>
+            <button id="btnSave" class="btn primary">Save</button>
+            <button id="btnFinalize" class="btn red">Finalize Month (lock)</button>
           </div>
         </div>
         <div class="row"><span id="lockInfo" class="muted"></span></div>
@@ -65,11 +65,11 @@
         <table class="table" id="tbl">
           <thead>
             <tr>
-              <th>F.I.O</th>
-              <th>Mutaxassislik</th>
-              <th>Rol</th>
-              <th>Miqdor (so‘m)</th>
-              <th>Berilgan</th>
+              <th>Full Name</th>
+              <th>Specialization</th>
+              <th>Role</th>
+              <th>Amount (UZS)</th>
+              <th>Paid</th>
             </tr>
           </thead>
           <tbody><!-- JS fills --></tbody>

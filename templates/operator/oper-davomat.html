@@ -1,9 +1,9 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>School Operator — Davomat</title>
+  <title>School Operator — Attendance</title>
   <link rel="stylesheet" href="{% static 'css/parent-davomat-style.css' %}">
   <style>
     .card{background:#fff;border-radius:12px;box-shadow:0 3px 6px rgba(0,0,0,.08);padding:14px 16px;margin-bottom:14px}
@@ -34,52 +34,52 @@
       </div>
       <h3 class="sidebar-title">School Operator</h3>
       <nav class="menu">
-      <a href="/operator/analytics/"><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Asosiy</a>
-      <!-- <a href="{% url 'operator-main' %}"><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Asosiy 12</a> -->
-      <a href="{% url 'operator-davomat' %}"><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> Davomat</a>
-      <a href="{% url 'operator-add' %}"><img src="{% static 'icons/Jadval.png' %}" alt=""> Yangi o’quvchi</a>
-      <!-- <a href="{% url 'moliya-sozlamalar' %}"><img src="{% static 'icons/sozlamalar.png' %}" alt=""> Sozlamalar</a> -->
-      <!-- <a href="/operator/analytics/"><img src="{% static 'icons/Jadval.png' %}" alt=""> Analitika</a> -->
+      <a href="/operator/analytics/"><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Home</a>
+      <!-- <a href="{% url 'operator-main' %}"><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Home 12</a> -->
+      <a href="{% url 'operator-davomat' %}"><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> Attendance</a>
+      <a href="{% url 'operator-add' %}"><img src="{% static 'icons/Jadval.png' %}" alt=""> New Student</a>
+      <!-- <a href="{% url 'moliya-sozlamalar' %}"><img src="{% static 'icons/sozlamalar.png' %}" alt=""> Settings</a> -->
+      <!-- <a href="/operator/analytics/"><img src="{% static 'icons/Jadval.png' %}" alt=""> Analytics</a> -->
       </nav>
     </aside>
 
     <!-- Content -->
     <main class="content">
       <div class="topbar">
-        <input type="text" placeholder="Qidiruv">
+        <input type="text" placeholder="Search">
         <div class="icons">
           <a href="#"><img src="{% static 'icons/Xabarlar.png' %}" alt="Bell"></a>
           <a href="#"><img src="{% static 'icons/Profil.png' %}" alt="Profile"></a>
         </div>
       </div>
 
-      <h2 class="page-title">Davomat</h2>
+      <h2 class="page-title">Attendance</h2>
 
       <!-- Mark attendance -->
       <div class="card">
-        <h3>Joriy dars uchun davomat</h3>
+        <h3>Attendance for current lesson</h3>
         <div class="row">
           <div>
-            <label>Guruh / Sinf</label>
-            <select id="classSelect"><option value="">— tanlang —</option></select>
+            <label>Group / Class</label>
+            <select id="classSelect"><option value="">— select —</option></select>
           </div>
           <div>
-            <label>Sana</label>
+            <label>Date</label>
             <input type="date" id="dateInp">
           </div>
           <div>
-            <label>Fan (shu kun)</label>
+            <label>Subject (today)</label>
             <!-- Filled from schedule by weekday; optional but recommended -->
             <select id="subjectSelect">
-              <option value="">— tanlang —</option>
+              <option value="">— select —</option>
             </select>
           </div>
-          <button id="btnLoadClass" class="btn">Yuklash</button>
+          <button id="btnLoadClass" class="btn">Load</button>
 
           <div class="right" style="display:flex;gap:8px;">
-            <button id="btnAllPresent" class="btn ghost">Barchasi kelgan</button>
-            <button id="btnAllAbsent" class="btn ghost">Barchasi kelmagan</button>
-            <button id="btnSave" class="btn primary">Saqlash</button>
+            <button id="btnAllPresent" class="btn ghost">All Present</button>
+            <button id="btnAllAbsent" class="btn ghost">All Absent</button>
+            <button id="btnSave" class="btn primary">Save</button>
           </div>
         </div>
 
@@ -88,8 +88,8 @@
             <thead>
               <tr>
                 <th style="width:60px;">#</th>
-                <th>F.I.O</th>
-                <th style="width:140px;">Kelgan</th>
+                <th>Full Name</th>
+                <th style="width:140px;">Present</th>
               </tr>
             </thead>
             <tbody><!-- JS fills --></tbody>
@@ -100,17 +100,17 @@
 
       <!-- Absent list (school-wide) -->
       <div class="card">
-        <h3>Kelmaganlar ro‘yxati</h3>
+        <h3>Absent Students List</h3>
         <div class="row">
           <div>
-            <label>Sana</label>
+            <label>Date</label>
             <input type="date" id="absDate">
           </div>
           <div>
-            <label>Guruh/Sinf (ixtiyoriy)</label>
-            <select id="absClass"><option value="">— hammasi —</option></select>
+            <label>Group/Class (optional)</label>
+            <select id="absClass"><option value="">— all —</option></select>
           </div>
-          <button id="btnLoadAbsent" class="btn">Yuklash</button>
+          <button id="btnLoadAbsent" class="btn">Load</button>
           <div class="right" style="display:flex;gap:8px;">
             <button id="btnCSV" class="btn ghost">CSV</button>
           </div>
@@ -121,10 +121,10 @@
             <thead>
               <tr>
                 <th style="width:60px;">#</th>
-                <th>F.I.O</th>
-                <th>Sinf</th>
-                <th>Ota/ona telefon</th>
-                <th>Holat</th>
+                <th>Full Name</th>
+                <th>Class</th>
+                <th>Parent Phone</th>
+                <th>Status</th>
               </tr>
             </thead>
             <tbody><!-- JS fills --></tbody>

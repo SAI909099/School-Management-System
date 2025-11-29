@@ -1,10 +1,10 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Foydalanuvchi qo‘shish</title>
+  <title>Add User</title>
 
   <!-- Global admin styles (lowercase path) -->
   <link rel="stylesheet" href="{% static 'css/admin-add-user.css' %}">
@@ -24,47 +24,35 @@
         <nav class="menu">
           <a href="/dashboard/" >
             <img src="{% static 'icons/Asosiy-white.png' %}" alt="Home">
-            <span>Asosiy</span>
+            <span>Home</span>
           </a>
           <a href="/operator/parents/">
-            <img src="{% static 'icons/O‘quvchi.png' %}" alt="O'quvchi">
-            <span>O‘quvchi</span>
+            <img src="{% static 'icons/O‘quvchi.png' %}" alt="Student">
+            <span>Student</span>
           </a>
           <a href="/operator/teachers/">
-            <img src="{% static 'icons/O‘qituvchi.png' %}" alt="O‘qituvchi">
-            <span>O‘qituvchi</span>
+            <img src="{% static 'icons/O‘qituvchi.png' %}" alt="Teacher">
+            <span>Teacher</span>
           </a>
           <a href="/schedule/classes/">
-            <img src="{% static 'icons/Jadval.png' %}" alt="Jadval">
-            <span>Jadval</span>
+            <img src="{% static 'icons/Jadval.png' %}" alt="Schedule">
+            <span>Schedule</span>
           </a>
           <a href="/moliya/">
-            <img src="{% static 'icons/Moliya.png' %}" alt="Moliya">
-            <span>Moliya</span>
+            <img src="{% static 'icons/Moliya.png' %}" alt="Finance">
+            <span>Finance</span>
           </a>
-            <a href="/users/add/" class="active" ><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Qo‘shish</a>
-
-    <!--      <a href="#">-->
-    <!--        <img src="{% static 'icons/sozlamalar.png' %}" alt="Sozlamalar">-->
-    <!--        <span>Sozlamalar</span>-->
-    <!--      </a>-->
+            <a href="/users/add/" class="active" >
+              <img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Add
+            </a>
         </nav>
       </aside>
 
     <!-- Content -->
     <main class="content">
-      <!-- Optional topbar (matches your admin style). Uncomment if you want it here.
-      <div class="topbar">
-        <div class="search"><input type="text" placeholder="Qidiruv"></div>
-        <div class="top-icons">
-          <a href="#"><img src="{% static 'icons/Xabarlar.png' %}" alt="Xabarlar"></a>
-          <a href="#"><img src="{% static 'icons/Profil.png' %}" alt="Profil"></a>
-        </div>
-      </div>
-      -->
 
       <div class="page">
-        <h2 class="page-title">Foydalanuvchi qo‘shish</h2>
+        <h2 class="page-title">Add User</h2>
 
         <div id="msg" class="hidden"></div>
 
@@ -72,33 +60,33 @@
           <form id="addUserForm" autocomplete="off">
             <div class="row">
               <div class="field">
-                <label for="phone">Telefon (login)</label>
+                <label for="phone">Phone (login)</label>
                 <input type="text" id="phone" placeholder="+998 90 123 45 67" required />
-                <div class="hint">Format: +998xxxxxxxxx (bo‘sh joy/chaslar farqi muhim emas, avtomatik tozalanadi)</div>
+                <div class="hint">Format: +998xxxxxxxxx (spaces/dashes are ignored, auto-cleaned)</div>
               </div>
               <div class="field">
-                <label for="password">Parol</label>
+                <label for="password">Password</label>
                 <input type="password" id="password" minlength="4" required />
               </div>
             </div>
 
             <div class="row">
               <div class="field">
-                <label for="last_name">Familiya</label>
+                <label for="last_name">Last Name</label>
                 <input type="text" id="last_name" />
               </div>
               <div class="field">
-                <label for="first_name">Ism</label>
+                <label for="first_name">First Name</label>
                 <input type="text" id="first_name" />
               </div>
               <div class="field">
-                <label for="role">Rol</label>
+                <label for="role">Role</label>
                 <select id="role" required>
-                  <option value="teacher">O‘qituvchi</option>
-                  <option value="registrar">Ro‘yxatga oluvchi</option>
-                  <option value="accountant">Hisobchi</option>
+                  <option value="teacher">Teacher</option>
+                  <option value="registrar">Registrar</option>
+                  <option value="accountant">Accountant</option>
                   <option value="admin">Admin</option>
-                  <option value="parent">Ota/Ona</option>
+                  <option value="parent">Parent</option>
                 </select>
               </div>
             </div>
@@ -106,27 +94,27 @@
             <!-- Teacher-only section -->
             <div id="teacherBlock" class="row">
               <div class="field">
-                <label for="specialty">Mutaxassislik (Fan)</label>
+                <label for="specialty">Specialty (Subject)</label>
                 <select id="specialty">
                   <option value="">—</option>
                 </select>
               </div>
               <div class="field">
-                <label for="is_class_teacher">Sinif rahbari</label>
+                <label for="is_class_teacher">Class Teacher</label>
                 <select id="is_class_teacher">
-                  <option value="false" selected>Yo‘q</option>
-                  <option value="true">Ha</option>
+                  <option value="false" selected>No</option>
+                  <option value="true">Yes</option>
                 </select>
               </div>
               <div class="field" style="flex:1 1 100%;">
-                <label for="notes">Izoh</label>
-                <textarea id="notes" rows="2" placeholder="Ixtiyoriy"></textarea>
+                <label for="notes">Notes</label>
+                <textarea id="notes" rows="2" placeholder="Optional"></textarea>
               </div>
             </div>
 
             <div class="actions">
-              <button type="submit" class="btn primary">Saqlash</button>
-              <button type="button" class="btn" id="resetBtn">Tozalash</button>
+              <button type="submit" class="btn primary">Save</button>
+              <button type="button" class="btn" id="resetBtn">Clear</button>
             </div>
           </form>
         </div>

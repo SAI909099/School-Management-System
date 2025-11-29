@@ -1,10 +1,10 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Kundalik — Baho qo‘yish</title>
+  <title>Daily — Grade Entry</title>
   <meta name="color-scheme" content="light">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="referrer" content="same-origin">
@@ -61,64 +61,69 @@
 </head>
 <body data-api-base="{{ API_BASE|default:'/api' }}">
   <div class="container" data-page="grades-entry" data-allow-daily="true" data-lock-daily="true">
+
     <!-- Sidebar -->
     <aside class="sidebar">
       <div class="logo">
-        <img src="{% static 'img/Logo.png' %}" alt="Maktab logotipi" class="logo-img" loading="lazy" decoding="async">
+        <img src="{% static 'img/Logo.png' %}" alt="School logo" class="logo-img" loading="lazy" decoding="async">
       </div>
-      <h3 class="sidebar-title">School O‘qituvchi</h3>
-      <nav class="menu" aria-label="Asosiy menyu">
-        <a href="/teachers/"><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Asosiy</a>
-        <a href="/classes/"><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> Siniflar</a>
-        <a href="/schedule/view/teacher/"><img src="{% static 'icons/O‘qituvchi.png' %}" alt=""> Jadval</a>
-        <a class="active" aria-current="page" href="/grades/entry/daily/"><img src="{% static 'icons/Jadval.png' %}" alt=""> Kundalik baho</a>
+      <h3 class="sidebar-title">School Teacher</h3>
+      <nav class="menu" aria-label="Main menu">
+        <a href="/teachers/"><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Home</a>
+        <a href="/classes/"><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> Classes</a>
+        <a href="/schedule/view/teacher/"><img src="{% static 'icons/O‘qituvchi.png' %}" alt=""> Schedule</a>
+        <a class="active" aria-current="page" href="/grades/entry/daily/"><img src="{% static 'icons/Jadval.png' %}" alt=""> Daily Grades</a>
       </nav>
     </aside>
 
     <!-- Content -->
     <main class="content">
-      <h2 class="page-title">Kundalik — Baho qo‘yish</h2>
+      <h2 class="page-title">Daily — Grade Entry</h2>
 
-      <!-- Status / messages -->
       <div id="msg" class="hidden" role="status" aria-live="polite"></div>
+
       <div id="loading" class="loading hidden" role="status" aria-live="polite">
-        <span class="spinner" aria-hidden="true"></span><span>Yuklanmoqda…</span>
+        <span class="spinner" aria-hidden="true"></span><span>Loading…</span>
       </div>
 
       <!-- Controls -->
       <div class="card" style="margin-bottom:16px;">
-        <div class="row" role="group" aria-label="Filtrlar">
+        <div class="row" role="group" aria-label="Filters">
           <div>
-            <label for="classSel">Sinf</label>
+            <label for="classSel">Class</label>
             <select id="classSel" aria-required="true"></select>
           </div>
+
           <div>
-            <label for="subjectSel">Fan</label>
+            <label for="subjectSel">Subject</label>
             <select id="subjectSel" aria-required="true">
-              <option value="">— tanlang —</option>
+              <option value="">— select —</option>
             </select>
           </div>
+
           <div>
-            <label for="typeSel">Turi</label>
-            <!-- JS will lock this to "daily" and disable -->
+            <label for="typeSel">Type</label>
             <select id="typeSel">
-              <option value="daily" selected>Kundalik</option>
+              <option value="daily" selected>Daily</option>
             </select>
           </div>
+
           <div>
-            <label for="dateInp">Sana</label>
+            <label for="dateInp">Date</label>
             <div style="display:flex; gap:6px; align-items:center;">
-              <button id="btnPrevDay" class="btn ghost" type="button" aria-label="Oldingi kun">←</button>
+              <button id="btnPrevDay" class="btn ghost" type="button" aria-label="Previous day">←</button>
               <input type="date" id="dateInp" inputmode="numeric" aria-required="true">
-              <button id="btnNextDay" class="btn ghost" type="button" aria-label="Keyingi kun">→</button>
+              <button id="btnNextDay" class="btn ghost" type="button" aria-label="Next day">→</button>
             </div>
           </div>
+
           <div>
-            <label for="termInp">Semestr / Term</label>
-            <input type="text" id="termInp" placeholder="masalan: 2025-1" autocomplete="off" spellcheck="false">
+            <label for="termInp">Semester / Term</label>
+            <input type="text" id="termInp" placeholder="e.g. 2025-1" autocomplete="off" spellcheck="false">
           </div>
-          <button id="btnLoad" class="btn" type="button">O‘quvchilarni yuklash</button>
-          <span id="whoBadge" class="badge" aria-label="Foydalanuvchi roli">Rol: —</span>
+
+          <button id="btnLoad" class="btn" type="button">Load Students</button>
+          <span id="whoBadge" class="badge" aria-label="User role">Role: —</span>
         </div>
       </div>
 
@@ -126,13 +131,13 @@
       <div class="card" aria-live="off">
         <div class="row" style="justify-content:space-between; margin-bottom:10px;">
           <div style="display:flex; gap:8px;">
-            <button id="btnFill3" class="btn ghost" type="button">Barchasini 3</button>
-            <button id="btnFill4" class="btn ghost" type="button">Barchasini 4</button>
-            <button id="btnFill5" class="btn ghost" type="button">Barchasini 5</button>
+            <button id="btnFill3" class="btn ghost" type="button">Set All 3</button>
+            <button id="btnFill4" class="btn ghost" type="button">Set All 4</button>
+            <button id="btnFill5" class="btn ghost" type="button">Set All 5</button>
           </div>
           <div style="display:flex; gap:8px;">
-            <button id="btnClear" class="btn ghost" type="button">Tozalash</button>
-            <button id="btnSave" class="btn primary" type="button">Saqlash</button>
+            <button id="btnClear" class="btn ghost" type="button">Clear</button>
+            <button id="btnSave" class="btn primary" type="button">Save</button>
           </div>
         </div>
 
@@ -140,9 +145,9 @@
           <thead>
             <tr>
               <th scope="col" style="width:60px;">№</th>
-              <th scope="col">Familiya Ism</th>
-              <th scope="col" style="width:120px;">Baho (2..5)</th>
-              <th scope="col">Izoh</th>
+              <th scope="col">Last Name & First Name</th>
+              <th scope="col" style="width:120px;">Grade (2..5)</th>
+              <th scope="col">Comment</th>
             </tr>
           </thead>
           <tbody><!-- JS will render rows here --></tbody>

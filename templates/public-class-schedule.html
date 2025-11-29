@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sinf jadvali</title>
+  <title>Class Schedule</title>
   <link rel="stylesheet" href="{% static 'css/jadval-style.css' %}">
   <style>
     .page { padding: 16px; }
@@ -33,17 +33,17 @@
       <div class="logo"><img src="{% static 'img/Logo.png' %}" alt="Logo" class="logo-img"></div>
       <h3 class="sidebar-title">School</h3>
       <nav class="menu">
-        <a href="/dashboard/"><img src="{% static 'icons/Asosiy.png' %}" alt=""> Asosiy</a>
-        <a href="/schedule/classes/"><img src="{% static 'icons/Jadval.png' %}" alt=""> Jadval editor</a>
+        <a href="/dashboard/"><img src="{% static 'icons/Asosiy.png' %}" alt=""> Home</a>
+        <a href="/schedule/classes/"><img src="{% static 'icons/Jadval.png' %}" alt=""> Schedule Editor</a>
       </nav>
     </aside>
 
     <main class="content">
       <div class="page">
         <div class="toolbar">
-          <button id="btnPrint" class="btn">🖨️ Chop etish</button>
-          <button id="btnOpenEditor" class="btn">✏️ Tahrirlash</button>
-          <span id="title" style="font-weight:700; margin-left:auto;">Sinf: —</span>
+          <button id="btnPrint" class="btn">🖨️ Print</button>
+          <button id="btnOpenEditor" class="btn">✏️ Edit</button>
+          <span id="title" style="font-weight:700; margin-left:auto;">Class: —</span>
         </div>
 
         <div class="panel">

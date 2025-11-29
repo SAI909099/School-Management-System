@@ -3,7 +3,7 @@
 <html lang="uz">
 <head>
   <meta charset="UTF-8">
-  <title>Yo‘naltirilmoqda…</title>
+  <title>Redirecting…</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     html,body{height:100%} body{display:flex;align-items:center;justify-content:center;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans","Apple Color Emoji","Segoe UI Emoji";background:#f7f7fb;color:#222}
@@ -13,8 +13,8 @@
 </head>
 <body>
   <div class="box">
-    <div id="status">Yo‘naltirilmoqda…</div>
-    <div class="muted">Iltimos kuting</div>
+    <div id="status">Redirecting…</div>
+    <div class="muted">Please wait</div>
   </div>
 
   <script>
@@ -26,7 +26,7 @@
       function show(msg){ document.getElementById('status').textContent = msg; }
 
       if(!token){
-        show("Avval tizimga kiring");
+        show("Please log in first");
         go("/");
         return;
       }
@@ -40,12 +40,12 @@
           // Normalize role
           const role = (me && me.role || "").toLowerCase();
 
-          // Map roles to pages (adjust any slugs you use)
+          // Map roles to pages
           const MAP = {
             admin: "/dashboard/",
             registrar: "/operator/analytics/",
             accountant: "/moliya/",
-            finance: "/moliya/",         // if you use 'finance' instead of 'accountant'
+            finance: "/moliya/",
             teacher: "/teachers/",
             parent: "/otaona/",
             operator: "/operator/analytics/",
@@ -56,7 +56,7 @@
         })
         .catch(err => {
           console.error(err);
-          show("Avtorizatsiya xatosi — qayta kiring");
+          show("Authorization error — please log in again");
           setTimeout(()=> go("/"), 900);
         });
     })();

@@ -1,10 +1,10 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sinf jadvali (ko‘rish)</title>
+  <title>Class Schedule (View)</title>
   <link rel="stylesheet" href="{% static 'css/jadval-style.css' %}">
   <style>
     .viewer { background:#fff; border-radius:12px; box-shadow:0 3px 6px rgba(0,0,0,.1); padding:16px; }
@@ -29,31 +29,31 @@
 </head>
 <body>
   <div class="container">
-    <!-- Optional sidebar (reuse your admin sidebar if you want) -->
+    <!-- Optional sidebar (reuse your admin sidebar if needed) -->
     <aside class="sidebar">
       <div class="logo"><img src="{% static 'img/Logo.png' %}" class="logo-img" alt=""></div>
       <h3 class="sidebar-title">School</h3>
       <nav class="menu">
-        <a href="/dashboard/"><img src="{% static 'icons/Asosiy.png' %}" alt=""> Asosiy</a>
-        <a href="/schedule/" ><img src="{% static 'icons/Jadval.png' %}" alt=""> Jadval (o‘qituvchi)</a>
-        <a href="/schedule/classes/" ><img src="{% static 'icons/Jadval.png' %}" alt=""> Jadval (sinflar)</a>
+        <a href="/dashboard/"><img src="{% static 'icons/Asosiy.png' %}" alt=""> Home</a>
+        <a href="/schedule/" ><img src="{% static 'icons/Jadval.png' %}" alt=""> Schedule (Teacher)</a>
+        <a href="/schedule/classes/" ><img src="{% static 'icons/Jadval.png' %}" alt=""> Schedule (Classes)</a>
       </nav>
     </aside>
 
     <main class="content">
-      <h2 class="page-title">Sinf jadvali (ko‘rish)</h2>
+      <h2 class="page-title">Class Schedule (View)</h2>
 
       <div id="msg" class="hidden"></div>
 
       <div class="viewer">
         <div class="head">
           <div class="meta">
-            <div style="font-size:18px; font-weight:700;" id="className">Sinf: —</div>
+            <div style="font-size:18px; font-weight:700;" id="className">Class: —</div>
             <div id="classTeacher" style="margin-top:4px;"></div>
           </div>
           <div style="display:flex; gap:8px; align-items:center;">
-            <span id="weekBadge" class="badge">Dushanba–Shanba</span>
-            <button class="print-btn" id="btnPrint">Chop etish</button>
+            <span id="weekBadge" class="badge">Monday–Saturday</span>
+            <button class="print-btn" id="btnPrint">Print</button>
           </div>
         </div>
 

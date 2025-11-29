@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>School Ota Ona — Baholar</title>
+  <title>School Parent — Grades</title>
 
   <link rel="stylesheet" href="{% static 'css/parent-baholar-style.css' %}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,19 +12,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
-    /* Page layout without sidebar */
     body, html { background:#f4f6fb; }
     .container { max-width:1200px; margin:0 auto; padding:0 16px; }
     .content { padding:16px 0 24px; }
     .topbar { display:flex; gap:12px; align-items:center; justify-content:space-between; margin:10px 0 16px; }
     .topbar input { width:360px; max-width:60vw; height:36px; border-radius:999px; border:1px solid #ddd; padding:0 14px; }
 
-    /* Cards + badges */
     .card { background:#fff; border:1px solid #eee; border-radius:14px; padding:16px; }
     .cards-grid { display:grid; gap:12px; }
     .badge { display:inline-block; padding:6px 10px; border-radius:999px; background:#f2f4ff; color:#4b57e4; font-weight:600; }
 
-    /* History table inside details */
     details.hist { margin-top: 8px; }
     details.hist > summary { cursor:pointer; user-select:none; color:#5b6bff; }
     table { width:100%; border-collapse:collapse; }
@@ -39,17 +36,15 @@
   <div class="container">
     <main class="content">
       <div class="topbar">
-        <input type="text" placeholder="Qidiruv">
+        <input type="text" placeholder="Search">
         <div class="icons">
-          <a href="/otaona/"><img src="{% static 'icons/Asosiy.png' %}" alt="Asosiy"></a>
-<!--          <a href="#"><img src="{% static 'icons/Xabarlar.png' %}" alt="Xabarlar"></a>-->
-<!--          <a href="#"><img src="{% static 'icons/Profil.png' %}" alt="Profil"></a>-->
+          <a href="/otaona/"><img src="{% static 'icons/Asosiy.png' %}" alt="Home"></a>
         </div>
       </div>
 
       <!-- JS injects the child selector + badges above this grid -->
       <div class="cards-grid">
-        <div class="card">Ma’lumotlar yuklanmoqda…</div>
+        <div class="card">Loading data…</div>
       </div>
     </main>
   </div>

@@ -1,6 +1,6 @@
-    {% load static %}
+{% load static %}
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,55 +19,53 @@
       </div>
       <h3 class="sidebar-title">School Operator</h3>
       <nav class="menu">
-        <a href="/operator/analytics/"><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Asosiy</a>
-      <!-- <a href="{% url 'operator-main' %}"><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Asosiy 12</a> -->
-      <a href="{% url 'operator-davomat' %}"><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> Davomat</a>
-      <a href="{% url 'operator-add' %}"><img src="{% static 'icons/Jadval.png' %}" alt=""> Yangi o’quvchi</a>
-      <!-- <a href="{% url 'moliya-sozlamalar' %}"><img src="{% static 'icons/sozlamalar.png' %}" alt=""> Sozlamalar</a> -->
-      <!-- <a href="/operator/analytics/"><img src="{% static 'icons/Jadval.png' %}" alt=""> Analitika</a> -->
+        <a href="/operator/analytics/"><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Home</a>
+      <!-- <a href="{% url 'operator-main' %}"><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Home 12</a> -->
+      <a href="{% url 'operator-davomat' %}"><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> Attendance</a>
+      <a href="{% url 'operator-add' %}"><img src="{% static 'icons/Jadval.png' %}" alt=""> New Student</a>
       </nav>
     </aside>
 
     <!-- Content -->
     <main class="content">
       <div class="topbar">
-        <input type="text" placeholder="Qidiruv">
+        <input type="text" placeholder="Search">
         <div class="icons">
           <a href="#"><img src="{% static 'icons/Xabarlar.png' %}" alt="Bell"></a>
           <a href="#"><img src="{% static 'icons/Profil.png' %}" alt="Profile"></a>
         </div>
       </div>
 
-      <!-- Karta/Statistika (ID’lar ixtiyoriy, JS bo‘lsa o‘qiydi) -->
+      <!-- Cards / Statistics -->
       <div class="stats">
         <div class="stat-card">
-          <h3>Bugungi yangi</h3>
+          <h3>New Today</h3>
           <h2 id="new-today">0</h2>
         </div>
         <div class="stat-card">
-          <h3>Haftalik yangi</h3>
+          <h3>New This Week</h3>
           <h2 id="new-week">0</h2>
         </div>
         <div class="stat-card">
-          <h3>Faol o‘quvchilar</h3>
+          <h3>Active Students</h3>
           <h2 id="active-total">0</h2>
         </div>
         <div class="stat-card">
-          <h3>Guruhlar</h3>
+          <h3>Groups</h3>
           <h2 id="groups-total">0</h2>
         </div>
       </div>
 
-      <!-- Grafik (hozircha rasm) -->
+      <!-- Chart (placeholder image for now) -->
       <div class="chart">
-        <h3>Yangi o‘quvchilar grafik</h3>
-        <img src="{% static 'img/chart.png' %}" alt="Grafik">
+        <h3>New Students Chart</h3>
+        <img src="{% static 'img/chart.png' %}" alt="Chart">
       </div>
     </main>
   </div>
 
   <script>
-    // Backend bazaviy URL (kerak bo‘lsa moslang)
+    // Backend base URL (adjust if needed)
     window.API_BASE = '/api';
   </script>
   <script src="{% static 'js/operator-reg.js' %}" defer></script>

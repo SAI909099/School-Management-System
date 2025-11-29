@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>School O‘qituvchi - Jadval</title>
+  <title>School Teacher - Schedule</title>
   <link rel="stylesheet" href="{% static 'css/teacher-list-style.css' %}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,14 +18,13 @@
       <div class="logo">
         <img src="{% static 'img/Logo.png' %}" alt="Logo" class="logo-img">
       </div>
-      <h3 class="sidebar-title">Jadval</h3>
+      <h3 class="sidebar-title">Schedule</h3>
       <nav class="menu">
-        <a href="/teachers/" ><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Asosiy</a>
-        <a href="/classes/"  ><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> Siniflar</a>
-        <a href="/schedule/view/teacher/" ><img src="{% static 'icons/O‘qituvchi.png' %}" alt=""> Jadval</a>
-        <!-- <a href="/sozlamalar/"><img src="{% static 'icons/sozlamalar.png' %}" alt=""> Sozlamalar</a> -->
-        <a href="/grades/entry/" ><img src="{% static 'icons/Jadval.png' %}" alt=""> Baho qo‘yish</a>
-
+        <a href="/teachers/"><img src="{% static 'icons/Asosiy-white.png' %}" alt=""> Home</a>
+        <a href="/classes/"><img src="{% static 'icons/O‘quvchi.png' %}" alt=""> Classes</a>
+        <a href="/schedule/view/teacher/"><img src="{% static 'icons/O‘qituvchi.png' %}" alt=""> Schedule</a>
+        <!-- <a href="/settings/"><img src="{% static 'icons/sozlamalar.png' %}" alt=""> Settings</a> -->
+        <a href="/grades/entry/"><img src="{% static 'icons/Jadval.png' %}" alt=""> Enter Grades</a>
       </nav>
     </aside>
 
@@ -33,7 +32,7 @@
     <main class="content">
       <!-- Topbar -->
       <div class="topbar">
-        <input type="text" placeholder="Qidiruv">
+        <input type="text" placeholder="Search">
         <div class="icons">
           <a href="#"><img src="{% static 'icons/Xabarlar.png' %}" alt="Bell"></a>
           <a href="#"><img src="{% static 'icons/Profil.png' %}" alt="Profile"></a>
@@ -43,29 +42,29 @@
       <!-- Cards grid -->
       <div class="cards-grid">
         <div class="card">
-          <h3>O‘qituvchi Ism va familiya</h3>
+          <h3>Teacher First and Last Name</h3>
           <table>
             <thead>
               <tr>
-                <th>Fan</th>
-                <th>Guruh</th>
-                <th>Soat</th>
+                <th>Subject</th>
+                <th>Group</th>
+                <th>Hour</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td>Matematika</td><td>5-A</td><td>1</td></tr>
-              <tr><td>Matematika</td><td>6-B</td><td>2</td></tr>
-              <tr><td>Matematika</td><td>4-V</td><td>3</td></tr>
+              <tr><td>Math</td><td>5-A</td><td>1</td></tr>
+              <tr><td>Math</td><td>6-B</td><td>2</td></tr>
+              <tr><td>Math</td><td>4-V</td><td>3</td></tr>
             </tbody>
             <tbody>
-              <tr><td>Matematika</td><td>5-A</td><td>4</td></tr>
-              <tr><td>Matematika</td><td>6-B</td><td>5</td></tr>
-              <tr><td>Matematika</td><td>4-V</td><td>6</td></tr>
+              <tr><td>Math</td><td>5-A</td><td>4</td></tr>
+              <tr><td>Math</td><td>6-B</td><td>5</td></tr>
+              <tr><td>Math</td><td>4-V</td><td>6</td></tr>
             </tbody>
             <tbody>
-              <tr><td>Matematika</td><td>5-A</td><td>7</td></tr>
-              <tr><td>Matematika</td><td>6-B</td><td>7</td></tr>
-              <tr><td>Matematika</td><td>4-V</td><td>8</td></tr>
+              <tr><td>Math</td><td>5-A</td><td>7</td></tr>
+              <tr><td>Math</td><td>6-B</td><td>7</td></tr>
+              <tr><td>Math</td><td>4-V</td><td>8</td></tr>
             </tbody>
           </table>
         </div>
